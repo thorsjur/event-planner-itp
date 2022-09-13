@@ -9,8 +9,8 @@ public class User {
     private List<Event> events;
 
     public User(String userName){
-        if (userName.isBlank()){
-            throw new IllegalArgumentException("User name is blank");
+        if (userName==null || userName.isBlank()){
+            throw new IllegalArgumentException("User name is null or blank");
         }
         this.userName = userName;
         this.events = new ArrayList<>();
@@ -22,5 +22,22 @@ public class User {
 
     public String getUserName() {
         return this.userName;
+    }
+
+    public void addEvent(Event event){
+        if (event==null){
+            throw new IllegalArgumentException("Event is null");
+        }
+        if (!this.events.contains(event)){
+            this.events.add(event);
+        }
+    }
+
+    public void removeEvent(Event event){
+        if (event==null){
+            throw new IllegalArgumentException("Event is null");
+        }
+        this.events.remove(event);
+        event.removeUser(this);
     }
 }

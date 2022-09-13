@@ -11,8 +11,11 @@ public class Event {
     private List<User> users;
 
     public Event(String name, String startTime, String endTime){
-        if (name.isBlank() || startTime.isBlank() || endTime.isBlank()){
+        if (name==null || startTime==null || endTime==null){
             throw new IllegalArgumentException("One or more parameters are null");
+        }
+        if (name.isBlank() || startTime.isBlank() || endTime.isBlank()){
+            throw new IllegalArgumentException("One or more parameters are blank");
         }
         this.users = new ArrayList<>();
         this.name = name;
@@ -34,5 +37,21 @@ public class Event {
 
     public String getEndTime() {
         return this.endTime;
+    }
+
+    public void addUser(User user){
+        if (user==null){
+            throw new IllegalArgumentException("User is null");
+        }
+        if (!this.users.contains(user)){
+            this.users.add(user);
+        }
+    }
+
+    public void removeUser(User user){
+        if (user==null){
+            throw new IllegalArgumentException("User is null");
+        }
+        this.users.remove(user);
     }
 }
