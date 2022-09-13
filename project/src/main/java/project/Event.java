@@ -8,19 +8,21 @@ public class Event {
     private String name;
     private String startTime;
     private String endTime;
+    private String location;
     private List<User> users;
 
-    public Event(String name, String startTime, String endTime){
-        if (name==null || startTime==null || endTime==null){
+    public Event(String name, String startTime, String endTime, String location){
+        if (name==null || startTime==null || endTime==null || location==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
-        if (name.isBlank() || startTime.isBlank() || endTime.isBlank()){
+        if (name.isBlank() || startTime.isBlank() || endTime.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
         this.users = new ArrayList<>();
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.location = location;
     }
 
     public List<User> getUsers() {
@@ -37,6 +39,10 @@ public class Event {
 
     public String getEndTime() {
         return this.endTime;
+    }
+
+    public String getLocation() {
+        return this.location;
     }
 
     public void addUser(User user){
