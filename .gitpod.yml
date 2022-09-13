@@ -3,7 +3,6 @@ image:
 
 tasks:
   - init: sdk use java 16.0.1.hs-adpt
-    command: cd javafx-template; mvn compile
 
 ports:
   - port: 6080
