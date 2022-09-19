@@ -15,6 +15,7 @@ public class AppTest
     @Test
     public void shouldAnswerWithTrue()
     {
+        Event ev = new Event("testEvent", "7am", "8am", "Spektrum");
         assertTrue( true );
     }
 
