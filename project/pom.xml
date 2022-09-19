@@ -10,7 +10,7 @@
 
   <name>project</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url></url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,6 +19,13 @@
   </properties>
 
   <dependencies>
+
+<dependency>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <version>3.0.0-M7</version>
+  <type>maven-plugin</type>
+</dependency>
 
           <!-- javafx -->
         <dependency>
@@ -58,10 +65,10 @@
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
-      <plugin>
+ <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.4</version>
+    <version>0.7.7.201606060606</version>
     <executions>
         <execution>
             <goals>
@@ -70,7 +77,7 @@
         </execution>
         <execution>
             <id>report</id>
-            <phase>prepare-package</phase>
+            <phase>test</phase>
             <goals>
                 <goal>report</goal>
             </goals>
@@ -93,7 +100,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
+          <version>3.0.0-M7</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
