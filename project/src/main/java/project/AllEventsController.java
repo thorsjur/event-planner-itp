@@ -1,13 +1,9 @@
 package project;
 
-import java.io.IOException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 public class AllEventsController {
     
@@ -19,9 +15,7 @@ public class AllEventsController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/MyEvents.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));  
-            stage.show();
+            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -32,9 +26,7 @@ public class AllEventsController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AllEvents.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));  
-            stage.show();
+            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -45,9 +37,7 @@ public class AllEventsController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/CreateEvent.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));  
-            stage.show();
+            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
         } catch(Exception e) {
             e.printStackTrace();
         }
