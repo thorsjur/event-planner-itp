@@ -2,6 +2,9 @@ package json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import project.Event;
+import project.EventType;
 
 public class EventDeserializerTest {
     
@@ -17,13 +21,17 @@ public class EventDeserializerTest {
     
     @BeforeEach
     public void setup() {
-        event = new Event("Thor", "0", "0", "Norway");
+        LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
+        event = new Event(EventType.PARTY, "Thor", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway");
     }
 
     @Test
     public void testEventDeserialization() throws JsonMappingException, JsonProcessingException {
         Event result = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event), Event.class);
+        assertEquals(event.getType(), result.getType());
         assertEquals(event.getName(), result.getName());
         assertEquals(event.getLocation(), result.getLocation());
+        assertEquals(event.getStartDate(), result.getStartDate());
+        assertEquals(event.getEndDate(), result.getEndDate());
     }
 }
