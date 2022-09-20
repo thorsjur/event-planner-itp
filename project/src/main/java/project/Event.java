@@ -1,20 +1,20 @@
 package project;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Event {
     
     private EventType type;
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String location;
     private List<User> users;
 
-    public Event(EventType type, String name, Date startDate, Date endDate, String location){
-        if (type==null || name==null || startDate==null || endDate==null || location==null){
+    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location){
+        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
         if (name.isBlank() || location.isBlank()){
@@ -23,8 +23,8 @@ public class Event {
         this.users = new ArrayList<>();
         this.type = type;
         this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = localDateTime;
+        this.endDate = localDateTime2;
         this.location = location;
     }
 
@@ -40,11 +40,11 @@ public class Event {
         return this.name;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return this.startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return this.endDate;
     }
 
