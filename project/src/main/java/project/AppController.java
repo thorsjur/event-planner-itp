@@ -11,14 +11,12 @@ import javafx.stage.Stage;
 
 public class AppController {
     
+    @FXML
     private Button CreateEventButton, EventsButton, MyEventsButton;
 
     @FXML
-    private void handleMyEventsButtonClicked(Stage stage) throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/App.fxml"));
-        Parent parent = fxmlLoader.load();
-        stage.setScene(new Scene(parent));
-        stage.show();
+    private void handleMyEventsButtonClicked() {
+        
     }
 
     @FXML
