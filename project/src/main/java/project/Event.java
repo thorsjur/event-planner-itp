@@ -1,34 +1,35 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Event {
     
     private EventType type;
     private String name;
-    private String startTime;
-    private String endTime;
+    private Date startDate;
+    private Date endDate;
     private String location;
     private List<User> users;
 
-    public Event(EventType type, String name, String startTime, String endTime, String location){
-        if (type==null || name==null || startTime==null || endTime==null || location==null){
+    public Event(EventType type, String name, Date startDate, Date endDate, String location){
+        if (type==null || name==null || startDate==null || endDate==null || location==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
-        if (name.isBlank() || startTime.isBlank() || endTime.isBlank() || location.isBlank()){
+        if (name.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
         this.users = new ArrayList<>();
         this.type = type;
         this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
     }
 
     public List<User> getUsers() {
-        return this.users;
+        return new ArrayList<>(this.users);
     }
 
     public EventType getType() {
@@ -39,12 +40,12 @@ public class Event {
         return this.name;
     }
 
-    public String getStartTime() {
-        return this.startTime;
+    public Date getStartDate() {
+        return this.startDate;
     }
 
-    public String getEndTime() {
-        return this.endTime;
+    public Date getEndDate() {
+        return this.endDate;
     }
 
     public String getLocation() {
