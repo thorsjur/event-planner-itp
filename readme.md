@@ -2,12 +2,11 @@
 
 # Group gr2225 repository "INSERT PROJECT NAME"
 
-## About the project
- -Fyll inn i etterkant-
-
 ## Repository content
-- The "project" folder constitutes the code for the project
-    - Application, resources, Project Object Model file, tests etc.
+- The **project** folder constitutes the code for the project
+    - *project/src/main/java/project* contains the java code for the application
+    - *project/src/main/resources* contains the fxml files which compose the view
+    - *project/src/test* contain the tests
 
  
 

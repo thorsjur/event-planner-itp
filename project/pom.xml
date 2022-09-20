@@ -21,16 +21,11 @@
   <dependencies>
 
           <!-- javafx -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>16</version>
-        </dependency>
         
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>16</version>
+            <version>18</version>
         </dependency>
 
         <!-- junit testing with jupiter -->

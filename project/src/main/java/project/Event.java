@@ -1,44 +1,51 @@
 package project;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
     
+    private EventType type;
     private String name;
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String location;
     private List<User> users;
 
-    public Event(String name, String startTime, String endTime, String location){
-        if (name==null || startTime==null || endTime==null || location==null){
+    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location){
+        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
-        if (name.isBlank() || startTime.isBlank() || endTime.isBlank() || location.isBlank()){
+        if (name.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
         this.users = new ArrayList<>();
+        this.type = type;
         this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDate = localDateTime;
+        this.endDate = localDateTime2;
         this.location = location;
     }
 
     public List<User> getUsers() {
-        return this.users;
+        return new ArrayList<>(this.users);
+    }
+
+    public EventType getType() {
+        return this.type;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public String getStartTime() {
-        return this.startTime;
+    public LocalDateTime getStartDate() {
+        return this.startDate;
     }
 
-    public String getEndTime() {
-        return this.endTime;
+    public LocalDateTime getEndDate() {
+        return this.endDate;
     }
 
     public String getLocation() {
