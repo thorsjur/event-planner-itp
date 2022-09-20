@@ -5,20 +5,22 @@ import java.util.List;
 
 public class Event {
     
+    private EventType type;
     private String name;
     private String startTime;
     private String endTime;
     private String location;
     private List<User> users;
 
-    public Event(String name, String startTime, String endTime, String location){
-        if (name==null || startTime==null || endTime==null || location==null){
+    public Event(EventType type, String name, String startTime, String endTime, String location){
+        if (type==null || name==null || startTime==null || endTime==null || location==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
         if (name.isBlank() || startTime.isBlank() || endTime.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
         this.users = new ArrayList<>();
+        this.type = type;
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -27,6 +29,10 @@ public class Event {
 
     public List<User> getUsers() {
         return this.users;
+    }
+
+    public EventType getType() {
+        return this.type;
     }
 
     public String getName() {
