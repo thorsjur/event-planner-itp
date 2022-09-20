@@ -1,5 +1,6 @@
 package json;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -17,4 +18,6 @@ public class EventSerializer extends JsonSerializer<Event> {
         jsonGen.writeStringField("location", event.getLocation());
         jsonGen.writeEndObject();
     }
+
+    
 }

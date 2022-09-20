@@ -12,7 +12,7 @@ import project.Event;
 
 public class EventDeserializerTest {
     
-    private static final CustomObjectMapper MAPPER = new CustomObjectMapper();
+    private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
     Event event;
     
     @BeforeEach
@@ -22,7 +22,7 @@ public class EventDeserializerTest {
 
     @Test
     public void testEventDeserialization() throws JsonMappingException, JsonProcessingException {
-        Event result = MAPPER.readValue(MAPPER.writeValueAsString(event), Event.class);
+        Event result = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event), Event.class);
         assertEquals(event.getName(), result.getName());
         assertEquals(event.getLocation(), result.getLocation());
     }

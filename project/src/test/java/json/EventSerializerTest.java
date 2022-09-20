@@ -10,7 +10,7 @@ import project.Event;
 
 public class EventSerializerTest {
 
-    private static final CustomObjectMapper MAPPER = new CustomObjectMapper();
+    private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
     private Event event;
 
     @BeforeEach
@@ -20,7 +20,7 @@ public class EventSerializerTest {
     
     @Test
     public void testEventSerialization() throws JsonProcessingException {
-        String result = MAPPER.writeValueAsString(this.event).replaceAll("[^A-Za-z\\{\\}:\",]", "");
+        String result = OBJECT_MAPPER.writeValueAsString(this.event).replaceAll("[^A-Za-z\\{\\}:\",]", "");
         String expected = "{\"name\":\"Thor\",\"location\":\"Norway\"}";
 
         System.out.println(result);
