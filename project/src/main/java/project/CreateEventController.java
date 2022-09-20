@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class AppController {
+public class CreateEventController {
     
     @FXML
     private Button CreateEventButton, EventsButton, MyEventsButton;
