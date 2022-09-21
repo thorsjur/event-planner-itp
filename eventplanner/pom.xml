@@ -5,15 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>gr2225</groupId>
-  <artifactId>project</artifactId>
+  <artifactId>eventplanner</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>project</name>
-  <!-- FIXME change it to the project's website -->
+  <name>eventplanner</name>
+  <!-- FIXME change it to the eventplanner's website -->
   <url></url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <eventplanner.build.sourceEncoding>UTF-8</eventplanner.build.sourceEncoding>
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
   </properties>
@@ -129,7 +129,7 @@
           <version>3.7.1</version>
         </plugin>
         <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <artifactId>maven-eventplanner-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
 
@@ -140,7 +140,7 @@
             <!-- Default configuration for running -->
             <!-- Usage: mvn javafx:run -->
             <configuration>
-                <mainClass>project.App</mainClass>
+                <mainClass>eventplanner.App</mainClass>
             </configuration>
         </plugin>
 

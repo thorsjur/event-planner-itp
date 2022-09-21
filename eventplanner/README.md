@@ -1,6 +1,6 @@
-**Application Description**
+**Application Description** (Most of the functionality in the application has not yet been implemented - enough functionality for the first deliverable)
 
-[Name of app] is a cloud-based application that helps you keep track of various events. With the help of this app, you can sign up for events on the main page titled "Events" and later find your events on your own page titled "My Events". You can also create your own events and use the application as aa event calendar.
+Event Planner is a cloud-based application that helps you keep track of various events. With the help of this app, you can sign up for events on the main page titled "Events" and later find your events on your own page titled "My Events". You can also create your own events and use the application as aa event calendar.
 
 The application initializez a login screen where the user is asked to enter their username in order to retrieve user history from the cloud. See screenshot[1]
 
