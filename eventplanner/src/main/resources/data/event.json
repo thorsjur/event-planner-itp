@@ -52,4 +52,16 @@
   "start-time" : "2008-04-14T07:07",
   "end-time" : "2008-04-14T14:07",
   "location" : "Gløs189"
+}, {
+  "type" : "PARTY",
+  "name" : "Beach Party",
+  "start-time" : "2022-09-21T16:50",
+  "end-time" : "2022-09-21T19:50",
+  "location" : "Beach"
+}, {
+  "type" : "COURSE",
+  "name" : "IT1901 Course",
+  "start-time" : "2022-09-23T12:00",
+  "end-time" : "2022-09-23T16:00",
+  "location" : "Online"
 } ]
