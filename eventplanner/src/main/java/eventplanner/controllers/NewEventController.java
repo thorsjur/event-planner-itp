@@ -71,7 +71,7 @@ public class NewEventController {
 
     private void handleInvalidTextField(TextField textField) {
         textField.setStyle("-fx-text-box-border: #B33333;");
-        outputMessage.setText("Invalid time entered: " + textField.getText());
+        outputMessage.setText("Invalid field entered: " + textField.getText());
         throw new IllegalArgumentException("Invalid time: " + textField.getText());
     }
 
