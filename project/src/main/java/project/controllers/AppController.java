@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -21,12 +19,8 @@ public class AppController {
     @FXML
     private ListView<Event> allEventsList;
 
-    private int view;
-
     @FXML
     public void initialize() {
-        if (view != 0) return;
-
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
         try {
@@ -51,35 +45,17 @@ public class AppController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/MyEvents.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        ControllerUtil.setSceneFromChild( "/MyEvents.fxml", MyEventsButton);
     }
 
     @FXML
     private void handleEventsButtonClicked(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AllEvents.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        ControllerUtil.setSceneFromChild( "/AllEvents.fxml", MyEventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/CreateEvent.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            MyEventsButton.getScene().setRoot(fxmlLoader.getRoot());
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        ControllerUtil.setSceneFromChild( "/CreateEvent.fxml", MyEventsButton);
     }
 }
 
