@@ -4,4 +4,5 @@ module app {
     requires javafx.fxml;
 
     opens eventplanner to javafx.graphics, javafx.fxml, javafx.controls;
+    opens eventplanner.controllers to javafx.graphics, javafx.fxml, javafx.controls;
 }
