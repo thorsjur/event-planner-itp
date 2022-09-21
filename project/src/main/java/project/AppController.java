@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
-public class AllEventsController {
+public class AppController {
     
     @FXML
     private Button CreateEventButton, EventsButton, MyEventsButton;
