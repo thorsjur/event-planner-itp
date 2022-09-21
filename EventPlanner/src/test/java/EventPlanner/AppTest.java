@@ -1,4 +1,4 @@
-package project;
+package EventPlanner;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,4 +1,4 @@
-package project;
+package EventPlanner;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package project;
+package EventPlanner;
 
 public enum EventType {
     CONCERT,
