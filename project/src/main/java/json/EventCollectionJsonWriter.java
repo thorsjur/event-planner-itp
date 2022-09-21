@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import project.Event;
+import EventPlanner.Event;
 
 public class EventCollectionJsonWriter {
     

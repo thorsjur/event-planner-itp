@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import project.Event;
+import EventPlanner.Event;
 
 public class EventCollectionJsonReader {
     

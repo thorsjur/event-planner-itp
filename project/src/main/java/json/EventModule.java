@@ -3,7 +3,7 @@ package json;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import project.Event;
+import EventPlanner.Event;
 
 public class EventModule extends SimpleModule {
     

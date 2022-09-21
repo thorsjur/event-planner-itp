@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import project.EventType;
-import project.Event;
+import EventPlanner.Event;
+import EventPlanner.EventType;
 
 public class EventDeserializer extends JsonDeserializer<Event> {
 
