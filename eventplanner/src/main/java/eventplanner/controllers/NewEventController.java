@@ -51,7 +51,11 @@ public class NewEventController {
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDatePicker.getValue());
 
         String name = nameField.getText();
+        if (name == null || name.length() < 3) handleInvalidTextField(nameField);
+
         String location = locationField.getText();
+        if (location == null || location.length() < 2) handleInvalidTextField(locationField);
+
         EventType eventType = EventType.valueOf(typeComboBox.getValue());
 
         Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
