@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import EventPlanner.Event;
-import EventPlanner.EventType;
+import eventplanner.Event;
+import eventplanner.EventType;
 
 public class EventDeserializerTest {
     

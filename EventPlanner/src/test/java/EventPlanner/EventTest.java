@@ -1,4 +1,4 @@
-package EventPlanner;
+package eventplanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import EventPlanner.Event;
-import EventPlanner.EventType;
-import EventPlanner.User;
+import eventplanner.Event;
+import eventplanner.EventType;
+import eventplanner.User;
 
 /**
  * Unit test for simple App.

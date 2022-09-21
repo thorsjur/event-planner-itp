@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import EventPlanner.Event;
-import EventPlanner.EventType;
+import eventplanner.Event;
+import eventplanner.EventType;
 
 public class EventSerializerTest {
 

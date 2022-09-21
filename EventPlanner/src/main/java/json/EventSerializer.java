@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import EventPlanner.Event;
+import eventplanner.Event;
 
 public class EventSerializer extends JsonSerializer<Event> {
 

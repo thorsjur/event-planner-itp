@@ -8,7 +8,3 @@
     - *EventPlanner/src/main/java/json* contain the json implementation for file reading/writing
     - *EventPlanner/src/main/resources* contains the fxml files which compose the view, and datafiles for loading and saving events.
     - *EventPlanner/src/test* contain the tests
-    
-
- 
-

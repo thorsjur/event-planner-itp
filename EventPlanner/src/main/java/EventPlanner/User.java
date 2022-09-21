@@ -1,4 +1,4 @@
-package EventPlanner;
+package eventplanner;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package EventPlanner;
+package eventplanner;
 
 import java.io.IOException;
 

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<EventPlanner xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>gr2225</groupId>
-  <artifactId>EventPlanner</artifactId>
+  <artifactId>eventplanner</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>EventPlanner</name>
-  <!-- FIXME change it to the EventPlanner's website -->
+  <name>eventplanner</name>
+  <!-- FIXME change it to the eventplanner's website -->
   <url></url>
 
   <properties>
-    <EventPlanner.build.sourceEncoding>UTF-8</EventPlanner.build.sourceEncoding>
+    <eventplanner.build.sourceEncoding>UTF-8</eventplanner.build.sourceEncoding>
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
   </properties>
@@ -129,7 +129,7 @@
           <version>3.7.1</version>
         </plugin>
         <plugin>
-          <artifactId>maven-EventPlanner-info-reports-plugin</artifactId>
+          <artifactId>maven-eventplanner-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
 
@@ -140,10 +140,10 @@
             <!-- Default configuration for running -->
             <!-- Usage: mvn javafx:run -->
             <configuration>
-                <mainClass>EventPlanner.App</mainClass>
+                <mainClass>eventplanner.App</mainClass>
             </configuration>
         </plugin>
 
       </plugins>
   </build>
-</EventPlanner>
+</project>
