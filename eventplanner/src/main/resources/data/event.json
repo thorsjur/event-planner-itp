@@ -1,0 +1,55 @@
+[ {
+  "type" : "COURSE",
+  "name" : "course1",
+  "start-time" : "2003-08-17T19:09",
+  "end-time" : "2003-08-18T14:09",
+  "location" : "Gløs781"
+}, {
+  "type" : "COURSE",
+  "name" : "course2",
+  "start-time" : "1999-07-25T02:37",
+  "end-time" : "1999-07-25T04:37",
+  "location" : "Gløs402"
+}, {
+  "type" : "COURSE",
+  "name" : "course3",
+  "start-time" : "2010-06-07T07:25",
+  "end-time" : "2010-06-07T14:25",
+  "location" : "Gløs132"
+}, {
+  "type" : "COURSE",
+  "name" : "course4",
+  "start-time" : "2012-11-21T20:04",
+  "end-time" : "2012-11-22T16:04",
+  "location" : "Gløs534"
+}, {
+  "type" : "COURSE",
+  "name" : "course5",
+  "start-time" : "1999-03-07T10:05",
+  "end-time" : "1999-03-07T20:05",
+  "location" : "Gløs72"
+}, {
+  "type" : "COURSE",
+  "name" : "course6",
+  "start-time" : "2016-04-02T14:54",
+  "end-time" : "2016-04-03T04:54",
+  "location" : "Gløs550"
+}, {
+  "type" : "COURSE",
+  "name" : "course7",
+  "start-time" : "2002-03-13T16:32",
+  "end-time" : "2002-03-14T08:32",
+  "location" : "Gløs293"
+}, {
+  "type" : "COURSE",
+  "name" : "course8",
+  "start-time" : "2001-11-03T19:53",
+  "end-time" : "2001-11-04T14:53",
+  "location" : "Gløs693"
+}, {
+  "type" : "COURSE",
+  "name" : "course9",
+  "start-time" : "2008-04-14T07:07",
+  "end-time" : "2008-04-14T14:07",
+  "location" : "Gløs189"
+} ]
