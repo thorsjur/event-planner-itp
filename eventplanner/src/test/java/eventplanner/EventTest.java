@@ -7,10 +7,6 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import eventplanner.Event;
-import eventplanner.EventType;
-import eventplanner.User;
-
 /**
  * Unit test for simple App.
  */
