@@ -1,8 +1,20 @@
 package eventplanner.controllers;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import eventplanner.Event;
+import eventplanner.EventType;
 import eventplanner.util.ControllerUtil;
+import eventplanner.util.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import json.util.IOUtil;
 
 public class NewEventController {
     
@@ -10,8 +22,85 @@ public class NewEventController {
     private Button CreateEventButton, EventsButton, MyEventsButton;
 
     @FXML
+    private DatePicker startDatePicker, endDatePicker;
+
+    @FXML
+    private TextField startTimeField, endTimeField, nameField, descField, locationField;
+
+    @FXML
+    private ComboBox<String> typeComboBox;
+
+    @FXML
+    private Text outputMessage;
+
+    @FXML
     public void initialize() {
-    
+        for (EventType eventType : EventType.values()) {
+            typeComboBox.getItems().add(eventType.toString());
+        }
+    }
+
+    @FXML
+    private void handleCreateNewEventButton() {
+        String startTime = startTimeField.getText();
+        String endTime = endTimeField.getText();
+        if (!Validation.isValidTimeString(startTime)) handleInvalidTextField(startTimeField);
+        if (!Validation.isValidTimeString(endTime)) handleInvalidTextField(endTimeField);
+
+        LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDatePicker.getValue());
+        LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDatePicker.getValue());
+
+        String name = nameField.getText();
+        String location = locationField.getText();
+        EventType eventType = EventType.valueOf(typeComboBox.getValue());
+
+        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
+        try {
+            IOUtil.appendEventToFile(event, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        resetFields();
+        outputMessage.setText("New event created successfully");
+    }
+
+    private void handleInvalidTextField(TextField textField) {
+        textField.setStyle("-fx-text-box-border: #B33333;");
+        outputMessage.setText("Invalid time entered: " + textField.getText());
+        throw new IllegalArgumentException("Invalid time: " + textField.getText());
+    }
+
+    /**
+     * NOTE: Assumes validated input
+     * @param startTime
+     * @return An array of length 2 containing hour and minutes
+     */
+    private int[] getTimeAsArray(String time) {
+        String[] split = time.split(":");
+        return new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
+    }
+
+    private LocalDateTime getLocalDateTimeObject(String time, LocalDate date) {
+        int[] timeArray = getTimeAsArray(time);
+        int hour = timeArray[0];
+        int minute = timeArray[1];
+
+        return date.atTime(hour, minute);
+    }
+
+    private void resetFields() {
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
+
+        startTimeField.clear();
+        endTimeField.clear();
+        nameField.clear();
+        descField.clear();
+        locationField.clear();
+
+        typeComboBox.valueProperty().set(null);
+        outputMessage.setText("");
     }
 
     @FXML

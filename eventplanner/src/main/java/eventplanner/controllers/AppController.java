@@ -3,6 +3,8 @@ package eventplanner.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import eventplanner.Event;
 import eventplanner.EventCell;
@@ -32,10 +34,16 @@ public class AppController {
             eventCollection = new ArrayList<>();
             e.printStackTrace(); 
         }
+        ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
+        Collections.sort(sortedEvents, new Comparator<Event>() {
 
-        eventCollection.forEach(e -> {
-            allEventsList.getItems().add(e);
+            @Override
+            public int compare(Event e1, Event e2) {
+                return e2.getStartDate().compareTo(e1.getStartDate());
+            }
+
         });
+        allEventsList.getItems().addAll(sortedEvents);
         
         allEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
             @Override
