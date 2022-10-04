@@ -10,9 +10,16 @@
     - [eventplanner/src/test](eventplanner/src/test/) contains the tests
 - Release documentation can be found at [docs/.](docs/)
 - Project documentation can be found at [eventplanner/README.md](eventplanner/README.md)
- 
- *This is currently a single-module project, however this may be subject to change.*
 
+## EventPlanner Architecture
+![Architecture diagram](docs/diagrams/architecture.png)
+
+**Legend:**
+ - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.
+    - Arrows from a module indicate that all layers in the module has the dependency
+ - The "box" named *eventplanner* represents the collection of local modules.
+ - The components with a symbol in the top-right corner represents modules, such as *javafx* and *core*.
+ - The folders represent the current packages or layers of the modules.
 
 
 ## Usage
