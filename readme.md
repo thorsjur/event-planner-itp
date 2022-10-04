@@ -3,11 +3,13 @@
 # Group 25 - EventPlanner
 
 ## Repository content
-- The **eventplanner** folder constitutes the code for the project
-    - [eventplanner/src/main/java/eventplanner](eventplanner/src/main/java/eventplanner/) contains the model and controllers
-    - [eventplanner/src/main/java/json](eventplanner/src/main/java/json/) contains the json implementation for file reading/writing
-    - [eventplanner/src/main/resources](eventplanner/src/main/resources/) contains the fxml files which compose the view, and datafiles for loading and saving events.
-    - [eventplanner/src/test](eventplanner/src/test/) contains the tests
+- The [**eventplanner**](eventplanner/) folder constitutes the local modules, as well as project documentation.
+    - [eventplanner/core](eventplanner/core/) contains the core module, with a core logic layer and persistence layer using json.
+        - The persistence layer can be found at [eventplanner/core/src/main/java/eventplanner/json](eventplanner/core/src/main/java/eventplanner/json/)
+        - The core layer can be found at [eventplanner/core/src/main/java/eventplanner/core](eventplanner/core/src/main/java/eventplanner/core/)
+    - [eventplanner/fxui](eventplanner/fxui/) contains the module for the user interface
+    - Each of the modules have their respective test folders located at `eventplanner/[MODULE_NAME]/src/test/java/eventplanner/`
+    - The respective resource directories are located at `eventplanner/[MODULE_NAME]/src/main/resources/`
 - Release documentation can be found at [docs/.](docs/)
 - Project documentation can be found at [eventplanner/README.md](eventplanner/README.md)
 
@@ -22,9 +24,19 @@
  - The folders represent the current packages or layers of the modules.
 
 
+## Building
+ ```
+cd eventplanner
+mvn install
+```
+
+Running mavens install command will validate, compile, test, package and verify the code. After it is done it will install the package to the local repository. Make sure you are in the correct directory (`gr2225/eventplanner/`)
+
 ## Usage
 
  ```
+cd eventplanner/fxui/
 mvn javafx:run
 ```
 
+To run the program: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
