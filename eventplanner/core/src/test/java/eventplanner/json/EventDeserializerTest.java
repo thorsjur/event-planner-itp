@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,10 @@ public class EventDeserializerTest {
     @BeforeEach
     public void setup() {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
-        event = new Event(EventType.PARTY, "Thor", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway");
+        List<String> users = new ArrayList<>();
+        users.add("christian");
+        users.add("palina");
+        event = new Event(EventType.PARTY, "Thor", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users);
     }
 
     @Test
@@ -33,5 +38,6 @@ public class EventDeserializerTest {
         assertEquals(event.getLocation(), result.getLocation());
         assertEquals(event.getStartDate(), result.getStartDate());
         assertEquals(event.getEndDate(), result.getEndDate());
+        assertEquals(event.getUsers(), result.getUsers());
     }
 }

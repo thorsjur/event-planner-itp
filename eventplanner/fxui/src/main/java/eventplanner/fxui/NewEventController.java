@@ -3,6 +3,8 @@ package eventplanner.fxui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
@@ -57,7 +59,9 @@ public class NewEventController {
 
         EventType eventType = EventType.valueOf(typeComboBox.getValue());
 
-        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
+        List<String> users = new ArrayList<>();
+
+        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, users);
         try {
             IOUtil.appendEventToFile(event, null);
         } catch (IOException e) {

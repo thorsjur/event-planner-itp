@@ -2,6 +2,9 @@ package eventplanner.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -21,13 +24,16 @@ public class EventSerializerTest {
     @BeforeEach
     public void setup() {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
-        event = new Event(EventType.PARTY, "Toga-party", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Samfundet");
+        List<String> users = new ArrayList<>();
+        users.add("christian");
+        users.add("palina");
+        event = new Event(EventType.PARTY, "Toga-party", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Samfundet", users);
     }
     
     @Test
     public void testEventSerialization() throws JsonProcessingException {
         String result = OBJECT_MAPPER.writeValueAsString(this.event).replaceAll("[^A-Za-z0-9\\-\\{\\}:\",]", "");
-        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\"}";
+        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\",\"users\":\"christian,palina\"}";
         assertEquals(expected, result);
     }
 }

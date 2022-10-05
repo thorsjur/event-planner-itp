@@ -11,16 +11,16 @@ public class Event {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String location;
-    private List<User> users;
+    private List<String> users;
 
-    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location){
-        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null){
+    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location, List<String> users){
+        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null || users==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
         if (name.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>(users);
         this.type = type;
         this.name = name;
         this.startDate = localDateTime;
@@ -28,7 +28,7 @@ public class Event {
         this.location = location;
     }
 
-    public List<User> getUsers() {
+    public List<String> getUsers() {
         return new ArrayList<>(this.users);
     }
 
@@ -52,19 +52,19 @@ public class Event {
         return this.location;
     }
 
-    public void addUser(User user){
-        if (user==null){
-            throw new IllegalArgumentException("User is null");
+    public void addUser(String username){
+        if (username==null){
+            throw new IllegalArgumentException("Username is null");
         }
-        if (!this.users.contains(user)){
-            this.users.add(user);
+        if (!this.users.contains(username)){
+            this.users.add(username);
         }
     }
 
-    public void removeUser(User user){
-        if (user==null){
-            throw new IllegalArgumentException("User is null");
+    public void removeUser(String username){
+        if (username==null){
+            throw new IllegalArgumentException("Username is null");
         }
-        this.users.remove(user);
+        this.users.remove(username);
     }
 }
