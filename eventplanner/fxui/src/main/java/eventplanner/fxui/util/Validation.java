@@ -13,11 +13,11 @@ import eventplanner.core.EventType;
  */
 public class Validation {
 
-    private static final LocalDate EARLIEST_VALID_DATE = LocalDate.of(2000, 1, 1);
-    private static final LocalDate LATEST_VALID_DATE = LocalDate.of(2030, 12, 30);
-    private static final int MIN_NAME_LENGTH = 2;
-    private static final int MIN_DESCRIPTION_LENGTH = 0;
-    private static final int MIN_LOCATION_LENGTH = 2;
+    public static final LocalDate EARLIEST_VALID_DATE = LocalDate.of(2000, 1, 1);
+    public static final LocalDate LATEST_VALID_DATE = LocalDate.of(2030, 12, 30);
+    public static final int MIN_NAME_LENGTH = 2;
+    public static final int MIN_DESCRIPTION_LENGTH = 0;
+    public static final int MIN_LOCATION_LENGTH = 2;
 
     /**
      *  Error types based on invalid inputs, with their respective error messages
@@ -46,6 +46,9 @@ public class Validation {
      * @return              boolean value indicating validity of the input
      */
     public static boolean isValidTextInput(String input, InputType inputType) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input cannot be null.");
+        }
         switch (inputType) {
             case DESCRIPION:
                 return isValidDescription(input);
@@ -98,6 +101,22 @@ public class Validation {
                 .anyMatch(e -> e.equals(comboBoxInput));
     }
 
+    public static boolean isStartBeforeEnd(LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
+        if (!isValidTimeString(startTime) || !isValidTimeString(endTime)) {
+            return true;
+        }
+        if (!areValidDateInputs(startDate, endDate)) {
+            return true;
+        }
+        int[] startTimeArr = getTimeArray(startTime);
+        LocalDateTime startDateTime = startDate.atTime(startTimeArr[0], startTimeArr[1]);
+
+        int[] endTimeArr = getTimeArray(endTime);
+        LocalDateTime endDateTime = endDate.atTime(endTimeArr[0], endTimeArr[1]);
+
+        return startDateTime.isBefore(endDateTime);
+    }
+
     private static boolean isValidTimeString(String timeString) {
         if (timeString == null
                 || timeString.length() != 5
@@ -122,22 +141,6 @@ public class Validation {
 
     private static boolean isValidDescription(String desc) {
         return desc.length() >= MIN_DESCRIPTION_LENGTH;
-    }
-
-    public static boolean isStartBeforeEnd(LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
-        if (!isValidTimeString(startTime) || !isValidTimeString(endTime)) {
-            return true;
-        }
-        if (!areValidDateInputs(startDate, endDate)) {
-            return true;
-        }
-        int[] startTimeArr = getTimeArray(startTime);
-        LocalDateTime startDateTime = startDate.atTime(startTimeArr[0], startTimeArr[1]);
-
-        int[] endTimeArr = getTimeArray(endTime);
-        LocalDateTime endDateTime = endDate.atTime(endTimeArr[0], endTimeArr[1]);
-
-        return startDateTime.isBefore(endDateTime);
     }
 
     private static int[] getTimeArray(String timeString) {
