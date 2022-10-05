@@ -3,8 +3,9 @@ package eventplanner.fxui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
@@ -18,8 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 public class NewEventController {
 
@@ -36,38 +37,70 @@ public class NewEventController {
     private ComboBox<String> typeComboBox;
 
     @FXML
-    private Text outputMessage;
+    private TextArea outputMessage;
 
     @FXML
     public void initialize() {
-        for (EventType eventType : EventType.values()) {
-            typeComboBox.getItems().add(eventType.toString());
+        Stream.of(EventType.values())
+            .map(et -> et.toString())
+            .forEach(typeComboBox.getItems()::add);
 
-            startTimeField.focusedProperty().addListener(getValidationListener(startTimeField, InputType.TIME));
-            endTimeField.focusedProperty().addListener(getValidationListener(endTimeField, InputType.TIME));
-            nameField.focusedProperty().addListener(getValidationListener(nameField, InputType.NAME));
-            descField.focusedProperty().addListener(getValidationListener(descField, InputType.DESCRIPION));
-            locationField.focusedProperty().addListener(getValidationListener(locationField, InputType.LOCATION));
-            startDatePicker.focusedProperty().addListener(getValidationListener(startDatePicker, InputType.DATE));
-            endDatePicker.focusedProperty().addListener(getValidationListener(endDatePicker, InputType.DATE));
-        }
+        startTimeField.focusedProperty().addListener(getValidationListener(startTimeField, InputType.TIME));
+        endTimeField.focusedProperty().addListener(getValidationListener(endTimeField, InputType.TIME));
+        nameField.focusedProperty().addListener(getValidationListener(nameField, InputType.NAME));
+        locationField.focusedProperty().addListener(getValidationListener(locationField, InputType.LOCATION));
+        startDatePicker.focusedProperty().addListener(getValidationListener(startDatePicker, InputType.DATE));
+        endDatePicker.focusedProperty().addListener(getValidationListener(endDatePicker, InputType.DATE));
     }
 
     @FXML
     private void handleCreateNewEventButton() {
+        ArrayList<Validation.ErrorType> errors = new ArrayList<>();
+
         String startTime = startTimeField.getText();
         String endTime = endTimeField.getText();
-
-        LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDatePicker.getValue());
-        LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDatePicker.getValue());
+        if (!Validation.isValidTextInput(startTime, InputType.TIME)
+            || !Validation.isValidTextInput(endTime, InputType.TIME)) {
+            errors.add(Validation.ErrorType.INVALID_TIME);
+        }
 
         String name = nameField.getText();
+        if (!Validation.isValidTextInput(name, InputType.NAME)) {
+            errors.add(Validation.ErrorType.INVALID_NAME);
+        }
 
         String location = locationField.getText();
+        if (!Validation.isValidTextInput(location, InputType.LOCATION)) {
+            errors.add(Validation.ErrorType.INVALID_LOCATION);
+        }
 
-        EventType eventType = EventType.valueOf(typeComboBox.getValue());
+        String eventString = typeComboBox.getValue();
+        EventType eventType = null;
+        if (!Validation.isValidEventType(eventString)) {
+            errors.add(Validation.ErrorType.INVALID_TYPE);
+        } else {
+            eventType = EventType.valueOf(eventString);
+        }
 
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        if (!Validation.areValidDateInputs(startDate, endDate)) {
+            errors.add(Validation.ErrorType.INVALID_DATE);
+        }
+
+        if (!Validation.isStartBeforeEnd(startDate, startTime, endDate, endTime)) {
+            errors.add(Validation.ErrorType.INVALID_TIME_RELATIONSHIP);
+        }
+
+        if (errors.size() > 0) {
+            displayErrorMessages(errors);
+            return;
+        }
+
+        LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
+        LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
+
         try {
             IOUtil.appendEventToFile(event, null);
         } catch (IOException e) {
@@ -76,6 +109,29 @@ public class NewEventController {
 
         resetFields();
         outputMessage.setText("New event created successfully");
+    }
+
+    private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
+        StringBuilder sb = new StringBuilder();
+        errors.forEach(e -> {
+            sb.append(e.err_message);
+            sb.append("\n");
+        });
+        outputMessage.setText(sb.toString());
+    }
+
+    private void resetFields() {
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
+
+        startTimeField.clear();
+        endTimeField.clear();
+        nameField.clear();
+        descField.clear();
+        locationField.clear();
+
+        typeComboBox.valueProperty().set(null);
+        outputMessage.setText("");
     }
 
     /**
@@ -95,20 +151,6 @@ public class NewEventController {
         int minute = timeArray[1];
 
         return date.atTime(hour, minute);
-    }
-
-    private void resetFields() {
-        startDatePicker.setValue(null);
-        endDatePicker.setValue(null);
-
-        startTimeField.clear();
-        endTimeField.clear();
-        nameField.clear();
-        descField.clear();
-        locationField.clear();
-
-        typeComboBox.valueProperty().set(null);
-        outputMessage.setText("");
     }
 
     @FXML
@@ -145,7 +187,6 @@ public class NewEventController {
         datePicker.setStyle("-fx-border-color: " + COLOUR_VALID);
     }
 
-
     private ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
         validateArguments(control, type);
 
@@ -153,9 +194,11 @@ public class NewEventController {
             case DATE:
                 DatePicker datePicker = (DatePicker) control;
                 return ControllerUtil.getValidationFocusListener(
-                    () -> {return Validation.isValidDateInput(datePicker.getValue());},
-                    () -> handleValidDatePicker(datePicker),
-                    () -> handleInvalidDatePicker(datePicker));
+                        () -> {
+                            return Validation.isValidDateInput(datePicker.getValue());
+                        },
+                        () -> handleValidDatePicker(datePicker),
+                        () -> handleInvalidDatePicker(datePicker));
             case EVENT_TYPE:
                 return null;
             default:
@@ -165,9 +208,11 @@ public class NewEventController {
 
     private ChangeListener<Boolean> getTextFieldValidationListener(TextField field, InputType type) {
         return ControllerUtil.getValidationFocusListener(
-            () -> {return Validation.isValidTextInput(field.getText(), type);},
-            () -> handleValidTextField(field),
-            () -> handleInvalidTextField(field));
+                () -> {
+                    return Validation.isValidTextInput(field.getText(), type);
+                },
+                () -> handleValidTextField(field),
+                () -> handleInvalidTextField(field));
     }
 
     private void validateArguments(Control control, InputType type) {
