@@ -40,11 +40,12 @@ public class NewEventController {
     private TextArea outputMessage;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         Stream.of(EventType.values())
             .map(et -> et.toString())
             .forEach(typeComboBox.getItems()::add);
 
+        // Adds listeners to all input fields that signals input-validity to the user.
         startTimeField.focusedProperty().addListener(getValidationListener(startTimeField, InputType.TIME));
         endTimeField.focusedProperty().addListener(getValidationListener(endTimeField, InputType.TIME));
         nameField.focusedProperty().addListener(getValidationListener(nameField, InputType.NAME));
@@ -137,8 +138,8 @@ public class NewEventController {
     /**
      * NOTE: Assumes validated input
      * 
-     * @param startTime
-     * @return An array of length 2 containing hour and minutes
+     * @param   startTime
+     * @return  An array of length 2 containing hour and minutes
      */
     private int[] getTimeAsArray(String time) {
         String[] split = time.split(":");
@@ -187,10 +188,15 @@ public class NewEventController {
         datePicker.setStyle("-fx-border-color: " + COLOUR_VALID);
     }
 
+    /**
+     * @param   control input control
+     * @param   type    specified type of input
+     * @return          ChangeListener that signals validity of input
+     */
     private ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
         validateArguments(control, type);
 
-        switch (type) { // All text inputs are handled by the default case
+        switch (type) { 
             case DATE:
                 DatePicker datePicker = (DatePicker) control;
                 return ControllerUtil.getValidationFocusListener(
@@ -201,7 +207,7 @@ public class NewEventController {
                         () -> handleInvalidDatePicker(datePicker));
             case EVENT_TYPE:
                 return null;
-            default:
+            default: // All text inputs are handled by the default case
                 return getTextFieldValidationListener((TextField) control, type);
         }
     }
@@ -215,6 +221,12 @@ public class NewEventController {
                 () -> handleInvalidTextField(field));
     }
 
+    /**
+     * Asserts that the given arguments are compatible
+     * @param control
+     * @param type
+     * @throws IllegalArgumentException if fields are not compatible
+     */
     private void validateArguments(Control control, InputType type) {
         if (control == null || type == null) {
             throw new IllegalArgumentException("Null inputs are not permitted");

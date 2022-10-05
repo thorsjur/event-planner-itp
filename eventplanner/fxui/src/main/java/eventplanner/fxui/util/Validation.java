@@ -6,6 +6,11 @@ import java.util.stream.Stream;
 
 import eventplanner.core.EventType;
 
+/**
+ * A utility class for validating user inputs.
+ * 
+ * The class defines the requirements for valid inputs.
+ */
 public class Validation {
 
     private static final LocalDate EARLIEST_VALID_DATE = LocalDate.of(2000, 1, 1);
@@ -14,6 +19,10 @@ public class Validation {
     private static final int MIN_DESCRIPTION_LENGTH = 0;
     private static final int MIN_LOCATION_LENGTH = 2;
 
+    /**
+     *  Error types based on invalid inputs, with their respective error messages
+     *  saved in the public field err_message.
+     */
     public enum ErrorType {
         INVALID_DATE("Invalid date entered, must be before " + LATEST_VALID_DATE.toString()
                 + " and after " + EARLIEST_VALID_DATE.toString() + "."),
@@ -30,6 +39,12 @@ public class Validation {
         }
     }
 
+    /**
+     * Returns the validity of the user input based on the given input type.
+     * @param   input       a textual user input
+     * @param   inputType   InputType specifying the type of input
+     * @return              boolean value indicating validity of the input
+     */
     public static boolean isValidTextInput(String input, InputType inputType) {
         switch (inputType) {
             case DESCRIPION:
@@ -45,17 +60,35 @@ public class Validation {
         }
     }
 
+    /**
+     * Uses local requirements to validate the input date.
+     * @param   date    to be validated
+     * @return          boolean value indicating validity of the date
+     */
     public static boolean isValidDateInput(LocalDate date) {
         return date != null
                 && date.isAfter(EARLIEST_VALID_DATE)
                 && date.isBefore(LATEST_VALID_DATE);
     }
 
+    /**
+     * Convenience method for validating two dates.
+     * @param   startDate   the start date
+     * @param   endDate     the end date
+     * @return              validity of both dates
+     */
     public static boolean areValidDateInputs(LocalDate startDate, LocalDate endDate) {
         return isValidDateInput(startDate)
                 && isValidDateInput(endDate);
     }
-
+    
+    /**
+     * Returns the validity of the given string.
+     * Returns true if the string is equal to a EventType,
+     * else it returns false.
+     * @param   comboBoxInput   the input from a comboBox containing EventTypes
+     * @return                  validity of the input string
+     */
     public static boolean isValidEventType(String comboBoxInput) {
         if (comboBoxInput == null) {
             return false;
