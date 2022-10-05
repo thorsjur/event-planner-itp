@@ -35,14 +35,21 @@
             <artifactId>junit-jupiter-params</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
+            
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 
@@ -60,7 +67,14 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.7.2.0</version>
+            </plugin>
+
         </plugins>
     </reporting>
-    
+
 </project>
