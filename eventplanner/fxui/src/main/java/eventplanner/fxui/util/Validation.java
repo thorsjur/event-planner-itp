@@ -118,9 +118,7 @@ public class Validation {
     }
 
     private static boolean isValidTimeString(String timeString) {
-        if (timeString == null
-                || timeString.length() != 5
-                || !timeString.contains(":")) {
+        if (timeString == null || !timeString.matches("^[0-9]{2}:[0-9]{2}$")) {
             return false;
         }
 
