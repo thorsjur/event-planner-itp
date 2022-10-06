@@ -23,7 +23,11 @@ public class EventSerializer extends JsonSerializer<Event> {
         jsonGen.writeEndObject();
     }
 
-    public String listToString(List<String> usernamesAsList) {
+    /**
+     * @param usernamesAsList
+     * @return String of usernames
+     */
+    private String listToString(List<String> usernamesAsList) {
         String usernamesString = usernamesAsList.toString();
         usernamesString = usernamesString.replaceAll("\\s+", "");
         return usernamesString.substring(1, usernamesString.length()-1);

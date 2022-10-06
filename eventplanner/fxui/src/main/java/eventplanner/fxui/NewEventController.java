@@ -60,6 +60,7 @@ public class NewEventController {
         EventType eventType = EventType.valueOf(typeComboBox.getValue());
 
         List<String> users = new ArrayList<>();
+        //users.add(this users username)
 
         Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, users);
         try {

@@ -32,7 +32,11 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         return new Event(eventType, name, startDateTime, endDateTime, location, usersList);
     }
 
-    public List<String> stringToList(String usernamesAsString) {
+    /**
+     * @param usernamesAsString
+     * @return List of usernames
+     */
+    private List<String> stringToList(String usernamesAsString) {
         List<String> usernamesAsList = new ArrayList<>();
         if (usernamesAsString.contains(",")) {
             usernamesAsList = new ArrayList<String>(Arrays.asList(usernamesAsString.split(",")));
