@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -60,11 +61,7 @@
                      </padding>
                      <children>
                         <Button fx:id="createButton" mnemonicParsing="false" onAction="#handleCreateNewEventButton" text="Create new event" />
-                        <Text fx:id="outputMessage" fill="#000000c6" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="94.13671875" VBox.vgrow="ALWAYS">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
+                        <TextArea fx:id="outputMessage" blendMode="MULTIPLY" cacheShape="false" centerShape="false" editable="false" focusTraversable="false" prefHeight="123.0" prefWidth="280.0" scaleShape="false" style="-fx-border-radius: 0; -fx-background-insets: 0; -fx-background-color: transparent, white, transparent, white;" wrapText="true" />
                      </children>
                   </VBox>
                </children>
