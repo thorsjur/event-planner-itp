@@ -1,7 +1,6 @@
 package eventplanner.json;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -19,19 +18,14 @@ public class EventSerializer extends JsonSerializer<Event> {
         jsonGen.writeStringField("start-time", event.getStartDate().toString());
         jsonGen.writeStringField("end-time", event.getEndDate().toString());
         jsonGen.writeStringField("location", event.getLocation());
-        jsonGen.writeStringField("users", listToString(event.getUsers()));
+        jsonGen.writeArrayFieldStart("users");
+        for (String user : event.getUsers()) {
+            jsonGen.writeString(user);
+        }
+        jsonGen.writeEndArray();
         jsonGen.writeEndObject();
     }
 
-    /**
-     * @param usernamesAsList
-     * @return String of usernames
-     */
-    private String listToString(List<String> usernamesAsList) {
-        String usernamesString = usernamesAsList.toString();
-        usernamesString = usernamesString.replaceAll("\\s+", "");
-        return usernamesString.substring(1, usernamesString.length()-1);
-    }
 
     
 }

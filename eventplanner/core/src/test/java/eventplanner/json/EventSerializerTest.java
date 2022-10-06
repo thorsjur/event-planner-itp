@@ -33,7 +33,7 @@ public class EventSerializerTest {
     @Test
     public void testEventSerialization() throws JsonProcessingException {
         String result = OBJECT_MAPPER.writeValueAsString(this.event).replaceAll("[^A-Za-z0-9\\-\\{\\}:\",]", "");
-        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\",\"users\":\"christian,palina\"}";
+        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\",\"users\":\"christian\",\"palina\"}";
         assertEquals(expected, result);
     }
 }
