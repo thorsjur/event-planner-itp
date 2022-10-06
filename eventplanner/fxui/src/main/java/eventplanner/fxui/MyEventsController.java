@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
+import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
 import javafx.collections.FXCollections;

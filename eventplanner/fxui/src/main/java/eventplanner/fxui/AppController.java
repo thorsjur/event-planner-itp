@@ -10,6 +10,7 @@ import java.util.Comparator;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.core.User;
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
