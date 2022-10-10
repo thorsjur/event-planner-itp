@@ -42,22 +42,27 @@ public class MyEventsController {
     }
 
     private void updateSavedEventsListView(){
-        ObservableList<Event> observalbleEventList = FXCollections.observableArrayList();
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        Collection<Event> allEvents;
-        try {
-            allEvents = reader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } 
-        // for (int i = 0; i < allEvents.size(); i++){
-        //     for (Event event : allEvents) {
-        //         if (AppController.user.getUserName().equals(event.getUsers().get(i))){
-        //             observalbleEventList.add(event);
-        //         }
-        //     }
-        // }
-        savedEventsList.setItems(observalbleEventList);
+        if (this.favoriteEvents == null){
+            removeEventLabel.setText("No favorite events yet");
+        }
+        else{
+            ObservableList<Event> favoriteEvents = FXCollections.observableArrayList();
+            EventCollectionJsonReader reader = new EventCollectionJsonReader();
+            Collection<Event> allEvents;
+            try {
+                allEvents = reader.load();
+                for (int i = 0; i < allEvents.size(); i++){
+                    for (Event event : allEvents) {
+                        if (AppController.user.getUserName().equals(event.getUsers().get(i))){
+                            favoriteEvents.add(event);
+                        }
+                    }
+                }
+                savedEventsList.setItems(favoriteEvents);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
+        }
     }
 
     @FXML
@@ -65,19 +70,21 @@ public class MyEventsController {
         if (!savedEventsList.isPressed()){
             removeEventLabel.setText("No events chosen");
         }
-        Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
-        for (Event event : selectedEvents) {
-            event.removeUser(AppController.user);
+        else{
+            Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
+            for (Event event : selectedEvents) {
+                event.removeUser(AppController.user);
+            }
+            EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+            try {
+                writer.save(selectedEvents);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            savedEventsList.getItems().removeAll(selectedEvents);
+            updateSavedEventsListView();
+            removeEventLabel.setText("Events removed \n from 'My events'");
         }
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        try {
-            writer.save(selectedEvents);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        savedEventsList.getItems().removeAll(selectedEvents);
-        updateSavedEventsListView();
-        removeEventLabel.setText("Events removed \n from 'My events'");
     }
 
     @FXML

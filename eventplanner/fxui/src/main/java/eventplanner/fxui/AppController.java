@@ -94,18 +94,20 @@ public class AppController {
         if (!allEventsList.isPressed()){
             saveEventLabel.setText("No events chosen");
         }
-        ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
-        for (Event event : selectedEvents) {
-            event.addUser(user);
+        else{
+            ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
+            for (Event event : selectedEvents) {
+                event.addUser(user);
+            }
+            EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
+            try {
+                reader.save(allEventsList.getItems());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            saveEventLabel.setText("Events saved \n to 'My events'");
         }
-        EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
-        try {
-            reader.save(allEventsList.getItems());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        saveEventLabel.setText("Events saved \n to 'My events'");
     }
 
     @FXML
