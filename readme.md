@@ -1,4 +1,15 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225) 
+#### Navigation:
+- modules
+    - Eventplanner
+    - [fxui](/eventplanner/fxui/README.md)
+    - [core](/eventplanner/core/README.md)
+- other
+    - [application description and user stories](/eventplanner/README.md)
+    - [release 1](/docs/release1.md)
+- repo
+    - [gitlab](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225)
+    - [issue-tracker](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225/-/issues)
 
 # Group 25 - EventPlanner
 
@@ -40,3 +51,29 @@ mvn javafx:run
 ```
 
 To run the program: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
+
+## Reports
+
+Jacoco code-coverage:
+
+ ```
+cd eventplanner/fxui or cd eventplanner/core
+mvn test
+```
+Spotbugs and checkstyle:
+
+ ```
+cd eventplanner/fxui or cd eventplanner/core
+mvn site
+```
+
+All reports can be found at each respectable modules `target/site` folder.
+
+jacoco.html;
+spotbugs.html;
+checksstyle.html;
+
+## Prerequistes
+
+- Maven (install: https://maven.apache.org/install.html)
+- Latest Java-version recommended
