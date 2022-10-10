@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import eventplanner.core.Event;
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;

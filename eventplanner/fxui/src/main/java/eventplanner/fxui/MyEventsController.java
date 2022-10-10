@@ -1,5 +1,6 @@
 package eventplanner.fxui;
 
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
