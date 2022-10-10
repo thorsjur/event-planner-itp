@@ -1,15 +1,6 @@
+[nav](/docs/nav.md)
+
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225) 
-#### Navigation:
-- modules
-    - Eventplanner
-    - [fxui](/eventplanner/fxui/README.md)
-    - [core](/eventplanner/core/README.md)
-- other
-    - [application description and user stories](/eventplanner/README.md)
-    - [release 1](/docs/release1.md)
-- repo
-    - [gitlab](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225)
-    - [issue-tracker](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225/-/issues)
 
 # Group 25 - EventPlanner
 

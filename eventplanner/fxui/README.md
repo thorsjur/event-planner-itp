@@ -1,15 +1,4 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225) 
-#### Navigation:
-- modules
-    - [Eventplanner](../../README.md)
-    - fxui
-    - [core](../core/README.md)
-- other
-    - [application description and user stories](../README.md)
-    - [release 1](../../docs/release1.md)
-- repo
-    - [gitlab](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225)
-    - [issue-tracker](https://gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225/-/issues)
+[nav](../../docs/nav.md)
 
 # Group 25 - FXUI module
 
