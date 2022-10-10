@@ -2,6 +2,7 @@ package eventplanner.fxui.util;
 
 import java.io.IOException;
 import java.util.function.Supplier;
+import java.util.Random;
 
 import eventplanner.fxui.App;
 import javafx.beans.value.ChangeListener;
@@ -50,5 +51,20 @@ public class ControllerUtil {
                 }
             }
         };
+    }
+
+    /**
+     * Generates a 5-digit number with random integers between 1-10 in each digit
+     * 
+     * @return 5-digit number
+     */
+    public String randNumGenerator() {
+        Random r = new Random();
+        int[] fiveRandomNumbers = r.ints(5, 0, 11).toArray();
+        String numbersAsString = "";
+        for (int num : fiveRandomNumbers) {
+            numbersAsString += "" + num;
+        }
+        return numbersAsString;
     }
 }

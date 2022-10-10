@@ -100,7 +100,7 @@ public class NewEventController {
 
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
-        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
+        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
 
         try {
             IOUtil.appendEventToFile(event, null);

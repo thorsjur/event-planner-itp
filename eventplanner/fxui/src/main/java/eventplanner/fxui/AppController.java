@@ -8,15 +8,28 @@ import java.util.Comparator;
 
 import eventplanner.core.Event;
 import eventplanner.fxui.util.ControllerUtil;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.geometry.Insets;
+
+
 import eventplanner.json.EventCollectionJsonReader;
 
 public class AppController {
-    
+    private ControllerUtil utils = new ControllerUtil();
     @FXML
     private Button CreateEventButton, EventsButton, MyEventsButton;
 
@@ -24,7 +37,15 @@ public class AppController {
     private ListView<Event> allEventsList;
 
     @FXML
+    private TextField textField;
+
+    @FXML
+    private Stage loginStage;
+
+    @FXML
     public void initialize() {
+        setInputUsernameStage();
+
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
         try {
@@ -52,6 +73,46 @@ public class AppController {
 
         });
     }
+
+    @FXML
+    private void setInputUsernameStage() {
+        Label label1 = new Label("Input username:");
+        textField = new TextField("user" + utils.randNumGenerator());
+        HBox hb = new HBox();
+        Button btnConfirm = new Button("Confirm");
+        Button btnCancel = new Button("Cancel");
+        btnCancel.setOnMouseClicked(handleCancel);
+        btnConfirm.setOnAction(handleConfirm);
+        hb.getChildren().addAll(label1, textField, btnConfirm, btnCancel);
+        hb.setSpacing(10);
+        BorderPane pane = new BorderPane();
+        pane.setCenter(hb);
+        pane.setPadding(new Insets(20,20,20,20));
+        Scene scene = new Scene(pane, 500, 100); 		                        
+        loginStage = new Stage(); 		                        
+        loginStage.setScene(scene); 		                        
+        loginStage.setTitle("Login");
+        loginStage.setAlwaysOnTop(true);
+        loginStage.show(); 
+    }
+
+    @FXML
+    private EventHandler<MouseEvent> handleCancel = new EventHandler<MouseEvent>() { 
+        @Override
+        public void handle(MouseEvent event) {
+            Platform.exit();
+        }
+    };
+
+    @FXML
+    private EventHandler<ActionEvent> handleConfirm = new EventHandler<ActionEvent>() { 
+        @Override
+        public void handle(ActionEvent event) {
+            String username = textField.getText();
+            System.out.println(username);
+            loginStage.close();
+        }
+    };
 
     @FXML
     private void handleMyEventsButtonClicked() {
