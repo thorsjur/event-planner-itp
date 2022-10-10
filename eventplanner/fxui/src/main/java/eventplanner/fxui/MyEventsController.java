@@ -67,7 +67,7 @@ public class MyEventsController {
         }
         Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
         for (Event event : selectedEvents) {
-            event.removeUser(AppController.user);
+            event.removeUser(AppController.username);
         }
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
         try {
