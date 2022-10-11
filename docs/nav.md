@@ -7,6 +7,7 @@
 - other
     - [application description and user stories](../eventplanner/README.md)
     - [Prerequisites](prerequisites.md)
+    - [Work-habits](work-habits.md)
     - [release 1](release1.md)
     - [release 2](release2.md)
 - repo
