@@ -23,8 +23,9 @@
                </font>
             </Text>
             <ListView fx:id="myEventsList" layoutX="26.0" layoutY="85.0" prefHeight="252.0" prefWidth="461.0" />
-            <Button fx:id="removeEventButton" layoutX="516.0" layoutY="187.0" mnemonicParsing="false" onAction="#handleRemoveEventButtonClicked" text="Remove event" />
-            <Label fx:id="removeEventLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="495.0" layoutY="213.0" prefHeight="68.0" prefWidth="137.0" />
+            <Button fx:id="removeEventButton" layoutX="516.0" layoutY="198.0" mnemonicParsing="false" onAction="#handleRemoveEventButtonClicked" text="Remove event" />
+            <Label fx:id="removeEventLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="495.0" layoutY="235.0" prefHeight="68.0" prefWidth="137.0" />
+            <Button fx:id="loadMyEventsButton" layoutX="512.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleLoadMyEventsButtonClicked" text="Load my events" />
       </children>
     </AnchorPane>
   </children>

@@ -1,19 +1,23 @@
 package eventplanner.fxui;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.util.Callback;
 
 
 public class MyEventsController {
@@ -22,65 +26,83 @@ public class MyEventsController {
     private Button createEventButton, eventsButton, myEventsButton;
 
     @FXML
-    private ListView<Event> savedEventsList;
+    private ListView<Event> myEventsList;
 
     @FXML
     private Label removeEventLabel;
 
     private User user;
 
+    private Collection<Event> eventCollection;
+
+
     @FXML
-    public void initialize() {
-        try {
-            updateSavedEventsListView();
-            savedEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void handleLoadMyEventsButtonClicked(){
+        updateSavedEventsListView();
     }
 
-    private void updateSavedEventsListView(){
-        ObservableList<Event> favoriteEvents = savedEventsList.getItems();
-        if (favoriteEvents == null){
-            removeEventLabel.setText("No favorite events yet");
+    private void updateSavedEventsListView() {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        try {
+            eventCollection = reader.load();
+        } catch (IOException e) {
+            eventCollection = new ArrayList<>();
+            e.printStackTrace(); 
         }
-        else{
-            EventCollectionJsonReader reader = new EventCollectionJsonReader();
-            Collection<Event> allEvents;
-            try {
-                allEvents = reader.load();
-                for (int i = 0; i < allEvents.size(); i++){
-                    for (Event event : allEvents) {
-                        if (getUser().username().equals(event.getUsers().get(i).username())){
-                            favoriteEvents.add(event);
-                        }
-                    }
+        ArrayList<Event> savedEvents = new ArrayList<>();
+        for (Event event : eventCollection) {
+            for (User user : event.getUsers()) {
+                if (user.username().equals(getUser().username())) {
+                    savedEvents.add(event);
                 }
-                savedEventsList.setItems(favoriteEvents);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } 
+            }
         }
+        Collections.sort(savedEvents, new Comparator<Event>() {
+
+            @Override
+            public int compare(Event e1, Event e2) {
+                return e1.getStartDate().compareTo(e2.getStartDate());
+            }
+
+        });
+
+        myEventsList.getItems().addAll(savedEvents);
+
+        myEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); // Makes it possible to choose multiple items in list view by holding ctrl+cmd after clicked on first item
+        
+        myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
+            @Override
+            public ListCell<Event> call(ListView<Event> param) {
+                return new EventCell();
+            }
+
+        });
     }
 
     @FXML
     public void handleRemoveEventButtonClicked(){
-        if (!savedEventsList.isPressed()){
+        if (myEventsList.getSelectionModel().getSelectedItem()==null){
             removeEventLabel.setText("No events chosen");
         }
         else{
-            Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
+            Collection<Event> selectedEvents = myEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
                 event.removeUser(getUser());
             }
             EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
-                writer.save(selectedEvents);
+                writer.save(eventCollection);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            savedEventsList.getItems().removeAll(selectedEvents);
-            updateSavedEventsListView();
+            myEventsList.getItems().removeAll(selectedEvents);
+            myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
+                @Override
+                public ListCell<Event> call(ListView<Event> param) {
+                    return new EventCell();
+                }
+    
+            });
             removeEventLabel.setText("Events removed \n from 'My events'");
         }
     }
