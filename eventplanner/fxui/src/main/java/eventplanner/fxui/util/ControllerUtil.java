@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 import java.util.Random;
 
+import eventplanner.core.User;
 import eventplanner.fxui.App;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -21,15 +22,19 @@ public class ControllerUtil {
      * @param resourcePath  name of the .fxml file
      * @param child         a child of the current scene
      */
-    public static void setSceneFromChild(String resourcePath, Node child) {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(resourcePath));
+    public static void setSceneFromChild(FXMLLoader loader, Node child) {
         try {
-            fxmlLoader.load();
-            child.getScene().setRoot(fxmlLoader.getRoot());
+            loader.load();
+            child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static FXMLLoader getFXMLLoader(String filename) {
+        return new FXMLLoader(App.class.getResource(filename));
+    }
+
 
     /**
      * Returns a ChangeListener based on a specific validation.

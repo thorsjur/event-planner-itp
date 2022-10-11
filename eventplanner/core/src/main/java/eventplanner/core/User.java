@@ -6,9 +6,6 @@ public record User(String username){
         if (username==null || username.isBlank()){
             throw new IllegalArgumentException("User name is null or blank");
         }
-        if (username.contains(",")) {
-            throw new IllegalArgumentException("username contains a comma");
-        }
         this.username = username;
     }
 }

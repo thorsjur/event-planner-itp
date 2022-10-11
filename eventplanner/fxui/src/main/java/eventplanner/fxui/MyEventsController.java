@@ -3,11 +3,13 @@ import java.io.IOException;
 import java.util.Collection;
 
 import eventplanner.core.Event;
+import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -24,6 +26,8 @@ public class MyEventsController {
 
     @FXML
     private Label removeEventLabel;
+
+    private User user;
 
     @FXML
     public void initialize() {
@@ -47,7 +51,7 @@ public class MyEventsController {
                 allEvents = reader.load();
                 for (int i = 0; i < allEvents.size(); i++){
                     for (Event event : allEvents) {
-                        if (LoginController.user.username().equals(event.getUsers().get(i).username())){
+                        if (getUser().username().equals(event.getUsers().get(i).username())){
                             favoriteEvents.add(event);
                         }
                     }
@@ -67,7 +71,7 @@ public class MyEventsController {
         else{
             Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
-                event.removeUser(LoginController.user);
+                event.removeUser(getUser());
             }
             EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
@@ -83,17 +87,37 @@ public class MyEventsController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild( "MyEvents.fxml", myEventsButton);
+        String pathName = "MyEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        MyEventsController myEventsController = loader.getController();
+        myEventsController.setUser(getUser());
     }
 
     @FXML
     private void handleEventsButtonClicked(){
-        ControllerUtil.setSceneFromChild( "AllEvents.fxml", eventsButton);
+        String pathName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        AppController appController = loader.getController();
+        appController.setUser(getUser());
     }
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", createEventButton);
+        String pathName = "CreateEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        NewEventController newEventController = loader.getController();
+        newEventController.setUser(getUser());
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User getUser() {
+        return this.user;
     }
 }
 

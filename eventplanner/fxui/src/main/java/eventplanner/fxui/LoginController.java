@@ -4,14 +4,12 @@ import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class LoginController {
     
-    @FXML
-    private Button createEventButton, eventsButton, myEventsButton;
-
     private ControllerUtil utils = new ControllerUtil();
     
     @FXML
@@ -20,7 +18,6 @@ public class LoginController {
     @FXML
     private TextField inputUsername;
 
-    static User user;
 
     @FXML
     public void initialize() {
@@ -29,8 +26,12 @@ public class LoginController {
 
     @FXML
     private void handleConfirm() {
-        this.user = new User(inputUsername.getText());
-        ControllerUtil.setSceneFromChild( "AllEvents.fxml", btnConfirm);    
+        User user = new User(inputUsername.getText());
+        String pathName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, btnConfirm);
+        AppController appController = loader.getController();
+        appController.setUser(user);   
     }
 
     @FXML

@@ -7,9 +7,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import eventplanner.core.Event;
+import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -30,6 +32,8 @@ public class AppController {
 
     @FXML
     private ListView<Event> allEventsList;
+
+    private User user;
 
     @FXML
     public void initialize() {
@@ -68,16 +72,16 @@ public class AppController {
         if (allEventsList.getSelectionModel().getSelectedItem()!=null){
             ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
-                event.addUser(LoginController.user);
+                event.addUser(getUser());
             }
             EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
             try {
                 reader.save(allEventsList.getItems());
+                saveEventLabel.setText("Events saved \n to 'My events'");
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            saveEventLabel.setText("Events saved \n to 'My events'");
         }
         else{
             saveEventLabel.setText("No events chosen");
@@ -86,17 +90,37 @@ public class AppController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild( "MyEvents.fxml", myEventsButton);
+        String pathName = "MyEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        MyEventsController myEventsController = loader.getController();
+        myEventsController.setUser(getUser());
     }
 
     @FXML
     private void handleEventsButtonClicked(){
-        ControllerUtil.setSceneFromChild( "AllEvents.fxml", eventsButton);
+        String pathName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        AppController appController = loader.getController();
+        appController.setUser(getUser());
     }
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", createEventButton);
+        String pathName = "CreateEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        NewEventController newEventController = loader.getController();
+        newEventController.setUser(getUser());
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User getUser() {
+        return this.user;
     }
 }
 
