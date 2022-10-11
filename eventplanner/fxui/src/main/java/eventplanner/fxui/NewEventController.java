@@ -25,7 +25,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button CreateEventButton, EventsButton, MyEventsButton;
+    private Button createEventButton, eventsButton, myEventsButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -46,12 +46,12 @@ public class NewEventController {
             .forEach(typeComboBox.getItems()::add);
 
         // Adds listeners to all input fields that signals input-validity to the user.
-        startTimeField.focusedProperty().addListener(getValidationListener(startTimeField, InputType.TIME));
-        endTimeField.focusedProperty().addListener(getValidationListener(endTimeField, InputType.TIME));
-        nameField.focusedProperty().addListener(getValidationListener(nameField, InputType.NAME));
-        locationField.focusedProperty().addListener(getValidationListener(locationField, InputType.LOCATION));
-        startDatePicker.focusedProperty().addListener(getValidationListener(startDatePicker, InputType.DATE));
-        endDatePicker.focusedProperty().addListener(getValidationListener(endDatePicker, InputType.DATE));
+        addValidationFocusListener(startTimeField, InputType.TIME);
+        addValidationFocusListener(endTimeField, InputType.TIME);
+        addValidationFocusListener(nameField, InputType.NAME);
+        addValidationFocusListener(locationField, InputType.LOCATION);
+        addValidationFocusListener(startDatePicker, InputType.DATE);
+        addValidationFocusListener(endDatePicker, InputType.DATE);
     }
 
     @FXML
@@ -102,21 +102,23 @@ public class NewEventController {
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
 
+        boolean saveFlag = true;
         try {
             IOUtil.appendEventToFile(event, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Something went wrong while saving\nCan't add event to file.");
+            saveFlag = false;
         }
 
         resetFields();
-        outputMessage.setText("New event created successfully");
+        String outputMessageString = saveFlag ? "New event created successfully" : "Error while saving event ...";
+        outputMessage.setText(outputMessageString);
     }
 
     private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
         errors.forEach(e -> {
-            sb.append(e.err_message);
-            sb.append("\n");
+            sb.append(e.err_message + "\n");
         });
         outputMessage.setText(sb.toString());
     }
@@ -156,17 +158,17 @@ public class NewEventController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("MyEvents.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("MyEvents.fxml", myEventsButton);
     }
 
     @FXML
     private void handleEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("AllEvents.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("AllEvents.fxml", myEventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked() {
-        ControllerUtil.setSceneFromChild("CreateEvent.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("CreateEvent.fxml", myEventsButton);
     }
 
     private static final String COLOUR_VALID = "#228C22";
@@ -219,6 +221,10 @@ public class NewEventController {
                 },
                 () -> handleValidTextField(field),
                 () -> handleInvalidTextField(field));
+    }
+
+    private void addValidationFocusListener(Control control, InputType Type) {
+        control.focusedProperty().addListener(getValidationListener(control, Type));
     }
 
     /**
