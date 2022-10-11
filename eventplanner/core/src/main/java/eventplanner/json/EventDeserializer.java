@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import eventplanner.core.EventType;
 import eventplanner.core.Event;
+import eventplanner.core.User;
 
 public class EventDeserializer extends JsonDeserializer<Event> {
 
@@ -27,11 +28,11 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         LocalDateTime startDateTime = LocalDateTime.parse(node.get("start-time").asText());
         LocalDateTime endDateTime = LocalDateTime.parse(node.get("end-time").asText());
 
-        List<String> usersList = new ArrayList<>();
+        List<User> usersList = new ArrayList<>();
         JsonNode usersNode = node.get("users");
         if (usersNode instanceof ArrayNode) {
             for (JsonNode elemetNode : ((ArrayNode) usersNode)) {
-                usersList.add(elemetNode.asText());
+                usersList.add(new User(elemetNode.asText()));
             }
         }
 

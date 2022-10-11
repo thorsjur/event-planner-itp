@@ -2,8 +2,6 @@ package eventplanner.fxui;
 
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

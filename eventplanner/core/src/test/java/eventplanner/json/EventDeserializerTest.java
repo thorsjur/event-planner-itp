@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import eventplanner.core.User;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 
@@ -24,9 +25,9 @@ public class EventDeserializerTest {
     @BeforeEach
     public void setup() {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
-        List<String> users = new ArrayList<>();
-        users.add("christian");
-        users.add("palina");
+        List<User> users = new ArrayList<>();
+        users.add(new User("christian"));
+        users.add(new User("palina"));
         event = new Event(EventType.PARTY, "Thor", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users);
     }
 
