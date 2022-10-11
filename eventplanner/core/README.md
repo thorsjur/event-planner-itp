@@ -13,7 +13,9 @@ Core module contains core layer and persistence layer.
 
 The persistence layer can be found [here](./src/main/java/eventplanner/json/).
 
-This is where data about users and events are stored. Events will be stored in a json file. Each event will be stored as its own object with properties; type, name, start-time, end-time, location and users. 
+To improve the applications usability, we wish to limit the user’s explicit knowledge of the data persistence, thus we choose to not use the desktop metaphor. User data will be displayed upon the user entering a unique username. Where and how the data is saved will not be disclosed to the user. When a user clicks on the “create new event”-button, “add event”-button or “remove event”-button, the saving should be implicitly done by the program.
+
+[This](../fxui/src/main/resources/data/event.json) is where data about users and events are stored. Events will be stored in a json file. Each event will be stored as its own object with properties; type, name, start-time, end-time, location and users. 
     
     {
         "type" : "Example",
