@@ -4,12 +4,43 @@
 
 ## Module content
 
-Core module contains core logic layer and persistence layer using json.
-        - The persistence layer can be found at [eventplanner/core/src/main/java/eventplanner/json](eventplanner/core/src/main/java/eventplanner/json/)
-        - The core layer can be found at [eventplanner/core/src/main/java/eventplanner/core](eventplanner/core/src/main/java/eventplanner/core/)
+Core module contains core layer and persistence layer.
+
+- The persistence layer can be found at [/src/main/java/eventplanner/json](./src/main/java/eventplanner/json/)
+- The core layer can be found at [/src/main/java/eventplanner/core](./src/main/java/eventplanner/core/)
+
+### Persistence layer
+
+The persistence layer can be found [here](./src/main/java/eventplanner/json/).
+
+This is where data about users and events are stored. Events will be stored in a json file. Each event will be stored as its own object with properties; type, name, start-time, end-time, location and users. 
+    
+    {
+        "type" : "Example",
+        "name" : "Examplename",
+        "start-time" : "2003-08-17T19:09",
+        "end-time" : "2003-08-18T14:09",
+        "location" : "Examplelocation"
+        "users" : 
+            [
+                "ExampleName1",
+                "ExampleName2"
+            ]
+    }
+
+The names saved in "users" will refer to the attendants at the event. The way our application is set ut, there is no need to store information about the user, as the user will be asked to input his/her name at app-launch. We do this because there is no need for security as all events are "open to the public".
+
+
+### Core layer
+
+The core layer can be found [here](./src/main/java/eventplanner/core/).
+
+This layer contains classes that represent the core logic of the project. The Event class can be used to initiate an object with the properties described above in the persistence layer. It also contains an list of all the users connected to the event.
+
+The user-class can be used to initiate an user object. This object will have the property name.
 
 ## Module Architecture
-![Architecture diagram](docs/diagrams/architecture.png)
+![Architecture diagram](../../docs/diagrams/architecture.png)
 
 **Legend:**
  - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.
@@ -36,8 +67,3 @@ All reports can be found at each respectable modules `target/site` folder.
 jacoco.html;
 spotbugs.html;
 checksstyle.html;
-
-## Prerequistes
-
-- Maven (install: https://maven.apache.org/install.html)
-- Latest Java-version recommended

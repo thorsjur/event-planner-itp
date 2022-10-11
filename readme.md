@@ -63,8 +63,3 @@ All reports can be found at each respectable modules `target/site` folder.
 jacoco.html;
 spotbugs.html;
 checksstyle.html;
-
-## Prerequistes
-
-- Maven (install: https://maven.apache.org/install.html)
-- Latest Java-version recommended

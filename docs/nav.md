@@ -1,11 +1,12 @@
 # Navigation:
 
 - modules
-    - [Eventplanner](../README.md)
+    - [eventplanner](../README.md)
     - [fxui](../eventplanner/fxui/README.md)
     - [core](../eventplanner/core/README.md)
 - other
     - [application description and user stories](../eventplanner/README.md)
+    - [Prerequisites](prerequisites.md)
     - [release 1](release1.md)
     - [release 2](release2.md)
 - repo
