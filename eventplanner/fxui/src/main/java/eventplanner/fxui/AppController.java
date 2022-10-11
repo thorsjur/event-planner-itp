@@ -1,42 +1,27 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 import eventplanner.core.Event;
-import eventplanner.core.EventType;
-import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.collections.ObservableList;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import javafx.geometry.Insets;
 
 
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
 
 public class AppController {
-    private ControllerUtil utils = new ControllerUtil();
     @FXML
     private Button createEventButton, eventsButton, myEventsButton;
 
@@ -46,19 +31,12 @@ public class AppController {
     @FXML
     private ListView<Event> allEventsList;
 
-    @FXML
-    private TextField textField;
 
-    @FXML
-    private Stage loginStage;
 
-    static User user = new User("user1");
+    static String username;
 
     @FXML
     public void initialize() {
-        setInputUsernameStage();
-
-        
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
         try {
@@ -138,17 +116,7 @@ public class AppController {
         public void handle(MouseEvent event) {
             Platform.exit();
         }
-    };
-
-    @FXML
-    private EventHandler<ActionEvent> handleConfirm = new EventHandler<ActionEvent>() { 
-        @Override
-        public void handle(ActionEvent event) {
-            String username = textField.getText();
-            System.out.println(username);
-            loginStage.close();
-        }
-    };
+    }
 
     @FXML
     private void handleMyEventsButtonClicked() {

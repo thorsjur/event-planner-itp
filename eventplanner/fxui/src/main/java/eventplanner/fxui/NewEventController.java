@@ -25,7 +25,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button CreateEventButton, EventsButton, MyEventsButton;
+    private Button createEventButton, eventsButton, myEventsButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -156,17 +156,17 @@ public class NewEventController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("MyEvents.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("MyEvents.fxml", myEventsButton);
     }
 
     @FXML
     private void handleEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("AllEvents.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("AllEvents.fxml", myEventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked() {
-        ControllerUtil.setSceneFromChild("CreateEvent.fxml", MyEventsButton);
+        ControllerUtil.setSceneFromChild("CreateEvent.fxml", myEventsButton);
     }
 
     private static final String COLOUR_VALID = "#228C22";

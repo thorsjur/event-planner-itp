@@ -70,6 +70,7 @@ public class MyEventsController {
         if (!savedEventsList.isPressed()){
             removeEventLabel.setText("No events chosen");
         }
+<<<<<<< HEAD
         else{
             Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
@@ -84,6 +85,17 @@ public class MyEventsController {
             savedEventsList.getItems().removeAll(selectedEvents);
             updateSavedEventsListView();
             removeEventLabel.setText("Events removed \n from 'My events'");
+=======
+        Collection<Event> selectedEvents = savedEventsList.getSelectionModel().getSelectedItems();
+        for (Event event : selectedEvents) {
+            event.removeUser(AppController.username);
+        }
+        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+        try {
+            writer.save(selectedEvents);
+        } catch (IOException e) {
+            e.printStackTrace();
+>>>>>>> fbe813e3387b68a42a2c440e552c82af54b5bbb6
         }
     }
 
