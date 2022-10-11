@@ -31,10 +31,6 @@ public class AppController {
     @FXML
     private ListView<Event> allEventsList;
 
-
-
-    static String username;
-
     @FXML
     public void initialize() {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
@@ -50,7 +46,7 @@ public class AppController {
 
             @Override
             public int compare(Event e1, Event e2) {
-                return e2.getStartDate().compareTo(e1.getStartDate());
+                return e1.getStartDate().compareTo(e2.getStartDate());
             }
 
         });
@@ -69,21 +65,23 @@ public class AppController {
 
     @FXML
     private void handleSaveEventButtonClicked(){
-        if (!allEventsList.isPressed()){
+        if (allEventsList.getSelectionModel().getSelectedItem()!=null){
+            ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
+            for (Event event : selectedEvents) {
+                event.addUser(LoginController.user);
+            }
+            EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
+            try {
+                reader.save(allEventsList.getItems());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            saveEventLabel.setText("Events saved \n to 'My events'");
+        }
+        else{
             saveEventLabel.setText("No events chosen");
         }
-        ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
-        for (Event event : selectedEvents) {
-            event.addUser(username);
-        }
-        EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
-        try {
-            reader.save(allEventsList.getItems());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        saveEventLabel.setText("Events saved \n to 'My events'");
     }
 
     @FXML
@@ -93,12 +91,12 @@ public class AppController {
 
     @FXML
     private void handleEventsButtonClicked(){
-        ControllerUtil.setSceneFromChild( "AllEvents.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild( "AllEvents.fxml", eventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", createEventButton);
     }
 }
 
