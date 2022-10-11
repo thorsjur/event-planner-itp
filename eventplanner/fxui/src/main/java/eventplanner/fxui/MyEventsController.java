@@ -35,52 +35,25 @@ public class MyEventsController {
 
     private Collection<Event> eventCollection;
 
-
+    /**
+     * Loads events to view
+     */
     @FXML
-    public void handleLoadMyEventsButtonClicked(){
+    private void handleLoadMyEventsButtonClicked(){
+        myEventsList.getItems().clear();
         updateSavedEventsListView();
+        if (myEventsList.getItems().size()==0){
+            removeEventLabel.setText("You have no events\nsaved. Add events\nfrom 'All Events' page");
+        }
     }
 
-    private void updateSavedEventsListView() {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        try {
-            eventCollection = reader.load();
-        } catch (IOException e) {
-            eventCollection = new ArrayList<>();
-            e.printStackTrace(); 
-        }
-        ArrayList<Event> savedEvents = new ArrayList<>();
-        for (Event event : eventCollection) {
-            for (User user : event.getUsers()) {
-                if (user.username().equals(getUser().username())) {
-                    savedEvents.add(event);
-                }
-            }
-        }
-        Collections.sort(savedEvents, new Comparator<Event>() {
-
-            @Override
-            public int compare(Event e1, Event e2) {
-                return e1.getStartDate().compareTo(e2.getStartDate());
-            }
-
-        });
-
-        myEventsList.getItems().addAll(savedEvents);
-
-        myEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); // Makes it possible to choose multiple items in list view by holding ctrl+cmd after clicked on first item
-        
-        myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
-            @Override
-            public ListCell<Event> call(ListView<Event> param) {
-                return new EventCell();
-            }
-
-        });
-    }
-
+    /**
+     * Removes user from selected items' list of users, 
+     * writes changes to file and removes the selected 
+     * events from view  
+     */
     @FXML
-    public void handleRemoveEventButtonClicked(){
+    private void handleRemoveEventButtonClicked(){
         if (myEventsList.getSelectionModel().getSelectedItem()==null){
             removeEventLabel.setText("No events chosen");
         }
@@ -123,6 +96,49 @@ public class MyEventsController {
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
         NewEventController newEventController = loader.getController();
         newEventController.setUser(getUser());
+    }
+
+    /**
+     * Reads/loads events from default file and displays the 
+     * events that contain the user in its users list.
+     */
+    private void updateSavedEventsListView() {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        try {
+            eventCollection = reader.load();
+        } catch (IOException e) {
+            eventCollection = new ArrayList<>();
+            e.printStackTrace(); 
+        }
+        ArrayList<Event> savedEvents = new ArrayList<>();
+        for (Event event : eventCollection) {
+            for (User user : event.getUsers()) {
+                if (user.username().equals(getUser().username())) {
+                    savedEvents.add(event);
+                }
+            }
+        }
+        Collections.sort(savedEvents, new Comparator<Event>() {
+
+            @Override
+            public int compare(Event e1, Event e2) {
+                return e1.getStartDate().compareTo(e2.getStartDate());
+            }
+
+        });
+
+        myEventsList.getItems().addAll(savedEvents);
+
+        // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
+        myEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        
+        myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
+            @Override
+            public ListCell<Event> call(ListView<Event> param) {
+                return new EventCell();
+            }
+
+        });
     }
 
     public void setUser(User user) {

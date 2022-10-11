@@ -4,7 +4,7 @@
   "start-time" : "1999-03-07T10:05",
   "end-time" : "1999-03-07T20:05",
   "location" : "Gløs72",
-  "users" : [ "palina" ]
+  "users" : [ ]
 }, {
   "type" : "COURSE",
   "name" : "course2",
@@ -25,14 +25,14 @@
   "start-time" : "2002-03-13T16:32",
   "end-time" : "2002-03-14T08:32",
   "location" : "Gløs293",
-  "users" : [ "user70455", "user79892", "user92197" ]
+  "users" : [ "user70455", "user79892", "user92197", "user101007" ]
 }, {
   "type" : "COURSE",
   "name" : "course1",
   "start-time" : "2003-08-17T19:09",
   "end-time" : "2003-08-18T14:09",
   "location" : "Gløs781",
-  "users" : [ "user79892", "david", "user31590", "palina" ]
+  "users" : [ "user79892", "david", "user31590" ]
 }, {
   "type" : "COURSE",
   "name" : "course9",
@@ -74,12 +74,12 @@
   "start-time" : "2022-09-23T12:00",
   "end-time" : "2022-09-23T16:00",
   "location" : "Online",
-  "users" : [ ]
+  "users" : [ "palina" ]
 }, {
   "type" : "COURSE",
   "name" : "ITP meeting",
   "start-time" : "2022-10-14T12:00",
   "end-time" : "2022-10-14T13:00",
   "location" : "Glos",
-  "users" : [ ]
+  "users" : [ "palina" ]
 } ]

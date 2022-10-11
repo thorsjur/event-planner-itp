@@ -35,8 +35,12 @@ public class AppController {
 
     private User user;
 
+    /**
+     * Reads events from file and displays events in 
+     * view, sorted after date and time 
+     */
     @FXML
-    public void initialize() {
+    private void initialize() {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
         try {
@@ -56,7 +60,8 @@ public class AppController {
         });
         allEventsList.getItems().addAll(sortedEvents);
 
-        allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); // Makes it possible to choose multiple items in list view by holding ctrl+cmd after clicked on first item
+        // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
+        allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
         
         allEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
             @Override
@@ -67,6 +72,10 @@ public class AppController {
         });
     }
 
+    /**
+     * Adds user to selected events' lists of 
+     * users and writes canges to file
+     */
     @FXML
     private void handleSaveEventButtonClicked(){
         if (allEventsList.getSelectionModel().getSelectedItem()!=null){
@@ -74,9 +83,9 @@ public class AppController {
             for (Event event : selectedEvents) {
                 event.addUser(getUser());
             }
-            EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
+            EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
-                reader.save(allEventsList.getItems());
+                writer.save(allEventsList.getItems());
                 saveEventLabel.setText("Events saved \n to 'My events'");
             } catch (IOException e) {
                 e.printStackTrace();
