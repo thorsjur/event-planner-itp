@@ -4,21 +4,21 @@
   "start-time" : "1999-03-07T10:05",
   "end-time" : "1999-03-07T20:05",
   "location" : "Gløs72",
-  "users" : [ ]
+  "users" : [ "palina" ]
 }, {
   "type" : "COURSE",
   "name" : "course2",
   "start-time" : "1999-07-25T02:37",
   "end-time" : "1999-07-25T04:37",
   "location" : "Gløs402",
-  "users" : [ ]
+  "users" : [ "palina" ]
 }, {
   "type" : "COURSE",
   "name" : "course8",
   "start-time" : "2001-11-03T19:53",
   "end-time" : "2001-11-04T14:53",
   "location" : "Gløs693",
-  "users" : [ "user79892" ]
+  "users" : [ "user79892", "palina" ]
 }, {
   "type" : "COURSE",
   "name" : "course7",
@@ -60,14 +60,14 @@
   "start-time" : "2016-04-02T14:54",
   "end-time" : "2016-04-03T04:54",
   "location" : "Gløs550",
-  "users" : [ ]
+  "users" : [ "thor" ]
 }, {
   "type" : "PARTY",
   "name" : "Beach Party",
   "start-time" : "2022-09-21T16:50",
   "end-time" : "2022-09-21T19:50",
   "location" : "Beach",
-  "users" : [ ]
+  "users" : [ "olee", "thor" ]
 }, {
   "type" : "COURSE",
   "name" : "IT1901 Course",

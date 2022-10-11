@@ -86,15 +86,6 @@ public class MyEventsController {
     }
 
     @FXML
-    private void handleMyEventsButtonClicked() {
-        String pathName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        MyEventsController myEventsController = loader.getController();
-        myEventsController.setUser(getUser());
-    }
-
-    @FXML
     private void handleEventsButtonClicked(){
         String pathName = "AllEvents.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
@@ -105,7 +96,7 @@ public class MyEventsController {
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        String pathName = "CreateEvents.fxml";
+        String pathName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
         NewEventController newEventController = loader.getController();

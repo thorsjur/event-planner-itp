@@ -27,7 +27,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button createEventButton, eventsButton, myEventsButton;
+    private Button eventsButton, myEventsButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -174,15 +174,6 @@ public class NewEventController {
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
         AppController appController = loader.getController();
         appController.setUser(getUser());
-    }
-
-    @FXML
-    private void handleCreateEventButtonClicked(){
-        String pathName = "CreateEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        NewEventController newEventController = loader.getController();
-        newEventController.setUser(getUser());
     }
 
     public void setUser(User user) {

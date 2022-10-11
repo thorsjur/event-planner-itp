@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.function.Supplier;
 import java.util.Random;
 
-import eventplanner.core.User;
 import eventplanner.fxui.App;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;

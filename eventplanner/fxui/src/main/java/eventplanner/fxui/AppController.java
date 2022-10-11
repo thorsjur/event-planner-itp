@@ -25,7 +25,7 @@ import eventplanner.json.EventCollectionJsonWriter;
 
 public class AppController {
     @FXML
-    private Button createEventButton, eventsButton, myEventsButton;
+    private Button createEventButton, myEventsButton;
 
     @FXML
     private Label saveEventLabel;
@@ -98,17 +98,8 @@ public class AppController {
     }
 
     @FXML
-    private void handleEventsButtonClicked(){
-        String pathName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        AppController appController = loader.getController();
-        appController.setUser(getUser());
-    }
-
-    @FXML
     private void handleCreateEventButtonClicked(){
-        String pathName = "CreateEvents.fxml";
+        String pathName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
         NewEventController newEventController = loader.getController();
