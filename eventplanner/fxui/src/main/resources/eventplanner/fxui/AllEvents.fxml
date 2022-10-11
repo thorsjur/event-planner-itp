@@ -12,9 +12,9 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="MyEventsButton" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleMyEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" text="My Events" />
-            <Button fx:id="EventsButton" layoutX="390.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" disable="true" text="Events" />
-            <Button fx:id="CreateEventButton" layoutX="265.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreateEventButtonClicked" prefHeight="26.0" prefWidth="110.0" text="Create Event" />
+            <Button fx:id="myEventsButton" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleMyEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" text="My Events" />
+            <Button fx:id="eventsButton" layoutX="390.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" disable="true" text="Events" />
+            <Button fx:id="createEventButton" layoutX="265.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreateEventButtonClicked" prefHeight="26.0" prefWidth="110.0" text="Create Event" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a44231" height="68.0" stroke="#a44231" strokeType="INSIDE" width="640.0" />
             <Text fill="WHITE" layoutX="277.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All events" textAlignment="CENTER">
                <font>
