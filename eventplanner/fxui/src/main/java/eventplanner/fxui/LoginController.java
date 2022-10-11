@@ -1,9 +1,8 @@
 package eventplanner.fxui;
 
+import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -21,7 +20,7 @@ public class LoginController {
     @FXML
     private TextField inputUsername;
 
-    static String username;
+    static User user;
 
     @FXML
     public void initialize() {
@@ -30,7 +29,7 @@ public class LoginController {
 
     @FXML
     private void handleConfirm() {
-        username = inputUsername.getText();
+        this.user = new User(inputUsername.getText());
         ControllerUtil.setSceneFromChild( "AllEvents.fxml", btnConfirm);    
     }
 

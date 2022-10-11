@@ -161,12 +161,12 @@ public class NewEventController {
 
     @FXML
     private void handleEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("AllEvents.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild("AllEvents.fxml", eventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked() {
-        ControllerUtil.setSceneFromChild("CreateEvent.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild("CreateEvent.fxml", createEventButton);
     }
 
     private static final String COLOUR_VALID = "#228C22";

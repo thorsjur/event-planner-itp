@@ -11,9 +11,9 @@ public class Event {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String location;
-    private List<String> users;
+    private List<User> users;
 
-    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location, List<String> users){
+    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location, List<User> users){
         if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null || users==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
@@ -28,7 +28,7 @@ public class Event {
         this.location = location;
     }
 
-    public List<String> getUsers() {
+    public List<User> getUsers() {
         return new ArrayList<>(this.users);
     }
 
@@ -52,7 +52,7 @@ public class Event {
         return this.location;
     }
 
-    public void addUser(String username){
+    public void addUser(User username){
         if (username==null){
             throw new IllegalArgumentException("Username is null");
         }
@@ -61,7 +61,7 @@ public class Event {
         }
     }
 
-    public void removeUser(String username){
+    public void removeUser(User username){
         if (username==null){
             throw new IllegalArgumentException("Username is null");
         }

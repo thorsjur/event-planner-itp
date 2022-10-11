@@ -31,10 +31,6 @@ public class AppController {
     @FXML
     private ListView<Event> allEventsList;
 
-
-
-    static String username;
-
     @FXML
     public void initialize() {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
@@ -50,7 +46,7 @@ public class AppController {
 
             @Override
             public int compare(Event e1, Event e2) {
-                return e2.getStartDate().compareTo(e1.getStartDate());
+                return e1.getStartDate().compareTo(e2.getStartDate());
             }
 
         });
@@ -69,13 +65,10 @@ public class AppController {
 
     @FXML
     private void handleSaveEventButtonClicked(){
-        if (!allEventsList.isPressed()){
-            saveEventLabel.setText("No events chosen");
-        }
-        else{
+        if (allEventsList.getSelectionModel().getSelectedItem()!=null){
             ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
-                event.addUser(user);
+                event.addUser(LoginController.user);
             }
             EventCollectionJsonWriter reader = new EventCollectionJsonWriter();
             try {
@@ -86,35 +79,8 @@ public class AppController {
             }
             saveEventLabel.setText("Events saved \n to 'My events'");
         }
-    }
-
-    @FXML
-    private void setInputUsernameStage() {
-        Label label1 = new Label("Input username:");
-        textField = new TextField("user" + utils.randNumGenerator());
-        HBox hb = new HBox();
-        Button btnConfirm = new Button("Confirm");
-        Button btnCancel = new Button("Cancel");
-        btnCancel.setOnMouseClicked(handleCancel);
-        btnConfirm.setOnAction(handleConfirm);
-        hb.getChildren().addAll(label1, textField, btnConfirm, btnCancel);
-        hb.setSpacing(10);
-        BorderPane pane = new BorderPane();
-        pane.setCenter(hb);
-        pane.setPadding(new Insets(20,20,20,20));
-        Scene scene = new Scene(pane, 500, 100); 		                        
-        loginStage = new Stage(); 		                        
-        loginStage.setScene(scene); 		                        
-        loginStage.setTitle("Login");
-        loginStage.setAlwaysOnTop(true);
-        loginStage.show(); 
-    }
-
-    @FXML
-    private EventHandler<MouseEvent> handleCancel = new EventHandler<MouseEvent>() { 
-        @Override
-        public void handle(MouseEvent event) {
-            Platform.exit();
+        else{
+            saveEventLabel.setText("No events chosen");
         }
     }
 
@@ -125,12 +91,12 @@ public class AppController {
 
     @FXML
     private void handleEventsButtonClicked(){
-        ControllerUtil.setSceneFromChild( "AllEvents.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild( "AllEvents.fxml", eventsButton);
     }
 
     @FXML
     private void handleCreateEventButtonClicked(){
-        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", myEventsButton);
+        ControllerUtil.setSceneFromChild( "CreateEvent.fxml", createEventButton);
     }
 }
 

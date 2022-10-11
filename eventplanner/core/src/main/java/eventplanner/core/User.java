@@ -1,22 +1,14 @@
 package eventplanner.core;
 
+public record User(String username){
 
-public class User {
-    
-    private String userName;
-
-    public User(String userName){
-        if (userName==null || userName.isBlank()){
+    public User(String username){
+        if (username==null || username.isBlank()){
             throw new IllegalArgumentException("User name is null or blank");
         }
-        if (userName.contains(",")) {
-            throw new IllegalArgumentException("Username contains a comma");
+        if (username.contains(",")) {
+            throw new IllegalArgumentException("username contains a comma");
         }
-        this.userName = userName;
+        this.username = username;
     }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
 }
