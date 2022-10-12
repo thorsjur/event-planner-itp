@@ -1,12 +1,15 @@
 package eventplanner.fxui;
-import java.io.IOException;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * TODO Javadoc.
+ */
 public class App extends Application {
 
     @Override

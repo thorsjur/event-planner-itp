@@ -1,12 +1,5 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import eventplanner.core.User;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
@@ -14,6 +7,12 @@ import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;
 import eventplanner.json.util.IOUtil;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.stream.Stream;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,16 +23,31 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+/**
+ * TODO Javadoc.
+ */
 public class NewEventController {
 
     @FXML
-    private Button eventsButton, myEventsButton;
+    private Button eventsButton;
+    @FXML
+    private Button myEventsButton;
 
     @FXML
-    private DatePicker startDatePicker, endDatePicker;
+    private DatePicker startDatePicker;
+    @FXML
+    private DatePicker endDatePicker;
 
     @FXML
-    private TextField startTimeField, endTimeField, nameField, descField, locationField;
+    private TextField startTimeField;
+    @FXML
+    private TextField endTimeField;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField descField;
+    @FXML
+    private TextField locationField;
 
     @FXML
     private ComboBox<String> typeComboBox;
@@ -46,8 +60,8 @@ public class NewEventController {
     @FXML
     private void initialize() {
         Stream.of(EventType.values())
-            .map(et -> et.toString())
-            .forEach(typeComboBox.getItems()::add);
+                .map(et -> et.toString())
+                .forEach(typeComboBox.getItems()::add);
 
         // Adds listeners to all input fields that signals input-validity to the user.
         addValidationFocusListener(startTimeField, InputType.TIME);
@@ -65,7 +79,7 @@ public class NewEventController {
         String startTime = startTimeField.getText();
         String endTime = endTimeField.getText();
         if (!Validation.isValidTextInput(startTime, InputType.TIME)
-            || !Validation.isValidTextInput(endTime, InputType.TIME)) {
+                || !Validation.isValidTextInput(endTime, InputType.TIME)) {
             errors.add(Validation.ErrorType.INVALID_TIME);
         }
 
@@ -104,7 +118,8 @@ public class NewEventController {
 
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
-        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
+        Event event = new Event(
+                eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
 
         boolean saveFlag = true;
         try {
@@ -115,14 +130,16 @@ public class NewEventController {
         }
 
         resetFields();
-        String outputMessageString = saveFlag ? "New event created successfully" : "Error while saving event ...";
+        String outputMessageString = saveFlag 
+                ? "New event created successfully" 
+                : "Error while saving event ...";
         outputMessage.setText(outputMessageString);
     }
 
     private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
         errors.forEach(e -> {
-            sb.append(e.err_message + "\n");
+            sb.append(e.errMessage + "\n");
         });
         outputMessage.setText(sb.toString());
     }
@@ -142,10 +159,10 @@ public class NewEventController {
     }
 
     /**
-     * NOTE: Assumes validated input
+     * NOTE: Assumes validated input.
      * 
-     * @param   startTime
-     * @return  An array of length 2 containing hour and minutes
+     * @param   startTime       TODO
+     * @return                  An array of length 2 containing hour and minutes
      */
     private int[] getTimeAsArray(String time) {
         String[] split = time.split(":");
@@ -170,7 +187,7 @@ public class NewEventController {
     }
 
     @FXML
-    private void handleEventsButtonClicked(){
+    private void handleEventsButtonClicked() {
         String pathName = "AllEvents.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
@@ -206,6 +223,8 @@ public class NewEventController {
     }
 
     /**
+     * TODO Javadoc summary.
+     * 
      * @param   control input control
      * @param   type    specified type of input
      * @return          ChangeListener that signals validity of input
@@ -229,7 +248,9 @@ public class NewEventController {
         }
     }
 
-    private ChangeListener<Boolean> getTextFieldValidationListener(TextField field, InputType type) {
+    private ChangeListener<Boolean> getTextFieldValidationListener(
+                TextField field, 
+                InputType type) {
         return ControllerUtil.getValidationFocusListener(
                 () -> {
                     return Validation.isValidTextInput(field.getText(), type);
@@ -238,21 +259,26 @@ public class NewEventController {
                 () -> handleInvalidTextField(field));
     }
 
-    private void addValidationFocusListener(Control control, InputType Type) {
-        control.focusedProperty().addListener(getValidationListener(control, Type));
+    private void addValidationFocusListener(Control control, InputType type) {
+        control.focusedProperty().addListener(getValidationListener(control, type));
     }
 
     /**
-     * Asserts that the given arguments are compatible
-     * @param control
-     * @param type
+     * Asserts that the given arguments are compatible.
+     * 
+     * @param control                   TODO
+     * @param type                      TODO
      * @throws IllegalArgumentException if fields are not compatible
      */
     private void validateArguments(Control control, InputType type) {
         if (control == null || type == null) {
             throw new IllegalArgumentException("Null inputs are not permitted");
         }
-        Set<InputType> textInputs = Set.of(InputType.DESCRIPION, InputType.LOCATION, InputType.NAME, InputType.TIME);
+        Set<InputType> textInputs = Set.of(
+                    InputType.DESCRIPION, 
+                    InputType.LOCATION, 
+                    InputType.NAME, 
+                    InputType.TIME);
         if (!(control instanceof TextField) && textInputs.contains(type)) {
             throw new IllegalArgumentException("Only text fields support this input type.");
         } else if (!(control instanceof DatePicker) && type == InputType.DATE) {

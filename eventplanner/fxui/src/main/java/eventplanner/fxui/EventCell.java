@@ -1,5 +1,6 @@
 package eventplanner.fxui;
 
+import eventplanner.core.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -7,8 +8,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import eventplanner.core.Event;
-
+/**
+ * TODO Javadoc.
+ */
 public class EventCell extends ListCell<Event> {
 
     private Text date;
@@ -17,6 +19,9 @@ public class EventCell extends ListCell<Event> {
     private Text location;
     private HBox content;
 
+    /**
+     * TODO Javadoc.
+     */
     public EventCell() {
         super();
         date = new Text();

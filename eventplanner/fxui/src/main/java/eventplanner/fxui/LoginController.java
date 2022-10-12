@@ -8,12 +8,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+/**
+ * TODO Javadoc.
+ */
 public class LoginController {
     
     private ControllerUtil utils = new ControllerUtil();
     
     @FXML
-    private Button btnCancel, btnConfirm;
+    private Button btnCancel;
+    
+    @FXML
+    private Button btnConfirm;
 
     @FXML
     private TextField inputUsername;

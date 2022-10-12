@@ -9,7 +9,7 @@ import eventplanner.core.EventType;
 /**
  * A utility class for validating user inputs.
  * 
- * The class defines the requirements for valid inputs.
+ * <p>The class defines the requirements for valid inputs.</p>
  */
 public class Validation {
 
@@ -32,10 +32,10 @@ public class Validation {
         INVALID_TYPE("No event type entered."),
         INVALID_TIME_RELATIONSHIP("Start time must be before end time.");
 
-        public final String err_message;
+        public final String errMessage;
 
-        private ErrorType(String err_message) {
-            this.err_message = err_message;
+        private ErrorType(String errMessage) {
+            this.errMessage = errMessage;
         }
     }
 
@@ -101,7 +101,20 @@ public class Validation {
                 .anyMatch(e -> e.equals(comboBoxInput));
     }
 
-    public static boolean isStartBeforeEnd(LocalDate startDate, String startTime, LocalDate endDate, String endTime) {
+    /**
+     * TODO Javadoc.
+     * 
+     * @param startDate     TODO
+     * @param startTime     TODO
+     * @param endDate       TODO
+     * @param endTime       TODO
+     * @return              TODO
+     */
+    public static boolean isStartBeforeEnd(
+                LocalDate startDate, 
+                String startTime, 
+                LocalDate endDate, 
+                String endTime) {
         if (!isValidTimeString(startTime) || !isValidTimeString(endTime)) {
             return true;
         }

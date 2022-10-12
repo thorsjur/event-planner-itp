@@ -1,13 +1,14 @@
 package eventplanner.fxui;
 
+import eventplanner.core.Event;
+import eventplanner.core.User;
+import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
-import eventplanner.core.Event;
-import eventplanner.core.User;
-import eventplanner.fxui.util.ControllerUtil;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,13 +19,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.util.Callback;
 
-
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
-
+/**
+ * TODO Javadoc.
+ */
 public class AppController {
+    
     @FXML
-    private Button createEventButton, myEventsButton;
+    private Button createEventButton; 
+    
+    @FXML
+    private Button myEventsButton;
 
     @FXML
     private Label saveEventLabel;
@@ -35,8 +39,8 @@ public class AppController {
     private User user;
 
     /**
-     * Reads events from file and displays events in 
-     * view, sorted after date and time 
+     * Reads events from file and displays events in
+     * view, sorted after date and time.
      */
     @FXML
     private void initialize() {
@@ -55,7 +59,9 @@ public class AppController {
 
         allEventsList.getItems().addAll(sortedEvents);
 
-        // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
+          
+        // Makes it possible to choose multiple items in list view 
+        // by holding ctrl+cmd while selecting items
         allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
         
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
@@ -64,12 +70,14 @@ public class AppController {
 
     /**
      * Adds user to selected events' lists of 
-     * users and writes canges to file
+     * users and writes canges to file.
      */
     @FXML
-    private void handleSaveEventButtonClicked(){
-        if (allEventsList.getSelectionModel().getSelectedItem()!=null){
-            ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
+    private void handleSaveEventButtonClicked() {
+        if (allEventsList.getSelectionModel().getSelectedItem() != null) {
+            ObservableList<Event> selectedEvents = allEventsList
+                    .getSelectionModel()
+                    .getSelectedItems();
             for (Event event : selectedEvents) {
                 event.addUser(getUser());
             }
@@ -81,8 +89,7 @@ public class AppController {
                 e.printStackTrace();
                 return;
             }
-        }
-        else{
+        } else {
             saveEventLabel.setText("No events chosen");
         }
     }
@@ -97,7 +104,7 @@ public class AppController {
     }
 
     @FXML
-    private void handleCreateEventButtonClicked(){
+    private void handleCreateEventButtonClicked() {
         String pathName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);

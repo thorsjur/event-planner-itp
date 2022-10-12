@@ -1,15 +1,15 @@
 package eventplanner.fxui;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -19,11 +19,19 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.util.Callback;
 
-
+/**
+ * TODO Javadoc.
+ */
 public class MyEventsController {
 
     @FXML
-    private Button createEventButton, eventsButton, myEventsButton;
+    private Button createEventButton;
+    
+    @FXML
+    private Button eventsButton; 
+    
+    @FXML
+    private Button myEventsButton;
 
     @FXML
     private ListView<Event> myEventsList;
@@ -36,28 +44,27 @@ public class MyEventsController {
     private Collection<Event> eventCollection;
 
     /**
-     * Loads events to view
+     * Loads events to view.
      */
     @FXML
-    private void handleLoadMyEventsButtonClicked(){
+    private void handleLoadMyEventsButtonClicked() {
         myEventsList.getItems().clear();
         updateSavedEventsListView();
-        if (myEventsList.getItems().size()==0){
-            removeEventLabel.setText("You have no events\nsaved. Add events\nfrom 'All Events' page");
+        if (myEventsList.getItems().size() == 0) {
+            removeEventLabel.setText("You have no events\nsaved. Add events\nat 'All Events'");
         }
     }
 
     /**
      * Removes user from selected items' list of users, 
      * writes changes to file and removes the selected 
-     * events from view  
+     * events from view.
      */
     @FXML
-    private void handleRemoveEventButtonClicked(){
-        if (myEventsList.getSelectionModel().getSelectedItem()==null){
+    private void handleRemoveEventButtonClicked() {
+        if (myEventsList.getSelectionModel().getSelectedItem() == null) {
             removeEventLabel.setText("No events chosen");
-        }
-        else{
+        } else {
             Collection<Event> selectedEvents = myEventsList.getSelectionModel().getSelectedItems();
             for (Event event : selectedEvents) {
                 event.removeUser(getUser());
@@ -81,7 +88,7 @@ public class MyEventsController {
     }
 
     @FXML
-    private void handleEventsButtonClicked(){
+    private void handleEventsButtonClicked() {
         String pathName = "AllEvents.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
@@ -90,7 +97,7 @@ public class MyEventsController {
     }
 
     @FXML
-    private void handleCreateEventButtonClicked(){
+    private void handleCreateEventButtonClicked() {
         String pathName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
@@ -129,7 +136,8 @@ public class MyEventsController {
 
         myEventsList.getItems().addAll(savedEvents);
 
-        // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
+        // Makes it possible to choose multiple items in list view 
+        // by holding ctrl+cmd while selecting items
         myEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         
         myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {

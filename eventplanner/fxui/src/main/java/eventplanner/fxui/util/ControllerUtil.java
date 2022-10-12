@@ -13,12 +13,14 @@ import javafx.scene.Node;
  * Static utility methods to simplify logic in the controllers.
  */
 public class ControllerUtil {
+
+    private static Random r = new Random();
     
     /**
      * Takes a .fxml resourcePath and a child of the current scene
      * and sets a new root based on the resource path
      * 
-     * @param resourcePath  name of the .fxml file
+     * @param loader        name of the .fxml file
      * @param child         a child of the current scene
      */
     public static void setSceneFromChild(FXMLLoader loader, Node child) {
@@ -43,9 +45,12 @@ public class ControllerUtil {
      * @param   validation          supplier that returns a boolean value indicating validity
      * @param   actionIfValid       action on valid supplier return
      * @param   actionIfInvalid     action of invalid supplier return
-     * @return                      ChangeListener<Boolean> for change in object focus
+     * @return                      ChangeListener for change in object focus
      */
-    public static ChangeListener<Boolean> getValidationFocusListener(Supplier<Boolean> validation, Runnable actionIfValid, Runnable actionIfInvalid) {
+    public static ChangeListener<Boolean> getValidationFocusListener(
+                Supplier<Boolean> validation, 
+                Runnable actionIfValid, 
+                Runnable actionIfInvalid) {
         return (arg0, oldValue, newValue) -> {
             if (!newValue) {
                 if (validation.get()) {
@@ -58,17 +63,16 @@ public class ControllerUtil {
     }
 
     /**
-     * Generates a 5-digit number with random integers between 1-10 in each digit
+     * Generates a 5-digit number with random integers between 1-10 in each digit.
      * 
      * @return 5-digit number
      */
     public String randNumGenerator() {
-        Random r = new Random();
         int[] fiveRandomNumbers = r.ints(5, 0, 11).toArray();
-        String numbersAsString = "";
+        StringBuilder numbersAsString = new StringBuilder();
         for (int num : fiveRandomNumbers) {
-            numbersAsString += "" + num;
+            numbersAsString.append(num);
         }
-        return numbersAsString;
+        return numbersAsString.toString();
     }
 }
