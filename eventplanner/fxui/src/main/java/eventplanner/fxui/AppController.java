@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
@@ -43,14 +42,16 @@ public class AppController {
     private void initialize() {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
+        
         try {
+            EventCollectionJsonReader reader = new EventCollectionJsonReader();
             eventCollection = reader.load();
         } catch (IOException e) {
             eventCollection = new ArrayList<>();
-            e.printStackTrace(); 
+            System.out.println("Could not load events");
         }
         ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
-        Collections.sort(sortedEvents, new Comparator<Event>() {
+        Collections.sort(sortedEvents, (e1, e2) -> e2.getStartDate().compareTo(e1.getStartDate()));
 
             @Override
             public int compare(Event e1, Event e2) {

@@ -50,12 +50,12 @@ public class NewEventController {
             .forEach(typeComboBox.getItems()::add);
 
         // Adds listeners to all input fields that signals input-validity to the user.
-        startTimeField.focusedProperty().addListener(getValidationListener(startTimeField, InputType.TIME));
-        endTimeField.focusedProperty().addListener(getValidationListener(endTimeField, InputType.TIME));
-        nameField.focusedProperty().addListener(getValidationListener(nameField, InputType.NAME));
-        locationField.focusedProperty().addListener(getValidationListener(locationField, InputType.LOCATION));
-        startDatePicker.focusedProperty().addListener(getValidationListener(startDatePicker, InputType.DATE));
-        endDatePicker.focusedProperty().addListener(getValidationListener(endDatePicker, InputType.DATE));
+        addValidationFocusListener(startTimeField, InputType.TIME);
+        addValidationFocusListener(endTimeField, InputType.TIME);
+        addValidationFocusListener(nameField, InputType.NAME);
+        addValidationFocusListener(locationField, InputType.LOCATION);
+        addValidationFocusListener(startDatePicker, InputType.DATE);
+        addValidationFocusListener(endDatePicker, InputType.DATE);
     }
 
     @FXML
@@ -106,21 +106,23 @@ public class NewEventController {
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
 
+        boolean saveFlag = true;
         try {
             IOUtil.appendEventToFile(event, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Something went wrong while saving\nCan't add event to file.");
+            saveFlag = false;
         }
 
         resetFields();
-        outputMessage.setText("New event created successfully");
+        String outputMessageString = saveFlag ? "New event created successfully" : "Error while saving event ...";
+        outputMessage.setText(outputMessageString);
     }
 
     private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
         errors.forEach(e -> {
-            sb.append(e.err_message);
-            sb.append("\n");
+            sb.append(e.err_message + "\n");
         });
         outputMessage.setText(sb.toString());
     }
@@ -234,6 +236,10 @@ public class NewEventController {
                 },
                 () -> handleValidTextField(field),
                 () -> handleInvalidTextField(field));
+    }
+
+    private void addValidationFocusListener(Control control, InputType Type) {
+        control.focusedProperty().addListener(getValidationListener(control, Type));
     }
 
     /**
