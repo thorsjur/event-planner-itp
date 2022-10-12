@@ -40,9 +40,8 @@ public class AppController {
      */
     @FXML
     private void initialize() {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
         Collection<Event> eventCollection;
-        
+
         try {
             EventCollectionJsonReader reader = new EventCollectionJsonReader();
             eventCollection = reader.load();
@@ -50,27 +49,17 @@ public class AppController {
             eventCollection = new ArrayList<>();
             System.out.println("Could not load events");
         }
+        
         ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
         Collections.sort(sortedEvents, (e1, e2) -> e2.getStartDate().compareTo(e1.getStartDate()));
 
-            @Override
-            public int compare(Event e1, Event e2) {
-                return e1.getStartDate().compareTo(e2.getStartDate());
-            }
-
-        });
         allEventsList.getItems().addAll(sortedEvents);
 
         // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
         allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
         
-        allEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
-            @Override
-            public ListCell<Event> call(ListView<Event> param) {
-                return new EventCell();
-            }
-
-        });
+        // Sets the CellFactory for the listview to produce EventCells (custom cells)
+        allEventsList.setCellFactory((param) -> new EventCell());
     }
 
     /**
