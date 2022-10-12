@@ -1,23 +1,24 @@
 package eventplanner.fxui;
 
-import eventplanner.core.Event;
-import eventplanner.core.User;
-import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import eventplanner.core.Event;
+import eventplanner.core.User;
+import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.util.Callback;
 
 /**
  * TODO Javadoc.
@@ -25,13 +26,7 @@ import javafx.util.Callback;
 public class MyEventsController {
 
     @FXML
-    private Button createEventButton;
-    
-    @FXML
-    private Button eventsButton; 
-    
-    @FXML
-    private Button myEventsButton;
+    private Button createEventButton, eventsButton;
 
     @FXML
     private ListView<Event> myEventsList;
@@ -40,8 +35,16 @@ public class MyEventsController {
     private Label removeEventLabel;
 
     private User user;
-
     private Collection<Event> eventCollection;
+
+    public MyEventsController(User user) {
+        this.user = user;
+    }
+
+    @FXML
+    private void initialize() {
+        updateSavedEventsListView();
+    }
 
     /**
      * Loads events to view.
@@ -56,8 +59,8 @@ public class MyEventsController {
     }
 
     /**
-     * Removes user from selected items' list of users, 
-     * writes changes to file and removes the selected 
+     * Removes user from selected items' list of users,
+     * writes changes to file and removes the selected
      * events from view.
      */
     @FXML
@@ -66,47 +69,22 @@ public class MyEventsController {
             removeEventLabel.setText("No events chosen");
         } else {
             Collection<Event> selectedEvents = myEventsList.getSelectionModel().getSelectedItems();
-            for (Event event : selectedEvents) {
-                event.removeUser(getUser());
-            }
+            selectedEvents.forEach(event -> event.removeUser(this.user));
+
             EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
                 writer.save(eventCollection);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Error occurred while saving events to file.");
+                return;
             }
             myEventsList.getItems().removeAll(selectedEvents);
-            myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
-                @Override
-                public ListCell<Event> call(ListView<Event> param) {
-                    return new EventCell();
-                }
-    
-            });
             removeEventLabel.setText("Events removed \n from 'My events'");
         }
     }
 
-    @FXML
-    private void handleEventsButtonClicked() {
-        String pathName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        AppController appController = loader.getController();
-        appController.setUser(getUser());
-    }
-
-    @FXML
-    private void handleCreateEventButtonClicked() {
-        String pathName = "CreateEvent.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        NewEventController newEventController = loader.getController();
-        newEventController.setUser(getUser());
-    }
-
     /**
-     * Reads/loads events from default file and displays the 
+     * Reads/loads events from default file and displays the
      * events that contain the user in its users list.
      */
     private void updateSavedEventsListView() {
@@ -115,46 +93,46 @@ public class MyEventsController {
             eventCollection = reader.load();
         } catch (IOException e) {
             eventCollection = new ArrayList<>();
-            e.printStackTrace(); 
+            System.out.println("Error occurred loading events ...");
         }
-        ArrayList<Event> savedEvents = new ArrayList<>();
-        for (Event event : eventCollection) {
-            for (User user : event.getUsers()) {
-                if (user.username().equals(getUser().username())) {
-                    savedEvents.add(event);
-                }
-            }
-        }
-        Collections.sort(savedEvents, new Comparator<Event>() {
 
-            @Override
-            public int compare(Event e1, Event e2) {
-                return e1.getStartDate().compareTo(e2.getStartDate());
-            }
+        List<Event> savedEvents = getUsersSavedEvents();
 
-        });
+        Collections.sort(savedEvents, getDateComparator());
 
         myEventsList.getItems().addAll(savedEvents);
 
-        // Makes it possible to choose multiple items in list view 
+        // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
         myEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        
-        myEventsList.setCellFactory(new Callback<ListView<Event>, ListCell<Event>>() {
-            @Override
-            public ListCell<Event> call(ListView<Event> param) {
-                return new EventCell();
-            }
 
-        });
+        myEventsList.setCellFactory(param -> new EventCell());
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    private List<Event> getUsersSavedEvents() {
+        return eventCollection.stream()
+                .filter(event -> {
+                    return event.getUsers().stream()
+                            .anyMatch(user -> user.username().equals(this.user.username()));
+                })
+                .collect(Collectors.toList());
     }
 
-    private User getUser() {
-        return this.user;
+    private Comparator<Event> getDateComparator() {
+        return (e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate());
+    }
+
+    @FXML
+    private void handleEventsButtonClicked() {
+        String fxmlFileName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
+        ControllerUtil.setSceneFromChild(loader, eventsButton);
+    }
+
+    @FXML
+    private void handleCreateEventButtonClicked() {
+        String fxmlFileName = "CreateEvent.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
+        ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 }
-

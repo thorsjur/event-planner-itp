@@ -12,37 +12,29 @@ import javafx.scene.control.TextField;
  * TODO Javadoc.
  */
 public class LoginController {
-    
-    private ControllerUtil utils = new ControllerUtil();
-    
+
     @FXML
-    private Button btnCancel;
-    
-    @FXML
-    private Button btnConfirm;
+    private Button btnCancel, btnConfirm;
 
     @FXML
     private TextField inputUsername;
 
-
     @FXML
     public void initialize() {
-        inputUsername.setText("user" + utils.randNumGenerator());
+        inputUsername.setText("user" + ControllerUtil.getRandomFiveDigitString());
     }
 
     @FXML
     private void handleConfirm() {
         User user = new User(inputUsername.getText());
-        String pathName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        String fxmlFileName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
         ControllerUtil.setSceneFromChild(loader, btnConfirm);
-        AppController appController = loader.getController();
-        appController.setUser(user);   
     }
 
     @FXML
     private void handleCancel() {
         Platform.exit();
     }
-    
+
 }

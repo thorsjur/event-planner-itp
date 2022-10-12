@@ -29,38 +29,29 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button eventsButton;
-    @FXML
-    private Button myEventsButton;
+    private Button eventsButton, myEventsButton;
 
     @FXML
-    private DatePicker startDatePicker;
-    @FXML
-    private DatePicker endDatePicker;
+    private DatePicker startDatePicker, endDatePicker;
 
     @FXML
-    private TextField startTimeField;
-    @FXML
-    private TextField endTimeField;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextField descField;
-    @FXML
-    private TextField locationField;
+    private TextField startTimeField, endTimeField, nameField, descField, locationField;
 
     @FXML
     private ComboBox<String> typeComboBox;
 
     @FXML
     private TextArea outputMessage;
-
     private User user;
+
+    public NewEventController(User user) {
+        this.user = user;
+    }
 
     @FXML
     private void initialize() {
         Stream.of(EventType.values())
-                .map(et -> et.toString())
+                .map(eventType -> eventType.toString())
                 .forEach(typeComboBox.getItems()::add);
 
         // Adds listeners to all input fields that signals input-validity to the user.
@@ -119,7 +110,11 @@ public class NewEventController {
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(
-                eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
+                eventType,
+                name,
+                localDateTimeStart,
+                localDateTimeEnd,
+                location);
 
         boolean saveFlag = true;
         try {
@@ -130,8 +125,8 @@ public class NewEventController {
         }
 
         resetFields();
-        String outputMessageString = saveFlag 
-                ? "New event created successfully" 
+        String outputMessageString = saveFlag
+                ? "New event created successfully"
                 : "Error while saving event ...";
         outputMessage.setText(outputMessageString);
     }
@@ -158,19 +153,12 @@ public class NewEventController {
         outputMessage.setText("");
     }
 
-    /**
-     * NOTE: Assumes validated input.
-     * 
-     * @param   startTime       TODO
-     * @return                  An array of length 2 containing hour and minutes
-     */
-    private int[] getTimeAsArray(String time) {
-        String[] split = time.split(":");
-        return new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
-    }
-
     private LocalDateTime getLocalDateTimeObject(String time, LocalDate date) {
-        int[] timeArray = getTimeAsArray(time);
+        if (!Validation.isValidTextInput(time, InputType.TIME)) {
+            throw new IllegalArgumentException("Invalid time string input ...");
+        }
+        String[] split = time.split(":");
+        int[] timeArray = new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
         int hour = timeArray[0];
         int minute = timeArray[1];
 
@@ -179,28 +167,16 @@ public class NewEventController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        String pathName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        String fxmlFileName = "MyEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, MyEventsController.class, user);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        MyEventsController myEventsController = loader.getController();
-        myEventsController.setUser(getUser());
     }
 
     @FXML
     private void handleEventsButtonClicked() {
-        String pathName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        String fxmlFileName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        AppController appController = loader.getController();
-        appController.setUser(getUser());
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    private User getUser() {
-        return this.user;
     }
 
     private static final String COLOUR_VALID = "#228C22";
@@ -225,14 +201,14 @@ public class NewEventController {
     /**
      * TODO Javadoc summary.
      * 
-     * @param   control input control
-     * @param   type    specified type of input
-     * @return          ChangeListener that signals validity of input
+     * @param control input control
+     * @param type    specified type of input
+     * @return ChangeListener that signals validity of input
      */
     private ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
         validateArguments(control, type);
 
-        switch (type) { 
+        switch (type) {
             case DATE:
                 DatePicker datePicker = (DatePicker) control;
                 return ControllerUtil.getValidationFocusListener(
@@ -249,8 +225,8 @@ public class NewEventController {
     }
 
     private ChangeListener<Boolean> getTextFieldValidationListener(
-                TextField field, 
-                InputType type) {
+            TextField field,
+            InputType type) {
         return ControllerUtil.getValidationFocusListener(
                 () -> {
                     return Validation.isValidTextInput(field.getText(), type);
@@ -266,8 +242,8 @@ public class NewEventController {
     /**
      * Asserts that the given arguments are compatible.
      * 
-     * @param control                   TODO
-     * @param type                      TODO
+     * @param control TODO
+     * @param type    TODO
      * @throws IllegalArgumentException if fields are not compatible
      */
     private void validateArguments(Control control, InputType type) {
@@ -275,10 +251,10 @@ public class NewEventController {
             throw new IllegalArgumentException("Null inputs are not permitted");
         }
         Set<InputType> textInputs = Set.of(
-                    InputType.DESCRIPION, 
-                    InputType.LOCATION, 
-                    InputType.NAME, 
-                    InputType.TIME);
+                InputType.DESCRIPION,
+                InputType.LOCATION,
+                InputType.NAME,
+                InputType.TIME);
         if (!(control instanceof TextField) && textInputs.contains(type)) {
             throw new IllegalArgumentException("Only text fields support this input type.");
         } else if (!(control instanceof DatePicker) && type == InputType.DATE) {
@@ -287,4 +263,5 @@ public class NewEventController {
             throw new IllegalArgumentException("Only combo boxes support this input type.");
         }
     }
+
 }
