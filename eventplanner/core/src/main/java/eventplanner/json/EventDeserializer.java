@@ -1,10 +1,5 @@
 package eventplanner.json;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,10 +11,33 @@ import eventplanner.core.EventType;
 import eventplanner.core.Event;
 import eventplanner.core.User;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A custom deserializer to deserialize events from json.
+ * Extends the jackson JsonDeserializer, see link.
+ * 
+ * @see <a href=
+ *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/JsonDeserializer.html">JsonDeserializer
+ *      docs</a>
+ */
 public class EventDeserializer extends JsonDeserializer<Event> {
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.fasterxml.jackson.databind.JsonDeserializer#deserialize(com.fasterxml.
+     * jackson.core.JsonParser,
+     * com.fasterxml.jackson.databind.DeserializationContext)
+     */
     @Override
-    public Event deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JacksonException {
+    public Event deserialize(JsonParser jsonParser, DeserializationContext context)
+            throws IOException, JacksonException {
+
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
         EventType eventType = EventType.valueOf(node.get("type").asText());
@@ -39,5 +57,4 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         return new Event(eventType, name, startDateTime, endDateTime, location, usersList);
     }
 
-    
 }
