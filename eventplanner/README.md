@@ -1,7 +1,7 @@
 [nav](../docs/nav.md)
 
 ## Application Description
-*NOTE: Most of the functionality in the application has not yet been implemented in release 1, see [release1.md](../docs/release1.md) for current functionality*
+*NOTE: Cloud storage has not yet been implemented in release 2, see [release2.md](../docs/release2.md) for current functionality*
 
 Event Planner is a cloud-based application that helps you keep track of various events. With the help of this app, you can sign up for events on the main page titled 'Events' and later find your events on your own page titled 'My Events'. You can also create your own events and use the application as an event calendar.
 
