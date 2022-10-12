@@ -2,6 +2,7 @@ package eventplanner.fxui.util;
 
 import java.io.IOException;
 import java.util.function.Supplier;
+import java.util.Random;
 
 import eventplanner.fxui.App;
 import javafx.beans.value.ChangeListener;
@@ -20,15 +21,19 @@ public class ControllerUtil {
      * @param resourcePath  name of the .fxml file
      * @param child         a child of the current scene
      */
-    public static void setSceneFromChild(String resourcePath, Node child) {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(resourcePath));
+    public static void setSceneFromChild(FXMLLoader loader, Node child) {
         try {
-            fxmlLoader.load();
-            child.getScene().setRoot(fxmlLoader.getRoot());
+            loader.load();
+            child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static FXMLLoader getFXMLLoader(String filename) {
+        return new FXMLLoader(App.class.getResource(filename));
+    }
+
 
     /**
      * Returns a ChangeListener based on a specific validation.
@@ -50,5 +55,20 @@ public class ControllerUtil {
                 }
             }
         };
+    }
+
+    /**
+     * Generates a 5-digit number with random integers between 1-10 in each digit
+     * 
+     * @return 5-digit number
+     */
+    public String randNumGenerator() {
+        Random r = new Random();
+        int[] fiveRandomNumbers = r.ints(5, 0, 11).toArray();
+        String numbersAsString = "";
+        for (int num : fiveRandomNumbers) {
+            numbersAsString += "" + num;
+        }
+        return numbersAsString;
     }
 }

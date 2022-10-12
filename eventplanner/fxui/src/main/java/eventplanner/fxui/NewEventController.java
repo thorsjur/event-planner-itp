@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import eventplanner.core.User;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.fxui.util.ControllerUtil;
@@ -15,6 +16,7 @@ import eventplanner.fxui.util.Validation;
 import eventplanner.json.util.IOUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
@@ -25,7 +27,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button createEventButton, eventsButton, myEventsButton;
+    private Button eventsButton, myEventsButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -38,6 +40,8 @@ public class NewEventController {
 
     @FXML
     private TextArea outputMessage;
+
+    private User user;
 
     @FXML
     private void initialize() {
@@ -100,7 +104,7 @@ public class NewEventController {
 
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
-        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location);
+        Event event = new Event(eventType, name, localDateTimeStart, localDateTimeEnd, location, new ArrayList<>());
 
         boolean saveFlag = true;
         try {
@@ -158,17 +162,28 @@ public class NewEventController {
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("MyEvents.fxml", myEventsButton);
+        String pathName = "MyEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        MyEventsController myEventsController = loader.getController();
+        myEventsController.setUser(getUser());
     }
 
     @FXML
-    private void handleEventsButtonClicked() {
-        ControllerUtil.setSceneFromChild("AllEvents.fxml", myEventsButton);
+    private void handleEventsButtonClicked(){
+        String pathName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        AppController appController = loader.getController();
+        appController.setUser(getUser());
     }
 
-    @FXML
-    private void handleCreateEventButtonClicked() {
-        ControllerUtil.setSceneFromChild("CreateEvent.fxml", myEventsButton);
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User getUser() {
+        return this.user;
     }
 
     private static final String COLOUR_VALID = "#228C22";

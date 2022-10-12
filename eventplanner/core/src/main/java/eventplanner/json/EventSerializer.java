@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import eventplanner.core.Event;
+import eventplanner.core.User;
 
 public class EventSerializer extends JsonSerializer<Event> {
 
@@ -18,8 +19,14 @@ public class EventSerializer extends JsonSerializer<Event> {
         jsonGen.writeStringField("start-time", event.getStartDate().toString());
         jsonGen.writeStringField("end-time", event.getEndDate().toString());
         jsonGen.writeStringField("location", event.getLocation());
+        jsonGen.writeArrayFieldStart("users");
+        for (User user : event.getUsers()) {
+            jsonGen.writeString(user.username());
+        }
+        jsonGen.writeEndArray();
         jsonGen.writeEndObject();
     }
+
 
     
 }

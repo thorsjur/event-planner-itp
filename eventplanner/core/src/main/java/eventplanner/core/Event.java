@@ -13,14 +13,14 @@ public class Event {
     private String location;
     private List<User> users;
 
-    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location){
-        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null){
+    public Event(EventType type, String name, LocalDateTime localDateTime, LocalDateTime localDateTime2, String location, List<User> users){
+        if (type==null || name==null || localDateTime==null || localDateTime2==null || location==null || users==null){
             throw new IllegalArgumentException("One or more parameters are null");
         }
         if (name.isBlank() || location.isBlank()){
             throw new IllegalArgumentException("One or more parameters are blank");
         }
-        this.users = new ArrayList<>();
+        this.users = new ArrayList<>(users);
         this.type = type;
         this.name = name;
         this.startDate = localDateTime;
