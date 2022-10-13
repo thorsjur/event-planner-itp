@@ -1,0 +1,40 @@
+
+@startuml architecture
+title Project Architecture
+skinparam useBetaStyle true
+
+<style>
+    .package {
+        BackgroundColor Khaki
+    }
+</style>
+
+skinparam component {
+  ArrowColor #FF6655
+}
+
+
+component [javafx] {
+    component [fxml] as fx
+}
+
+node "eventplanner" as ep {
+    component [core] {
+        package eventplanner.core
+        package eventplanner.json
+    }
+
+    component [fxui] {
+        package eventplanner.fxui
+
+    }
+}
+
+component [jackson] as jack
+
+fxui ..> fx
+fxui ..> eventplanner.core
+fxui ..> eventplanner.json
+eventplanner.json ..> jack
+
+@enduml
