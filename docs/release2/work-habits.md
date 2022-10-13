@@ -1,4 +1,4 @@
-[nav](nav.md)
+[nav](../nav.md)
 
 # Working habits
 
