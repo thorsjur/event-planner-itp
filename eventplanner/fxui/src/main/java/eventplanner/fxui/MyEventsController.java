@@ -47,18 +47,6 @@ public class MyEventsController {
     }
 
     /**
-     * Loads events to view.
-     */
-    @FXML
-    private void handleLoadMyEventsButtonClicked() {
-        myEventsList.getItems().clear();
-        updateSavedEventsListView();
-        if (myEventsList.getItems().size() == 0) {
-            removeEventLabel.setText("You have no events\nsaved. Add events\nat 'All Events'");
-        }
-    }
-
-    /**
      * Removes user from selected items' list of users,
      * writes changes to file and removes the selected
      * events from view.
@@ -98,7 +86,7 @@ public class MyEventsController {
 
         List<Event> savedEvents = getUsersSavedEvents();
 
-        Collections.sort(savedEvents, getDateComparator());
+        Collections.sort(savedEvents, ControllerUtil.getReverseDateComparator());
 
         myEventsList.getItems().addAll(savedEvents);
 
@@ -116,10 +104,6 @@ public class MyEventsController {
                             .anyMatch(user -> user.username().equals(this.user.username()));
                 })
                 .collect(Collectors.toList());
-    }
-
-    private Comparator<Event> getDateComparator() {
-        return (e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate());
     }
 
     @FXML

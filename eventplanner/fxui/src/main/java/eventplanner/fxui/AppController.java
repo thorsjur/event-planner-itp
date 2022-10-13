@@ -55,7 +55,7 @@ public class AppController {
         }
 
         ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
-        Collections.sort(sortedEvents, (e1, e2) -> e2.getStartDate().compareTo(e1.getStartDate()));
+        Collections.sort(sortedEvents, ControllerUtil.getReverseDateComparator());
         allEventsList.getItems().addAll(sortedEvents);
 
         // Makes it possible to choose multiple items in list view

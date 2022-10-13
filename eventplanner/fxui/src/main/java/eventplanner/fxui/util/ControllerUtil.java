@@ -2,9 +2,12 @@ package eventplanner.fxui.util;
 
 import java.io.IOException;
 import java.util.function.Supplier;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
+import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
@@ -38,6 +41,7 @@ public class ControllerUtil {
 
     /**
      * Returns a FXMLLoader from the provided fxml file name
+     * 
      * @param fxmlFilename the filename of the fxml file in the resources directory
      * @return a FXMLLoader from the given fxml filename
      */
@@ -118,6 +122,26 @@ public class ControllerUtil {
         return random.ints(5, 0, 10)
                 .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                 .toString();
+    }
+
+    /**
+     * Returns a comparator that sort events where the last events come first, and
+     * first events come last.
+     * 
+     * @return comparator for events
+     */
+    public static Comparator<Event> getDateComparator() {
+        return (e1, e2) -> e1.getStartDate().compareTo(e2.getStartDate());
+    }
+
+    /**
+     * Returns a comparator that sort events where the first events come last, and
+     * last events come first.
+     * 
+     * @return comparator for events
+     */
+    public static Comparator<Event> getReverseDateComparator() {
+        return Collections.reverseOrder(getDateComparator());
     }
 
 }
