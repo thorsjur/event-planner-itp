@@ -8,21 +8,22 @@ import java.util.Collections;
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.util.Callback;
 
-
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
-
+/**
+ * Controller for main view.
+ */
 public class AppController {
+
     @FXML
     private Button createEventButton, myEventsButton;
 
@@ -34,9 +35,13 @@ public class AppController {
 
     private User user;
 
+    public AppController(User user) {
+        this.user = user;
+    }
+
     /**
-     * Reads events from file and displays events in 
-     * view, sorted after date and time 
+     * Reads events from file and displays events in
+     * view, sorted after date and time.
      */
     @FXML
     private void initialize() {
@@ -49,70 +54,56 @@ public class AppController {
             eventCollection = new ArrayList<>();
             System.out.println("Could not load events");
         }
-        
-        ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
-        Collections.sort(sortedEvents, (e1, e2) -> e2.getStartDate().compareTo(e1.getStartDate()));
 
+        ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
+        Collections.sort(sortedEvents, ControllerUtil.getReverseDateComparator());
         allEventsList.getItems().addAll(sortedEvents);
 
-        // Makes it possible to choose multiple items in list view by holding ctrl+cmd while selecting items
-        allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); 
-        
+        // Makes it possible to choose multiple items in list view
+        // by holding ctrl+cmd while selecting items
+        allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
         allEventsList.setCellFactory((param) -> new EventCell());
     }
 
     /**
-     * Adds user to selected events' lists of 
-     * users and writes canges to file
+     * Adds user to selected events' lists of
+     * users and writes canges to file.
      */
     @FXML
-    private void handleSaveEventButtonClicked(){
-        if (allEventsList.getSelectionModel().getSelectedItem()!=null){
-            ObservableList<Event> selectedEvents =  allEventsList.getSelectionModel().getSelectedItems();
-            for (Event event : selectedEvents) {
-                event.addUser(getUser());
-            }
+    private void handleSaveEventButtonClicked() {
+        if (allEventsList.getSelectionModel().getSelectedItem() != null) {
+            ObservableList<Event> selectedEvents = allEventsList
+                    .getSelectionModel()
+                    .getSelectedItems();
+
+            selectedEvents.forEach(event -> event.addUser(user));
+
             EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
                 writer.save(allEventsList.getItems());
                 saveEventLabel.setText("Events saved \n to 'My events'");
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Could not save events ...");
                 return;
             }
-        }
-        else{
+        } else {
             saveEventLabel.setText("No events chosen");
         }
     }
 
     @FXML
     private void handleMyEventsButtonClicked() {
-        String pathName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+        String fxmlFileName = "MyEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, MyEventsController.class, user);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        MyEventsController myEventsController = loader.getController();
-        myEventsController.setUser(getUser());
     }
 
     @FXML
-    private void handleCreateEventButtonClicked(){
-        String pathName = "CreateEvent.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(pathName);
+    private void handleCreateEventButtonClicked() {
+        String fxmlFileName = "CreateEvent.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
         ControllerUtil.setSceneFromChild(loader, myEventsButton);
-        NewEventController newEventController = loader.getController();
-        newEventController.setUser(getUser());
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    private User getUser() {
-        return this.user;
     }
 }
-
-
-

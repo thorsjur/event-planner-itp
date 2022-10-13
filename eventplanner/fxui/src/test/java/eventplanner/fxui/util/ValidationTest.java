@@ -125,7 +125,7 @@ public class ValidationTest {
 
     private static String getRandomString(int minLength, int maxLength) {
         Random random = new Random();
-        int length = random.nextInt(minLength, maxLength + 1);
+        int length = random.nextInt((maxLength - minLength) + 1) + minLength;
 
         return random.ints(0, 256)
             .limit(length)
