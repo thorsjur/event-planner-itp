@@ -39,7 +39,7 @@
 
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="100"/>
+    <property name="max" value="120"/>
     <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
   </module>
 
@@ -125,7 +125,7 @@
               value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
     </module>
     <module name="OneStatementPerLine"/>
-    <module name="MultipleVariableDeclarations"/>
+    <!-- <module name="MultipleVariableDeclarations"/> -->
     <module name="ArrayTypeStyle"/>
     <module name="MissingSwitchDefault"/>
     <module name="FallThrough"/>
