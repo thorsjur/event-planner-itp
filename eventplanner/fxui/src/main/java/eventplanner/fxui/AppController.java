@@ -10,6 +10,7 @@ import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 /**
- * TODO Javadoc.
+ * Controller for main view.
  */
 public class AppController {
 

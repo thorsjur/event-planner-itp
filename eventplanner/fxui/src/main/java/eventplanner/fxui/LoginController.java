@@ -2,6 +2,7 @@ package eventplanner.fxui;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
- * TODO Javadoc.
+ * Controller for startup view.
  */
 public class LoginController {
 

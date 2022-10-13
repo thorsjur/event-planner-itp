@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * TODO Javadoc.
+ * Sets stage and launches app.
  */
 public class App extends Application {
 

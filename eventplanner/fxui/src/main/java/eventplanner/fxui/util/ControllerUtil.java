@@ -1,5 +1,12 @@
 package eventplanner.fxui.util;
 
+import eventplanner.core.Event;
+import eventplanner.core.User;
+import eventplanner.fxui.App;
+import eventplanner.fxui.AppController;
+import eventplanner.fxui.MyEventsController;
+import eventplanner.fxui.NewEventController;
+
 import java.io.IOException;
 import java.util.function.Supplier;
 import java.util.Collections;
@@ -7,12 +14,6 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
-import eventplanner.core.Event;
-import eventplanner.core.User;
-import eventplanner.fxui.App;
-import eventplanner.fxui.AppController;
-import eventplanner.fxui.MyEventsController;
-import eventplanner.fxui.NewEventController;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

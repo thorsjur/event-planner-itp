@@ -1,10 +1,10 @@
 package eventplanner.fxui.util;
 
+import eventplanner.core.EventType;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
-
-import eventplanner.core.EventType;
 
 /**
  * A utility class for validating user inputs.
@@ -102,13 +102,13 @@ public class Validation {
     }
 
     /**
-     * TODO Javadoc.
+     * Check if start date is before end-date.
      * 
-     * @param startDate     TODO
-     * @param startTime     TODO
-     * @param endDate       TODO
-     * @param endTime       TODO
-     * @return              TODO
+     * @param startDate     start date
+     * @param startTime     start time
+     * @param endDate       end date
+     * @param endTime       end time
+     * @return              return
      */
     public static boolean isStartBeforeEnd(
                 LocalDate startDate, 

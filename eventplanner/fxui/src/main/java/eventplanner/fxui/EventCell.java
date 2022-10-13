@@ -1,6 +1,7 @@
 package eventplanner.fxui;
 
 import eventplanner.core.Event;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
@@ -9,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * TODO Javadoc.
+ * Class for display of events in gui.
  */
 public class EventCell extends ListCell<Event> {
 
@@ -20,7 +21,7 @@ public class EventCell extends ListCell<Event> {
     private HBox content;
 
     /**
-     * TODO Javadoc.
+     * Constructor.
      */
     public EventCell() {
         super();

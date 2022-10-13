@@ -1,18 +1,18 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,7 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 
 /**
- * TODO Javadoc.
+ * Controller for "myEvents" view.
  */
 public class MyEventsController {
 

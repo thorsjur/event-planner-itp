@@ -7,12 +7,14 @@ import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;
 import eventplanner.json.util.IOUtil;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +26,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 /**
- * TODO Javadoc.
+ * Controller for new events.
  */
 public class NewEventController {
 
@@ -199,7 +201,7 @@ public class NewEventController {
     }
 
     /**
-     * TODO Javadoc summary.
+     * Getter for ValidationListener
      * 
      * @param control input control
      * @param type    specified type of input
@@ -242,8 +244,8 @@ public class NewEventController {
     /**
      * Asserts that the given arguments are compatible.
      * 
-     * @param control TODO
-     * @param type    TODO
+     * @param control                   Input field
+     * @param type                      Input type
      * @throws IllegalArgumentException if fields are not compatible
      */
     private void validateArguments(Control control, InputType type) {
