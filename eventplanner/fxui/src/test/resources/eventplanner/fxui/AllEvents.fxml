@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.AppController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Button fx:id="myEventsButton" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleMyEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" text="My Events" />
+            <Button disable="true" layoutX="390.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Events" />
+            <Button fx:id="createEventButton" layoutX="265.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreateEventButtonClicked" prefHeight="26.0" prefWidth="110.0" text="Create Event" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a44231" height="68.0" stroke="#a44231" strokeType="INSIDE" width="642.0" />
+            <Text fill="WHITE" layoutX="2.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Events" textAlignment="CENTER" wrappingWidth="640.0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <ListView fx:id="allEventsList" layoutX="26.0" layoutY="85.0" prefHeight="252.0" prefWidth="426.0" />
+            <Button fx:id="saveEventButton" layoutX="500.0" layoutY="198.0" mnemonicParsing="false" onAction="#handleSaveEventButtonClicked" text="Save event" />
+            <Label fx:id="saveEventLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="461.0" layoutY="224.0" prefHeight="83.0" prefWidth="171.0" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
