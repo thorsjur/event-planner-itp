@@ -47,6 +47,9 @@ public class ControllerUtil {
      * @return a FXMLLoader from the given fxml filename
      */
     public static FXMLLoader getFXMLLoader(String fxmlFilename) {
+        if (fxmlFilename == null) {
+            throw new IllegalArgumentException("filename cannot be null");
+        }
         return new FXMLLoader(App.class.getResource(fxmlFilename));
     }
 
