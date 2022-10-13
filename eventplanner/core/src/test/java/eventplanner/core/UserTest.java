@@ -1,7 +1,7 @@
 package eventplanner.core;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for User class in core module
