@@ -50,7 +50,7 @@ class EventSignupTest extends ApplicationTest {
         clickOn("#myEventsButton");
         ListView<Event> savedEventsListView = lookup("#myEventsList").queryListView();
         assertThat(savedEventsListView).hasExactlyNumItems(1);
-        assertTrue(areEventsEqual(savedEventsListView.getItems().get(0), clickedEvent));
+        assertTrue(FxuiTestUtil.areEventsEqual(savedEventsListView.getItems().get(0), clickedEvent));
 
         // Selects two more items and asserts that there are three events.
         clickOn("#eventsButton");
@@ -76,16 +76,6 @@ class EventSignupTest extends ApplicationTest {
         ListView<Event> listView = lookup("#myEventsList").queryListView();
         listView.getSelectionModel().selectAll();
         clickOn("#removeEventButton").clickOn("#eventsButton");
-    }
-
-    private boolean areEventsEqual(Event ev1, Event ev2) {
-        return ev1.getEndDate().isEqual(ev2.getEndDate())
-                && ev1.getLocation().equals(ev2.getLocation())
-                && ev1.getStartDate().isEqual(ev2.getStartDate())
-                && ev1.getName().equals(ev2.getName())
-                && ev1.getStartDate().isEqual(ev2.getStartDate())
-                && ev1.getType().equals(ev2.getType())
-                && ev1.getUsers().equals(ev2.getUsers());
     }
 
 }
