@@ -70,6 +70,10 @@
                     <mainClass>eventplanner.fxui/eventplanner.fxui.App</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
