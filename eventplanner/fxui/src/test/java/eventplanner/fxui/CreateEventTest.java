@@ -14,9 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-class LoginScreenTest extends ApplicationTest {
-
+public class CreateEventTest extends ApplicationTest {
+    
     @BeforeAll
     public static void setupHeadless() {
         App.supportHeadless();
@@ -31,10 +30,17 @@ class LoginScreenTest extends ApplicationTest {
     }
 
     @Test
-    public void testConfirm() {
-        String username = "testuser";
-        this.clickOn("#inputUsername").write(username);
+    public void createValidEvent() {
         clickOn("#btnConfirm");
-        lookup("#allEventsList");
+        clickOn("#createEventButton");
+        
+        clickOn("#startDatePicker").write("10/9/2023");
+        clickOn("#startTimeField").write("13:00");
+        clickOn("#endDatePicker").write("11/10/2023");
+        clickOn("#endTimeField").write("13:00");
+        clickOn("#nameField").write("TestName");
+        clickOn("#locationField").write("TestLoc");
+        clickOn("#descField").write("TestDesc");
+        clickOn("#createButton");
     }
 }
