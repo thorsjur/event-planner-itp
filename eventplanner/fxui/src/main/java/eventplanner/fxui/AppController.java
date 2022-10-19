@@ -10,9 +10,7 @@ import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,8 +37,6 @@ public class AppController {
     @FXML
     private TextField searchBar;
 
-    private ObservableList<Event> observableEventList = FXCollections.observableArrayList();
-
     private User user;
 
     public AppController(User user) {
@@ -50,6 +46,7 @@ public class AppController {
     /**
      * Reads events from file and displays events in
      * view, sorted after date and time.
+     * Also initializes the filtration search field.  
      */
     @FXML
     private void initialize() {
@@ -64,39 +61,8 @@ public class AppController {
             System.out.println("Could not load events");
         }
 
-        observableEventList.addAll(eventCollection);
-
-        FilteredList<Event> filteredEvents = new FilteredList<>(observableEventList, b -> true);
-        
-        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredEvents.setPredicate(event -> {
-
-                // If no search value then all events will be displayed
-                if(newValue.isEmpty() || newValue.isBlank() || newValue == null) {
-                    return true;
-                }
-
-                String searchKeyword = newValue.toLowerCase();
-
-                // Found eventname match
-                if (event.getName().toLowerCase().indexOf(searchKeyword) > -1) {
-                    return true;
-                }
-                // Found type match
-                else if (event.getType().toString().toLowerCase().indexOf(searchKeyword) > -1) {
-                    return true;
-                }
-                // Found location match
-                else if (event.getLocation().toLowerCase().indexOf(searchKeyword) > -1) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            });
-        });
-
-        SortedList<Event> sortedList = new SortedList<>(filteredEvents);
+        // Initializing search filtration functionality
+        SortedList<Event> sortedList = ControllerUtil.searchFiltrator(eventCollection, searchBar);
 
         allEventsList.setItems(sortedList);
 
@@ -109,7 +75,6 @@ public class AppController {
 
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
         allEventsList.setCellFactory((param) -> new EventCell());
-
     }
 
     /**

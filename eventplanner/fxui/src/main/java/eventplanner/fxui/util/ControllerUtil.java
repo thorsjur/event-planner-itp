@@ -13,18 +13,24 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Random;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 /**
  * Static utility methods to simplify logic in the controllers.
  */
 public class ControllerUtil {
+
+    private static ObservableList<Event> observableEventList = FXCollections.observableArrayList();
+
 
     /**
      * Takes a FXMLLoader and a child of the current scene
@@ -136,6 +142,59 @@ public class ControllerUtil {
      */
     public static Comparator<Event> getReverseDateComparator() {
         return Collections.reverseOrder(getDateComparator());
+    }
+
+   /**
+    * Takes all the events from the database, and filters out the ones
+    * that don't match with the value in the searchbar. 
+    * Returns a sortedList of the ones that match.
+    *
+    * @param eventCollection    Collection of all events
+    * @param searchBar          TextField with input that gets observed
+    * @return SortedList of matching events
+    * @throws IllegalArgumentException if the event collection is empty
+    */
+    public static SortedList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
+
+        if (eventCollection.isEmpty()) {
+            throw new IllegalArgumentException("Event collection is empty");
+        }
+
+        observableEventList.addAll(eventCollection);
+
+        FilteredList<Event> filteredEvents = new FilteredList<>(observableEventList, b -> true);
+        
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredEvents.setPredicate(event -> {
+
+                // If no search value then all events will be displayed
+                if(newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                // Found eventname match
+                if (event.getName().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                }
+                // Found type match
+                else if (event.getType().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                }
+                // Found location match
+                else if (event.getLocation().toLowerCase().indexOf(searchKeyword) > -1) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<Event> sortedList = new SortedList<>(filteredEvents);
+
+        return new SortedList<Event>(sortedList);
     }
 
 }
