@@ -50,7 +50,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         JsonNode usersNode = node.get("users");
         if (usersNode instanceof ArrayNode) {
             for (JsonNode elemetNode : ((ArrayNode) usersNode)) {
-                usersList.add(new User(elemetNode.asText()));
+                usersList.add(User.findUser(elemetNode.asText())); //TODO - Må finne en måte å passe inn userne her
             }
         }
 

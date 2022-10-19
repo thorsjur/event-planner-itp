@@ -2,6 +2,7 @@ package eventplanner.fxui;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
@@ -46,8 +47,16 @@ public class RegisterController {
         return true;
     }
 
+    private boolean checkIfAbove18(LocalDate localDate) {
+        if (Period.between(localDate, LocalDate.now()).getYears() > 17 ) {
+            return true;
+        } else {
+            return false;
+        } 
+    }
+
     private User createUser(String email, String password, LocalDate localDate) {
-        return new User(email); //TODO
+        return new User(email, password, checkIfAbove18(localDate)); //TODO - trengs det å legge til en serelisering her?
     }
 
     @FXML

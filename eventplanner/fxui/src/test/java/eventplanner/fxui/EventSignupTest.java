@@ -27,7 +27,7 @@ class EventSignupTest extends ApplicationTest {
     @Override
     public void start(Stage stage) throws Exception {
         final FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AppController.class,
-                new User("test_user"));
+                new User("test@test.test", "password", true)); //TODO - test om dette ble korrekt
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();

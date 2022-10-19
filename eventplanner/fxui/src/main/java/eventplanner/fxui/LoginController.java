@@ -31,8 +31,11 @@ public class LoginController {
     private Label errorOutput;
 
     private User validateUser(String email, String password) {
-        //TODO
-        return new User(email);
+        return findUser(email); //TODO - denne skal først finne bruker findUser(email) for så å sjekke om passordet stemmer.
+    }
+
+    private User findUser(String email) {
+        return new User("TODO@TODO.TODO", "TODO", true); //TODO - denne skal finne en user
     }
 
     @FXML

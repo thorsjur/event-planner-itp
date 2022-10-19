@@ -27,10 +27,10 @@ public class EventDeserializerTest {
     public void setup() {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
         List<User> users = new ArrayList<>();
-        users.add(new User("christian"));
-        users.add(new User("palina"));
-        users.add(new User("david"));
-        users.add(new User("thor"));
+        users.add(new User("christian", "password", true)); //TODO - pass på følgefeil
+        users.add(new User("palina", "password", true)); //TODO - pass på følgefeil
+        users.add(new User("david", "password", true)); //TODO - pass på følgefeil
+        users.add(new User("thor", "password", true)); //TODO - pass på følgefeil
         event = new Event(EventType.PARTY, "Thors bursdag", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users);
 
         List<User> users2 = new ArrayList<>();

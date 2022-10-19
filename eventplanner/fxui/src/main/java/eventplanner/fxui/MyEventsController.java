@@ -101,7 +101,7 @@ public class MyEventsController {
         return eventCollection.stream()
                 .filter(event -> {
                     return event.getUsers().stream()
-                            .anyMatch(user -> user.username().equals(this.user.username()));
+                            .anyMatch(user -> user.email().equals(this.user.email())); //TODO - pass på følgefeil
                 })
                 .collect(Collectors.toList());
     }
