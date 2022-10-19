@@ -4,17 +4,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -26,7 +29,7 @@ import javafx.scene.control.TextField;
 public class AppController {
 
     @FXML
-    private Button createEventButton, myEventsButton;
+    private Button createEventButton;
 
     @FXML
     private Label saveEventLabel;
@@ -36,6 +39,11 @@ public class AppController {
 
     @FXML
     private TextField searchBar;
+
+    @FXML
+    private CheckBox myEventsCheckBox;
+
+    private boolean checkBoxValue = false;
 
     private User user;
 
@@ -50,15 +58,24 @@ public class AppController {
      */
     @FXML
     private void initialize() {
-
+        
         Collection<Event> eventCollection;
-
+        
         try {
             EventCollectionJsonReader reader = new EventCollectionJsonReader();
             eventCollection = reader.load();
         } catch (IOException e) {
             eventCollection = new ArrayList<>();
             System.out.println("Could not load events");
+        }
+
+        if (isChecked()) {
+            eventCollection = eventCollection.stream()
+            .filter(event -> {
+                return event.getUsers().stream()
+                        .anyMatch(user -> user.username().equals(this.user.username()));
+            })
+            .collect(Collectors.toList());
         }
 
         // Initializing search filtration functionality
@@ -104,16 +121,25 @@ public class AppController {
     }
 
     @FXML
-    private void handleMyEventsButtonClicked() {
-        String fxmlFileName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, MyEventsController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+    private void handleMyEventsCheckBox() {
+        setChecked();
+        myEventsCheckBox.setSelected(isChecked());
+        initialize();
     }
+
+    private boolean isChecked() {
+        return this.checkBoxValue;
+    }
+
+    private void setChecked() {
+        this.checkBoxValue = !checkBoxValue;
+    }
+
 
     @FXML
     private void handleCreateEventButtonClicked() {
         String fxmlFileName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        ControllerUtil.setSceneFromChild(loader, createEventButton);
     }
 }

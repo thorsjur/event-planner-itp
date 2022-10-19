@@ -17,7 +17,6 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="myEventsButton" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleMyEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" text="My Events" />
             <Button fx:id="eventsButton" layoutX="390.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleEventsButtonClicked" prefHeight="26.0" prefWidth="110.0" text="Events" />
             <Button disable="true" layoutX="265.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Create Event" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a44231" height="68.0" stroke="#a44231" strokeType="INSIDE" width="646.0" />

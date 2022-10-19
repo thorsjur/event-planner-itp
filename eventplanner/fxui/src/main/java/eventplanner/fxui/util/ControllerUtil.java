@@ -145,11 +145,11 @@ public class ControllerUtil {
     }
 
    /**
-    * Takes all the events from the database, and filters out the ones
+    * Takes events, and filters out the ones
     * that don't match with the value in the searchbar. 
     * Returns a sortedList of the ones that match.
     *
-    * @param eventCollection    Collection of all events
+    * @param eventCollection    Collection of events
     * @param searchBar          TextField with input that gets observed
     * @return SortedList of matching events
     * @throws IllegalArgumentException if the event collection is empty
