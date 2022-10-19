@@ -20,11 +20,11 @@
                   <Font size="30.0" />
                </font>
             </Text>
-            <TextField fx:id="inputUsername" layoutX="242.0" layoutY="188.0" />
+            <TextField fx:id="inputEmail" layoutX="242.0" layoutY="188.0" />
             <Label layoutX="143.0" layoutY="193.0" text="Enter email:" />
-            <Button fx:id="btnConfirm" layoutX="242.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleConfirm" prefHeight="26.0" prefWidth="76.0" text="Login" />
-            <Button fx:id="btnCancel" layoutX="338.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="64.0" text="Cancel" />
-            <Button fx:id="btnConfirm1" layoutX="267.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleConfirm" prefHeight="26.0" prefWidth="110.0" text="Register page" />
+            <Button fx:id="btnLogin" layoutX="242.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="76.0" text="Login" />
+            <Button fx:id="btnExit" layoutX="338.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="64.0" text="Exit" />
+            <Button fx:id="btnRegisterPage" layoutX="267.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleBtnRegisterPage" prefHeight="26.0" prefWidth="110.0" text="Register page" />
             <Label layoutX="269.0" layoutY="85.0" text="Dont have an user?" />
             <Label layoutX="143.0" layoutY="226.0" text="Enter password:" />
             <PasswordField layoutX="242.0" layoutY="222.0" />
