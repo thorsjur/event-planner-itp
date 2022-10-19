@@ -4,6 +4,7 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
+import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.MyEventsController;
 import eventplanner.fxui.NewEventController;
 
@@ -37,6 +38,7 @@ public class ControllerUtil {
             child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
             System.out.println("IOException occurred while loading scene.");
+            e.printStackTrace();
         }
     }
 
@@ -69,6 +71,23 @@ public class ControllerUtil {
     }
 
     /**
+     * Returns a FXMLLoader with a controller factory for the EventPage controller.
+     * 
+     * @param event        the event to be displayed
+     * @param user         the user to be passed to the controller
+     * @return a FXMLLoader with the associated event page controller
+     */
+    public static FXMLLoader getFXMLLoaderWithEventPageFactory(User user, Event event) {
+        FXMLLoader loader = getFXMLLoader("EventPage.fxml");
+        loader.setControllerFactory(getEventPageControllerFactory(user, event));
+        return loader;
+    }
+
+    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event) {
+        return param -> new EventPageController(user, event);
+    }
+
+    /**
      * Returns a controller factory from the given class, and provides the created
      * controller with the user.
      * 
@@ -87,6 +106,7 @@ public class ControllerUtil {
         }
         return param -> classMap.get(cls);
     }
+    
 
     /**
      * Returns a ChangeListener based on a specific validation.
@@ -99,7 +119,6 @@ public class ControllerUtil {
      * @param actionIfInvalid action of invalid supplier return
      * @return ChangeListener for change in object focus
      */
-
     public static ChangeListener<Boolean> getValidationFocusListener(
             Supplier<Boolean> validation,
             Runnable actionIfValid,

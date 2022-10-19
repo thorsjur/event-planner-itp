@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="400.0" maxWidth="640.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.EventPageController">
+  <children>
+    <AnchorPane maxHeight="400.0" maxWidth="640.0" VBox.vgrow="ALWAYS">
+      <children>
+            <HBox alignment="CENTER" prefHeight="400.0" prefWidth="640.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="400.0" style="-fx-background-color: #a44231;">
+                           <children>
+                              <Label fx:id="nameLabel" alignment="BOTTOM_CENTER" layoutX="3.0" layoutY="3.0" prefHeight="68.0" prefWidth="400.0" snapToPixel="false" text="[MISSING EVENT NAME]" textFill="WHITE">
+                                 <padding>
+                                    <Insets bottom="5.0" />
+                                 </padding>
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Pane>
+                        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" prefHeight="332.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <Text fx:id="descText" boundsType="LOGICAL_VERTICAL_CENTER" lineSpacing="1.25" strokeType="OUTSIDE" strokeWidth="0.0" text="[MISSING DESCRIPTION]">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Text>
+                           </content>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="400.0" prefWidth="255.0" spacing="10.0" style="-fx-background-color: #E2E2E2;">
+                     <padding>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                           <children>
+                              <StackPane alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="126.0">
+                                 <children>
+                                    <Label text="Author:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                              <StackPane alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="224.0">
+                                 <children>
+                                    <Label fx:id="authorLabel" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="172.0" text="[MISSING INFO]">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                           <children>
+                              <StackPane prefHeight="20.0" prefWidth="141.0">
+                                 <children>
+                                    <Label prefHeight="20.0" prefWidth="132.0" text="Start time:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="150.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="startTimeLabel" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="159.0" text="[MISSING INFO]">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                           <children>
+                              <StackPane prefHeight="20.0" prefWidth="144.0">
+                                 <children>
+                                    <Label text="End time:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="20.0" prefWidth="217.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="endTimeLabel" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="161.0" text="[MISSING INFO]">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                           <children>
+                              <StackPane prefHeight="20.0" prefWidth="139.0">
+                                 <children>
+                                    <Label text="Location:">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="20.0" prefWidth="216.0">
+                                 <children>
+                                    <Label fx:id="locationLabel" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="161.0" text="[MISSING INFO]">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="76.0" prefWidth="193.0" spacing="10.0">
+                           <children>
+                              <StackPane prefHeight="76.0" prefWidth="152.0">
+                                 <children>
+                                    <Label prefHeight="44.0" prefWidth="84.0" text="Registered users:" textAlignment="RIGHT" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                              <StackPane prefHeight="76.0" prefWidth="210.0">
+                                 <children>
+                                    <Label fx:id="regUsersLabel" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="178.0" text="[MISSING INFO]">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                        <Button fx:id="registerButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="Register to event" />
+                        <Button fx:id="returnButton" mnemonicParsing="false" onMouseClicked="#handleReturnBtnClicked" text="Return">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Text fx:id="outputText" strokeType="OUTSIDE" strokeWidth="0.0" text="[OUTPUT MESSAGE]" textAlignment="CENTER" wrappingWidth="204.13671875" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

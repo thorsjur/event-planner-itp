@@ -44,6 +44,7 @@ public class MyEventsController {
     @FXML
     private void initialize() {
         updateSavedEventsListView();
+        myEventsList.setUserData(user);
     }
 
     /**
