@@ -21,11 +21,6 @@ public class LoginController {
     private TextField inputUsername;
 
     @FXML
-    public void initialize() {
-        inputUsername.setText("user" + ControllerUtil.getRandomFiveDigitString());
-    }
-
-    @FXML
     private void handleConfirm() {
         User user = new User(inputUsername.getText());
         String fxmlFileName = "AllEvents.fxml";

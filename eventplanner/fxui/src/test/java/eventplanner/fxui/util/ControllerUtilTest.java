@@ -70,22 +70,6 @@ public class ControllerUtilTest {
     }
 
     @Test
-    public void testGetRandomFiveDigitString_isOfLengthFive() {
-        for (int i = 0; i < 30; i++) {
-            String string = ControllerUtil.getRandomFiveDigitString();
-            assertEquals(5, string.length());
-        }
-    }
-
-    @Test
-    public void testGetRandomFiveDigitString_isOnlyDigits() {
-        for (int i = 0; i < 30; i++) {
-            String string = ControllerUtil.getRandomFiveDigitString();
-            assertTrue(string.matches("^\\d+$"));
-        }
-    }
-
-    @Test
     public void testGetDateComparator_areEqual() {
         LocalDateTime date = LocalDateTime.of(2022, 8, 13, 13, 12);
         LocalDateTime date2 = LocalDateTime.of(2022, 8, 13, 13, 12);

@@ -9,12 +9,14 @@ import eventplanner.fxui.NewEventController;
 
 import java.io.IOException;
 import java.util.function.Supplier;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.util.Callback;
@@ -114,18 +116,6 @@ public class ControllerUtil {
                 }
             }
         };
-    }
-
-    /**
-     * Generates a random 5-digit number as a string.
-     * 
-     * @return 5-digit number string
-     */
-    public static String getRandomFiveDigitString() {
-        Random random = new Random();
-        return random.ints(5, 0, 10)
-                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                .toString();
     }
 
     /**
