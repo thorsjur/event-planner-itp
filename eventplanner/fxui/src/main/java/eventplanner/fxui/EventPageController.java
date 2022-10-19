@@ -9,28 +9,32 @@ import eventplanner.fxui.util.EventUtil;
 import eventplanner.json.util.IOUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.text.Text;
 
 public class EventPageController {
 
     @FXML
-    Button returnButton, registerButton;
+    private Button returnButton, registerButton, deleteEventButton;
 
     @FXML
-    Label nameLabel, authorLabel, startTimeLabel, endTimeLabel, locationLabel, regUsersLabel;
+    private Label nameLabel, authorLabel, startTimeLabel, endTimeLabel, locationLabel, regUsersLabel;
 
     @FXML
-    Text descText, outputText;
+    private Text descText, outputText;
 
     @FXML
-    ScrollPane scrollPane;
+    private ScrollPane scrollPane;
 
-    User user;
-    Event event;
-    boolean isRegistered;
+    private User user;
+    private Event event;
+    private boolean isRegistered;
 
     public EventPageController(User user, Event event) {
         this.user = user;
@@ -39,17 +43,37 @@ public class EventPageController {
     }
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         initializeDescription();
         initializeTextLabels();
         initializeOutputText();
         initializeRegisterButton();
+        initializeDeleteEventButton();
     }
 
     @FXML
-    public void handleReturnBtnClicked() {
+    private void handleReturnBtnClicked() {
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AppController.class, user);
         ControllerUtil.setSceneFromChild(loader, returnButton);
+    }
+
+    @FXML
+    private void handleDeleteEventButtonClicked() {
+        ButtonType deleteType = new ButtonType("DELETE EVENT", ButtonData.OK_DONE);
+        Alert alert = new Alert(
+            AlertType.CONFIRMATION,
+            "Are you sure you want to delete this event?",
+            deleteType,
+            ButtonType.CANCEL
+        );
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            // TODO: delete this event
+            handleReturnBtnClicked();
+        }
     }
 
     private void initializeRegisterButton() {
@@ -98,6 +122,13 @@ public class EventPageController {
         decrementRegisteredUsers();
         isRegistered = false;
         updateRegisterButton();
+    }
+
+    private void initializeDeleteEventButton() {
+        if (!user.username().equals("AUTHOR")) { // TODO: should compare to author/owner of event
+            deleteEventButton.setDisable(true);
+            deleteEventButton.setVisible(false);
+        };
     }
 
     private void initializeDescription() {
