@@ -4,7 +4,6 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
-import eventplanner.fxui.MyEventsController;
 import eventplanner.fxui.NewEventController;
 
 import java.io.IOException;
@@ -28,9 +27,6 @@ import javafx.util.Callback;
  * Static utility methods to simplify logic in the controllers.
  */
 public class ControllerUtil {
-
-    private static ObservableList<Event> observableEventList = FXCollections.observableArrayList();
-
 
     /**
      * Takes a FXMLLoader and a child of the current scene
@@ -88,7 +84,6 @@ public class ControllerUtil {
     private static <T> Callback<Class<?>, Object> getControllerFactory(Class<T> cls, User user) {
         final Map<Class<?>, Object> classMap = Map.of(
                 AppController.class, new AppController(user),
-                MyEventsController.class, new MyEventsController(user),
                 NewEventController.class, new NewEventController(user));
         if (!classMap.containsKey(cls)) {
             throw new IllegalArgumentException("Invalid class provided");
@@ -152,13 +147,10 @@ public class ControllerUtil {
     * @param eventCollection    Collection of events
     * @param searchBar          TextField with input that gets observed
     * @return SortedList of matching events
-    * @throws IllegalArgumentException if the event collection is empty
     */
     public static SortedList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
-
-        if (eventCollection.isEmpty()) {
-            throw new IllegalArgumentException("Event collection is empty");
-        }
+        
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList();
 
         observableEventList.addAll(eventCollection);
 

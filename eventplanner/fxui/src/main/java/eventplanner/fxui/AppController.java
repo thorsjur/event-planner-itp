@@ -3,9 +3,7 @@ package eventplanner.fxui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
