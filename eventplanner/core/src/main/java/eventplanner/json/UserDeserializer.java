@@ -7,11 +7,12 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import eventplanner.core.User;
+import eventplanner.core.UserUtil;
 
 import java.io.IOException;
 
 /**
- * A custom deserializer to deserialize events from json.
+ * A custom deserializer to deserialize users from json.
  * Extends the jackson JsonDeserializer, see link.
  * 
  * @see <a href=
@@ -35,7 +36,7 @@ public class UserDeserializer extends JsonDeserializer<User> {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
         String email = node.get("email").asText();
-        String password = node.get("password").asText();
+        String password = UserUtil.deHash(node.get("password").asText());
         Boolean above18 = Boolean.parseBoolean(node.get("above18").asText());
 
         return new User(email, password, above18);

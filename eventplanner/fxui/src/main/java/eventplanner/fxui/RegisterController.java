@@ -1,12 +1,13 @@
 package eventplanner.fxui;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.regex.Pattern;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-
+import eventplanner.json.util.IOUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,29 +43,43 @@ public class RegisterController {
     public void initialize() {
     }
 
-    private boolean validateRegister(String email, String password, LocalDate localDate) {
-        //TODO
+    private static boolean validateRegister(User user) {
+        
+        if(!Pattern.compile("^(.+)@(\\S+)$").matcher(user.email()).matches()) {
+            return false;
+        } else if(user.password() == null) {
+            return false;
+        };
+
         return true;
     }
 
     private boolean checkIfAbove18(LocalDate localDate) {
-        if (Period.between(localDate, LocalDate.now()).getYears() > 17 ) {
-            return true;
-        } else {
-            return false;
-        } 
+        return (Period.between(localDate, LocalDate.now()).getYears() > 17);
     }
 
-    private User createUser(String email, String password, LocalDate localDate) {
-        return new User(email, password, checkIfAbove18(localDate)); //TODO - trengs det å legge til en serelisering her?
+    private Boolean createUser(User user) {
+        boolean saveflag = false;
+        if (validateRegister(user)) {
+            try {
+                IOUtil.appendUserToFile(user, null);
+                saveflag = true;
+            } catch (IOException e) {
+                System.out.println("Something went wrong while saving\nCan't add user to file.");
+                e.printStackTrace();
+            }            
+        } else {
+            System.out.println("User not valid");
+        }
+        return saveflag;
     }
 
     @FXML
     private void handleCreateUser() {
-        if (validateRegister(inputEmail.getText(), inputPassword.getText(), inputBirthDate.getValue())) {
-            User user = createUser(inputEmail.getText(), inputPassword.getText(), inputBirthDate.getValue());
+        User newUser = new User(inputEmail.getText(), inputPassword.getText(), checkIfAbove18(inputBirthDate.getValue()));
+        if (createUser(newUser)) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, newUser);
             ControllerUtil.setSceneFromChild(loader, btnCreateUser);
         } else {
             this.counter ++;

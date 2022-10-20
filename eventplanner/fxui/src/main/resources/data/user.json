@@ -1,0 +1,9 @@
+[ {
+  "email" : "test@test.test",
+  "password" : "testh",
+  "above18" : false
+}, {
+  "email" : "test2@test2.test2",
+  "password" : "test2h",
+  "above18" : false
+} ]

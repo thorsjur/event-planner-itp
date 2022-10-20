@@ -24,26 +24,7 @@ public record User(String email, String password, Boolean above18) {
         }
 
         this.email = email;
-        this.password = passwordHash(password);
+        this.password = UserUtil.passwordHash(password);
         this.above18 = above18;
-    }
-
-    private String passwordHash(String password) {
-        return password;
-    }
-
-    //Getters.
-    public String getEmail() {
-        return this.email;
-    }
-    public String getPassword () {
-        return this.password;
-    }
-    public boolean getAbove18() {
-        return this.above18;
-    }
-
-    public static User findUser(String email) { //TODO - denne funksjonen skal finne og returne en user basert på email.
-        return new User("test@test.test", "password", true);
     }
 }

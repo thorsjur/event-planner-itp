@@ -39,7 +39,7 @@ public class EventSerializer extends JsonSerializer<Event> {
         jsonGen.writeStringField("location", event.getLocation());
         jsonGen.writeArrayFieldStart("users");
         for (User user : event.getUsers()) {
-            jsonGen.writeString(user.email()); //TODO mulig denne må endres på....
+            jsonGen.writeString(user.email());
         }
         jsonGen.writeEndArray();
         jsonGen.writeEndObject();

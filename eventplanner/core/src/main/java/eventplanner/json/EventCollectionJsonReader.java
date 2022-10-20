@@ -50,5 +50,13 @@ public class EventCollectionJsonReader {
     public Collection<Event> load() throws IOException {
         return load(null);
     }
-
+    public static void main(String[] args) {
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        try {
+            reader.load();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }

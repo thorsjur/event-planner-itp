@@ -8,6 +8,7 @@ import eventplanner.json.util.IOUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -15,37 +16,40 @@ import java.util.Collection;
  */
 public class UserCollectionJsonReader {
 
-    private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
+    private static final CustomObjectMapper USER_MAPPER = new CustomObjectMapper();
 
     /**
-     * Method to load a collection of events from a JSON file.
+     * Method to load a collection of users from a JSON file.
      * If no file is specified for the method, the reader reads from the default
      * JSON file specified in {@link UserCollectionJsonWriter}
      * 
-     * @param file the json file to load events from.
-     * @return a collection of events
+     * @param file the json file to load users from.
+     * @return a collection of users
      * @throws IOException on low level I/O errors
      */
     public Collection<User> load(File file) throws IOException {
         if (file == null) {
-            file = new File(EventCollectionJsonWriter.DIRECTORY_PATH
-                    + EventCollectionJsonWriter.DEFAULT_FILE_NAME
-                    + EventCollectionJsonWriter.FILE_EXTENSION);
+            file = new File(UserCollectionJsonWriter.DIRECTORY_PATH
+                    + UserCollectionJsonWriter.DEFAULT_FILE_NAME
+                    + UserCollectionJsonWriter.FILE_EXTENSION);
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
         }
-        if (!IOUtil.hasFileExtension(file, EventCollectionJsonWriter.FILE_EXTENSION)) {
+        if (!IOUtil.hasFileExtension(file, UserCollectionJsonWriter.FILE_EXTENSION)) {
             throw new IllegalArgumentException("File is not of type .json");
         }
-        return OBJECT_MAPPER.readValue(file, new TypeReference<Collection<User>>() {
+        if (file.length() < 10) {
+            return new ArrayList<User>();
+        }
+        return USER_MAPPER.readValue(file, new TypeReference<Collection<User>>() {
         });
     }
 
     /**
-     * Method to load a collection of events using the default JSON file.
+     * Method to load a collection of users using the default JSON file.
      * 
-     * @see EventCollectionJsonReader#load(File file)
+     * @see UserCollectionJsonReader#load(File file)
      */
     public Collection<User> load() throws IOException {
         return load(null);

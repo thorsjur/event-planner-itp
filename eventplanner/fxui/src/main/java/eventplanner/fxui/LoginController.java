@@ -1,8 +1,8 @@
 package eventplanner.fxui;
 
 import eventplanner.core.User;
+import eventplanner.core.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,20 +30,33 @@ public class LoginController {
     @FXML
     private Label errorOutput;
 
-    private User validateUser(String email, String password) {
-        return findUser(email); //TODO - denne skal først finne bruker findUser(email) for så å sjekke om passordet stemmer.
-    }
+    private Boolean validateUser(String email, String password) {
 
-    private User findUser(String email) {
-        return new User("TODO@TODO.TODO", "TODO", true); //TODO - denne skal finne en user
+        try {
+            User checkUser = UserUtil.findUser(email);
+            if (checkUser.password().equals(UserUtil.passwordHash(password))) {
+                System.out.println("Found user, correct password.");
+               return true;
+            } else {
+                System.out.println("Found user, wrong password.");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Could not find user.");
+            return false;
+        }
     }
 
     @FXML
     private void handleLogin() {
-        User user = validateUser(inputEmail.getText(), inputPassword.getText());
-        if (user != null) {
+
+        if (inputPassword.getText().isBlank() || inputEmail.getText().isBlank()) {
+            System.out.println("Input password or email is null.");
+            counter++;
+            errorOutput.setText("Wrong username or password; "+ Integer.toString(counter));
+        } else if (validateUser(inputEmail.getText(), inputPassword.getText())) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, UserUtil.findUser(inputEmail.getText()));
             ControllerUtil.setSceneFromChild(loader, btnLogin);
         } else {
             this.counter ++;

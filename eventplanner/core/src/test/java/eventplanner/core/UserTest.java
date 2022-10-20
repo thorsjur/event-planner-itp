@@ -27,8 +27,8 @@ public class UserTest {
         Exception e1 = Assert.assertThrows(IllegalArgumentException.class, () -> new User(null, null, null));
         Exception e2 = Assert.assertThrows(IllegalArgumentException.class, () -> new User("", null, null));
         Exception e3 = Assert.assertThrows(IllegalArgumentException.class, () -> new User(" ", null, null));
-        Assert.assertTrue(e1.getMessage().equals("User name is null or blank"));
-        Assert.assertTrue(e2.getMessage().equals("User name is null or blank"));
-        Assert.assertTrue(e3.getMessage().equals("User name is null or blank"));
+        Assert.assertTrue(e1.getMessage().equals("Email is null or blank"));
+        Assert.assertTrue(e2.getMessage().equals("Email is null or blank"));
+        Assert.assertTrue(e3.getMessage().equals("Email is null or blank"));
     }
 }

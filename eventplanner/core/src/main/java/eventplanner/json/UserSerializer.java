@@ -31,11 +31,9 @@ public class UserSerializer extends JsonSerializer<User> {
             throws IOException {
 
         jsonGen.writeStartObject();
-        jsonGen.writeStringField("email", user.getEmail());
-        jsonGen.writeStringField("password", user.getPassword());
-        jsonGen.writeBooleanField("above18", user.getAbove18());
-
-        jsonGen.writeEndArray();
+        jsonGen.writeStringField("email", user.email());
+        jsonGen.writeStringField("password", user.password());
+        jsonGen.writeBooleanField("above18", user.above18());
         jsonGen.writeEndObject();
     }
 

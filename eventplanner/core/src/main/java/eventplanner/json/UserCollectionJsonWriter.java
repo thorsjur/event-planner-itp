@@ -22,7 +22,7 @@ public class UserCollectionJsonWriter {
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
 
     /**
-     * Method to save a collection of events to a JSON file.
+     * Method to save a collection of users to a JSON file.
      * If no file is specified for the method, the writer writes to the default
      * JSON file specified by the classes constant fields.
      * 
@@ -43,7 +43,7 @@ public class UserCollectionJsonWriter {
     }
 
     /**
-     * Method to save a collection of events to the default JSON file.
+     * Method to save a collection of users to the default JSON file.
      * 
      * @see EventCollectionJsonWriter#save(Collection collection, File file)
      */
@@ -52,7 +52,7 @@ public class UserCollectionJsonWriter {
     }
 
     /**
-     * Method to save a single event to the specified JSON file.
+     * Method to save a single user to the specified JSON file.
      * 
      * @see EventCollectionJsonWriter#save(Collection collection, File file)
      */
@@ -61,7 +61,7 @@ public class UserCollectionJsonWriter {
     }
 
     /**
-     * Method to save a single event to the default JSON file.
+     * Method to save a single user to the default JSON file.
      * 
      * @see EventCollectionJsonWriter#save(Collection collection, File file)
      */
