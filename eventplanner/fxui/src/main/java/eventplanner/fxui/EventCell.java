@@ -1,9 +1,13 @@
 package eventplanner.fxui;
 
 import eventplanner.core.Event;
-
+import eventplanner.core.User;
+import eventplanner.fxui.util.ControllerUtil;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -16,9 +20,8 @@ public class EventCell extends ListCell<Event> {
 
     private Text date;
     private Text name;
-    private Text type;
-    private Text location;
     private HBox content;
+    private Button eventPageBtn;
 
     /**
      * Constructor.
@@ -27,11 +30,11 @@ public class EventCell extends ListCell<Event> {
         super();
         date = new Text();
         name = new Text();
-        type = new Text();
-        location = new Text();
+        eventPageBtn = new Button("Read more");
+        
 
         VBox leftContent = new VBox(name, date);
-        VBox rightContent = new VBox(type, location);
+        VBox rightContent = new VBox(eventPageBtn);
         rightContent.setAlignment(Pos.CENTER_RIGHT);
 
         content = new HBox(leftContent, rightContent);
@@ -47,8 +50,14 @@ public class EventCell extends ListCell<Event> {
         if (event != null && !empty) {
             date.setText(event.getStartDate().toString());
             name.setText(event.getName());
-            type.setText(event.getType().toString());
-            location.setText(event.getLocation());
+
+            ListView<Event> parentListView = this.getListView();
+            User user = (User) parentListView.getUserData();
+            eventPageBtn.setOnMouseClicked((e) -> {
+                FXMLLoader loader = ControllerUtil.getFXMLLoaderWithEventPageFactory(user, event);
+                ControllerUtil.setSceneFromChild(loader, parentListView);
+            });
+            
 
             setGraphic(content);
         } else {

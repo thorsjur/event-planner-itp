@@ -79,6 +79,8 @@ public class AppController {
 
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
         allEventsList.setCellFactory((param) -> new EventCell());
+
+        allEventsList.setUserData(user);
     }
 
     /**
