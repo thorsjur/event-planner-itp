@@ -3,21 +3,24 @@ package eventplanner.fxui;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.function.Predicate;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
-
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextField;
 
 /**
  * Controller for main view.
@@ -25,13 +28,21 @@ import javafx.scene.control.SelectionMode;
 public class AppController {
 
     @FXML
-    private Button createEventButton, myEventsButton;
+    private Button createEventButton;
 
     @FXML
     private Label saveEventLabel;
 
     @FXML
     private ListView<Event> allEventsList;
+
+    @FXML
+    private TextField searchBar;
+
+    @FXML
+    private CheckBox myEventsCheckBox;
+
+    private boolean checkBoxValue = false;
 
     private User user;
 
@@ -42,11 +53,13 @@ public class AppController {
     /**
      * Reads events from file and displays events in
      * view, sorted after date and time.
+     * Also initializes the filtration search field.  
      */
     @FXML
     private void initialize() {
+        
         Collection<Event> eventCollection;
-
+        
         try {
             EventCollectionJsonReader reader = new EventCollectionJsonReader();
             eventCollection = reader.load();
@@ -55,16 +68,19 @@ public class AppController {
             System.out.println("Could not load events");
         }
 
-        ArrayList<Event> sortedEvents = new ArrayList<>(eventCollection);
-        Collections.sort(sortedEvents, ControllerUtil.getReverseDateComparator());
-        allEventsList.getItems().addAll(sortedEvents);
+        // Initializing search filtration functionality
+        SortedList<Event> sortedList = ControllerUtil.searchFiltrator(eventCollection, searchBar);
 
+        allEventsList.setItems(sortedList.filtered(e -> true));
+        
         // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
         allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
         allEventsList.setCellFactory((param) -> new EventCell());
+
+        allEventsList.setUserData(user);
     }
 
     /**
@@ -94,16 +110,35 @@ public class AppController {
     }
 
     @FXML
-    private void handleMyEventsButtonClicked() {
-        String fxmlFileName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, MyEventsController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+    private void handleMyEventsCheckBox() {
+        setChecked();
+        myEventsCheckBox.setSelected(isChecked());
+        FilteredList<Event> ev = (FilteredList<Event>) allEventsList.getItems();
+        if (isChecked()) {
+            Predicate<Event> pred = event -> {
+                return event.getUsers().stream()
+                        .anyMatch(user -> user.email().equals(this.user.email()));
+            };
+            ev.setPredicate(pred);
+        }
+        else {
+            ev.setPredicate(e -> true);
+        }
     }
+
+    private boolean isChecked() {
+        return this.checkBoxValue;
+    }
+
+    private void setChecked() {
+        this.checkBoxValue = !isChecked();
+    }
+
 
     @FXML
     private void handleCreateEventButtonClicked() {
         String fxmlFileName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+        ControllerUtil.setSceneFromChild(loader, createEventButton);
     }
 }

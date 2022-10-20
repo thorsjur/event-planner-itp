@@ -123,4 +123,21 @@ public class Event {
             throw new IllegalArgumentException("User is null");
         }
     }
+
+    /**
+     * Logistically compare this event to another object.
+     * Returns true if and only if the events are functionality equivalent.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Event)) {
+            return false;
+        }
+        Event event = (Event) o;
+        return endDate.isEqual(event.getEndDate())
+                && location.equals(event.getLocation())
+                && startDate.isEqual(event.getStartDate())
+                && name.equals(event.getName())
+                && type.equals(event.getType());
+    }
 }

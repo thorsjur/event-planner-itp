@@ -29,6 +29,9 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
         Parent parent = fxmlLoader.load();
         this.scene = new Scene(parent);
+
+        stage.setResizable(false);
+        stage.setTitle("Event Planner");
         stage.setScene(scene);
         stage.show();
     }
