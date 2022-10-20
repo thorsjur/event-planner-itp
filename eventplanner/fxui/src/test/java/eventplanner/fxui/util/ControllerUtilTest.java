@@ -19,7 +19,6 @@ import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
 import eventplanner.fxui.EventCell;
-import eventplanner.fxui.MyEventsController;
 import eventplanner.fxui.NewEventController;
 import javafx.fxml.FXMLLoader;
 
@@ -59,7 +58,6 @@ public class ControllerUtilTest {
     @Test
     public void testGetFXMLLoaderWithFactory_doesNotThrowExceptionOnKnownClass() {
         assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, AppController.class, null));
-        assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, MyEventsController.class, user));
         assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, NewEventController.class, null));
     }
 
@@ -67,22 +65,6 @@ public class ControllerUtilTest {
     public void testGetFXMLLoaderWithFactory_hasControllerFactory() {
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(path, AppController.class, user);
         assertNotNull(loader.getControllerFactory());
-    }
-
-    @Test
-    public void testGetRandomFiveDigitString_isOfLengthFive() {
-        for (int i = 0; i < 30; i++) {
-            String string = ControllerUtil.getRandomFiveDigitString();
-            assertEquals(5, string.length());
-        }
-    }
-
-    @Test
-    public void testGetRandomFiveDigitString_isOnlyDigits() {
-        for (int i = 0; i < 30; i++) {
-            String string = ControllerUtil.getRandomFiveDigitString();
-            assertTrue(string.matches("^\\d+$"));
-        }
     }
 
     @Test
