@@ -10,6 +10,8 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
+import eventplanner.json.UserCollectionJsonReader;
+import eventplanner.json.UserCollectionJsonWriter;
 
 /**
  * Static utility methods to be used in io classes.
@@ -40,6 +42,34 @@ public class IOUtil {
      */
     public static void appendEventToFile(final Event event, final File file) throws IOException {
         appendEventsToFile(List.of(event), file);
+    }
+
+        /**
+     * method that reads the current saved events, and appends the new events, then
+     * writes back to file.
+     * 
+     * @param events the collection of events to append to file
+     * @param file   the file to append to
+     * @throws IOException on I/O error
+     */
+    public static void appendUsersToFile(final Collection<User> users, final File file)
+            throws IOException {
+
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        Collection<User> loadUsers = reader.load(file);
+        loadUsers.addAll(users);
+
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(loadUsers, file);
+    }
+
+    /**
+     * Takes a single user and a specific file and appends the event to file.
+     * 
+     * @see IOUtil#appendUserToFile(User user, File file)
+     */
+    public static void appendUserToFile(final User user, final File file) throws IOException {
+        appendUsersToFile(List.of(user), file);
     }
 
     /**

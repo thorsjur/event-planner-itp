@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class CustomObjectMapper extends ObjectMapper {
 
     public CustomObjectMapper() {
+        registerModule(new UserModule());
         registerModule(new EventModule());
         enable(SerializationFeature.INDENT_OUTPUT);
     }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import eventplanner.core.EventType;
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.core.UserUtil;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -49,8 +50,12 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         List<User> usersList = new ArrayList<>();
         JsonNode usersNode = node.get("users");
         if (usersNode instanceof ArrayNode) {
-            for (JsonNode elemetNode : ((ArrayNode) usersNode)) {
-                usersList.add(new User(elemetNode.asText()));
+            for (JsonNode elementNode : ((ArrayNode) usersNode)) {
+                try {
+                    usersList.add(UserUtil.findUser(elementNode.asText()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

@@ -36,10 +36,10 @@ public class EventTest {
     @BeforeAll
     public void setup() {
         localDateTime = LocalDateTime.of(2022, 2, 22, 16, 30);
-        user1 = new User("user1");
-        user2 = new User("user2");
-        user3 = new User("user3");
-        user4 = new User("user4");
+        user1 = new User("user1@test.test", "password", true); //TODO - pass på at dette ikke skapte følgefeil.
+        user2 = new User("user2@test.test", "password", true); //TODO - pass på at dette ikke skapte følgefeil.
+        user3 = new User("user3@test.test", "password", true); //TODO - pass på at dette ikke skapte følgefeil.);
+        user4 = new User("user4@test.test", "password", true); //TODO - pass på at dette ikke skapte følgefeil.);
         users = Arrays.asList(user1, user2, user3, user4);
         event1 = new Event(EventType.CONCERT, "event1", localDateTime,
                 localDateTime.plus(3, ChronoUnit.HOURS), "loc1", null);

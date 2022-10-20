@@ -5,7 +5,6 @@ import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
 import eventplanner.fxui.EventPageController;
-import eventplanner.fxui.MyEventsController;
 import eventplanner.fxui.NewEventController;
 
 import java.io.IOException;

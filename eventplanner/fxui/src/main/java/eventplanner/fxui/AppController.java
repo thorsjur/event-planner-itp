@@ -117,7 +117,7 @@ public class AppController {
         if (isChecked()) {
             Predicate<Event> pred = event -> {
                 return event.getUsers().stream()
-                        .anyMatch(user -> user.username().equals(this.user.username()));
+                        .anyMatch(user -> user.email().equals(this.user.email()));
             };
             ev.setPredicate(pred);
         }
