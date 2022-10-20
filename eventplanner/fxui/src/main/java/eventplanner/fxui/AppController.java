@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import eventplanner.core.Event;
@@ -11,8 +12,8 @@ import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
 import eventplanner.json.EventCollectionJsonWriter;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,22 +70,10 @@ public class AppController {
             System.out.println("Could not load events");
         }
 
-        if (isChecked()) {
-            eventCollection = eventCollection.stream()
-            .filter(event -> {
-                return event.getUsers().stream()
-                        .anyMatch(user -> user.username().equals(this.user.username()));
-            })
-            .collect(Collectors.toList());
-        }
-
         // Initializing search filtration functionality
         SortedList<Event> sortedList = ControllerUtil.searchFiltrator(eventCollection, searchBar);
 
-        allEventsList.setItems(sortedList);
-
-        ArrayList<Event> sortedEvents = new ArrayList<>(allEventsList.getItems());        
-        Collections.sort(sortedEvents, ControllerUtil.getReverseDateComparator());
+        allEventsList.setItems(sortedList.filtered(e -> true));
         
         // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
@@ -124,7 +113,17 @@ public class AppController {
     private void handleMyEventsCheckBox() {
         setChecked();
         myEventsCheckBox.setSelected(isChecked());
-        initialize();
+        FilteredList<Event> ev = (FilteredList<Event>) allEventsList.getItems();
+        if (isChecked()) {
+            Predicate<Event> pred = event -> {
+                return event.getUsers().stream()
+                        .anyMatch(user -> user.username().equals(this.user.username()));
+            };
+            ev.setPredicate(pred);
+        }
+        else {
+            ev.setPredicate(e -> true);
+        }
     }
 
     private boolean isChecked() {
@@ -132,7 +131,7 @@ public class AppController {
     }
 
     private void setChecked() {
-        this.checkBoxValue = !checkBoxValue;
+        this.checkBoxValue = !isChecked();
     }
 
 
