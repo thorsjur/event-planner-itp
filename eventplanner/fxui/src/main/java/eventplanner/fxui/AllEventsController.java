@@ -9,7 +9,8 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
+import eventplanner.json.util.IOUtil;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -25,7 +26,7 @@ import javafx.scene.control.TextField;
 /**
  * Controller for main view.
  */
-public class AppController {
+public class AllEventsController {
 
     @FXML
     private Button createEventButton;
@@ -42,11 +43,11 @@ public class AppController {
     @FXML
     private CheckBox myEventsCheckBox;
 
-    private boolean checkBoxValue = false;
-
+    private ObservableList<Event> observableList;
+    private boolean checkBoxIsChecked = false;
     private User user;
 
-    public AppController(User user) {
+    public AllEventsController(User user) {
         this.user = user;
     }
 
@@ -58,20 +59,14 @@ public class AppController {
     @FXML
     private void initialize() {
         
-        Collection<Event> eventCollection;
-        
-        try {
-            EventCollectionJsonReader reader = new EventCollectionJsonReader();
-            eventCollection = reader.load();
-        } catch (IOException e) {
-            eventCollection = new ArrayList<>();
-            System.out.println("Could not load events");
-        }
+        observableList = loadEvents();
 
         // Initializing search filtration functionality
-        SortedList<Event> sortedList = ControllerUtil.searchFiltrator(eventCollection, searchBar);
+        FilteredList<Event> filteredList = ControllerUtil.searchFiltrator(observableList, searchBar);
+        SortedList<Event> sortedList = filteredList.sorted(ControllerUtil.getReverseDateComparator());
+        FilteredList<Event> myEventsList = sortedList.filtered(e -> true);
 
-        allEventsList.setItems(sortedList.filtered(e -> true));
+        allEventsList.setItems(myEventsList);
         
         // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
@@ -96,14 +91,14 @@ public class AppController {
 
             selectedEvents.forEach(event -> event.addUser(user));
 
-            EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
             try {
-                writer.save(allEventsList.getItems());
-                saveEventLabel.setText("Events saved \n to 'My events'");
+                IOUtil.addUserToEvents(selectedEvents, user, null);
+                saveEventLabel.setText("Registration successful");
             } catch (IOException e) {
-                System.out.println("Could not save events ...");
+                System.out.println("Could not register to events ...");
                 return;
             }
+
         } else {
             saveEventLabel.setText("No events chosen");
         }
@@ -111,29 +106,44 @@ public class AppController {
 
     @FXML
     private void handleMyEventsCheckBox() {
-        setChecked();
+        toggleIsChecked();
         myEventsCheckBox.setSelected(isChecked());
-        FilteredList<Event> ev = (FilteredList<Event>) allEventsList.getItems();
-        if (isChecked()) {
-            Predicate<Event> pred = event -> {
+
+        Predicate<Event> pred;
+        if (checkBoxIsChecked) {
+            pred = event -> {
                 return event.getUsers().stream()
                         .anyMatch(user -> user.email().equals(this.user.email()));
             };
-            ev.setPredicate(pred);
+        } else {
+            pred = event -> true;
         }
-        else {
-            ev.setPredicate(e -> true);
-        }
+
+        FilteredList<Event> ev = (FilteredList<Event>) allEventsList.getItems();
+        ev.setPredicate(pred);
     }
 
     private boolean isChecked() {
-        return this.checkBoxValue;
+        return checkBoxIsChecked;
     }
 
-    private void setChecked() {
-        this.checkBoxValue = !isChecked();
+    private void toggleIsChecked() {
+        this.checkBoxIsChecked = !checkBoxIsChecked;
     }
 
+    private ObservableList<Event> loadEvents() {
+        Collection<Event> eventCollection;
+        
+        try {
+            EventCollectionJsonReader reader = new EventCollectionJsonReader();
+            eventCollection = reader.load();
+        } catch (IOException e) {
+            eventCollection = new ArrayList<>();
+            System.out.println("Could not load events");
+        }
+
+        return FXCollections.observableArrayList(eventCollection);
+    }
 
     @FXML
     private void handleCreateEventButtonClicked() {

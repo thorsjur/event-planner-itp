@@ -1,5 +1,10 @@
 package eventplanner.json;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -7,15 +12,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import eventplanner.core.EventType;
 import eventplanner.core.Event;
+import eventplanner.core.EventType;
 import eventplanner.core.User;
-import eventplanner.core.UserUtil;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import eventplanner.json.util.IOUtil;
 
 /**
  * A custom deserializer to deserialize events from json.
@@ -49,14 +49,13 @@ public class EventDeserializer extends JsonDeserializer<Event> {
 
         List<User> usersList = new ArrayList<>();
         JsonNode usersNode = node.get("users");
+
         if (usersNode instanceof ArrayNode) {
-            for (JsonNode elementNode : ((ArrayNode) usersNode)) {
-                try {
-                    usersList.add(UserUtil.findUser(elementNode.asText()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            List<String> emails = new ArrayList<>();
+            ((ArrayNode) usersNode).forEach(element -> emails.add(element.asText()));
+            try {
+                usersList = IOUtil.loadUsersMatchingEmail(emails, null);
+            } catch (IOException e) {}
         }
 
         return new Event(eventType, name, startDateTime, endDateTime, location, usersList);

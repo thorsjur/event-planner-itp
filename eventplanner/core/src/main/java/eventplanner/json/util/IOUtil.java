@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
@@ -44,7 +45,7 @@ public class IOUtil {
         appendEventsToFile(List.of(event), file);
     }
 
-        /**
+    /**
      * method that reads the current saved events, and appends the new events, then
      * writes back to file.
      * 
@@ -83,6 +84,36 @@ public class IOUtil {
      */
     public static boolean hasFileExtension(final File file, String fileExtension) {
         return file.getName().endsWith(fileExtension);
+    }
+
+    /**
+     * Loads users from file, matching the provided email addresses.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param emails the collection of emails
+     * @param file   the provided file
+     * @return       list of users matching email addresses
+     * @throws IOException on I/O error
+     */
+    public static List<User> loadUsersMatchingEmail(final List<String> emails, final File file) throws IOException {
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        return reader.load(file).stream()
+                .filter(user -> emails.contains(user.email()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Loads user from file, matching the provided email addresses.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param email  the email to match
+     * @param file   the provided file
+     * @return       the user matching the email address or null if no such user exists
+     * @throws IOException on I/O error
+     */
+    public static User loadUserMatchingEmail(final String email, final File file) throws IOException {
+        List<User> users = loadUsersMatchingEmail(List.of(email), file);
+        return users.isEmpty() ? null : users.get(0);
     }
 
     /**

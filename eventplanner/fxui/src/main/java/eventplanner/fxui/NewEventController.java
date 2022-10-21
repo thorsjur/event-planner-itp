@@ -170,7 +170,7 @@ public class NewEventController {
     @FXML
     private void handleEventsButtonClicked() {
         String fxmlFileName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
         ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 
