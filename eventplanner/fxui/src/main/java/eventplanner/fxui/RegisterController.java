@@ -77,6 +77,7 @@ public class RegisterController {
     @FXML
     private void handleCreateUser() {
         User newUser = new User(inputEmail.getText(), inputPassword.getText(), checkIfAbove18(inputBirthDate.getValue()));
+        
         if (createUser(newUser)) {
             String fxmlFileName = "AllEvents.fxml";
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, newUser);

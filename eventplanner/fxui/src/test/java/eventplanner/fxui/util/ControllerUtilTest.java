@@ -25,7 +25,7 @@ import javafx.fxml.FXMLLoader;
 public class ControllerUtilTest {
 
     private boolean flag = false;
-    private final User user = new User("email", "password", true); //TODO - sjekk om dette ble korrekt
+    private final User user = new User("email@test.co.uk", "password", true); //TODO - sjekk om dette ble korrekt
     private final String path = "path";
     
     @Test

@@ -110,8 +110,6 @@ public class ControllerUtil {
         return param -> classMap.get(cls);
     }
     
-    
-
     /**
      * Returns a ChangeListener based on a specific validation.
      * Runs actionIfValid if supplier validation return true,

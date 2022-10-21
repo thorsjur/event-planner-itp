@@ -20,8 +20,8 @@ import eventplanner.core.EventType;
 public class EventDeserializerTest {
     
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    Event event;
-    Event event2;
+    private Event event;
+    private Event event2;
     
     @BeforeEach
     public void setup() {

@@ -5,17 +5,16 @@ import java.io.IOException;
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.fxui.util.EventUtil;
 import eventplanner.json.util.IOUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.text.Text;
 
 public class EventPageController {
@@ -39,7 +38,7 @@ public class EventPageController {
     public EventPageController(User user, Event event) {
         this.user = user;
         this.event = event;
-        this.isRegistered = EventUtil.isUserRegistered(event, user);
+        this.isRegistered = event.getUsers().contains(user);
     }
 
     @FXML

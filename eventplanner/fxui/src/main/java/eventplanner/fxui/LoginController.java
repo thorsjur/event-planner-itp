@@ -1,8 +1,11 @@
 package eventplanner.fxui;
 
+import java.io.IOException;
+
 import eventplanner.core.User;
-import eventplanner.core.UserUtil;
+import eventplanner.core.util.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.util.IOUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +36,7 @@ public class LoginController {
     private Boolean validateUser(String email, String password) {
 
         try {
-            User checkUser = UserUtil.findUser(email);
+            User checkUser = IOUtil.loadUserMatchingEmail(email, null);
             if (checkUser.password().equals(UserUtil.passwordHash(password))) {
                 System.out.println("Found user, correct password.");
                return true;
@@ -56,7 +59,14 @@ public class LoginController {
             errorOutput.setText("Wrong username or password; "+ Integer.toString(counter));
         } else if (validateUser(inputEmail.getText(), inputPassword.getText())) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, UserUtil.findUser(inputEmail.getText()));
+            User user;
+            try {
+                user = IOUtil.loadUserMatchingEmail(inputEmail.getText(), null);
+            } catch (IOException e) {
+                System.out.println("Something went wrong loading user from file");
+                return;
+            }
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
             ControllerUtil.setSceneFromChild(loader, btnLogin);
         } else {
             this.counter ++;

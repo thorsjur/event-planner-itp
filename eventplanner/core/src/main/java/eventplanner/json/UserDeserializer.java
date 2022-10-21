@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import eventplanner.core.User;
-import eventplanner.core.UserUtil;
+import eventplanner.core.util.UserUtil;
 
 import java.io.IOException;
 
