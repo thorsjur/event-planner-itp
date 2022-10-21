@@ -126,6 +126,7 @@ public class Event {
 
     /**
      * Logistically compare this event to another object.
+     * Does not compare registered users.
      * Returns true if and only if the events are functionality equivalent.
      */
     @Override
@@ -138,7 +139,6 @@ public class Event {
                 && location.equals(event.getLocation())
                 && startDate.isEqual(event.getStartDate())
                 && name.equals(event.getName())
-                && type.equals(event.getType())
-                && users.equals(event.getUsers());
+                && type.equals(event.getType());
     }
 }

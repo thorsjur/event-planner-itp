@@ -1,24 +1,23 @@
 package eventplanner.fxui.util;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
 import eventplanner.fxui.AppController;
 import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.NewEventController;
-
-import java.io.IOException;
-import java.util.function.Supplier;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
-
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -42,7 +41,6 @@ public class ControllerUtil {
             child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
             System.out.println("IOException occurred while loading scene.");
-            e.printStackTrace();
         }
     }
 
@@ -160,51 +158,48 @@ public class ControllerUtil {
    /**
     * Takes events, and filters out the ones
     * that don't match with the value in the searchbar. 
-    * Returns a sortedList of the ones that match.
+    * Returns a sortedList of the matching events.
     *
     * @param eventCollection    Collection of events
     * @param searchBar          TextField with input that gets observed
     * @return SortedList of matching events
     */
-    public static SortedList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
+    public static FilteredList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
         
-        ObservableList<Event> observableEventList = FXCollections.observableArrayList();
-
-        observableEventList.addAll(eventCollection);
-
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventCollection);
         FilteredList<Event> filteredEvents = new FilteredList<>(observableEventList, b -> true);
         
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredEvents.setPredicate(event -> {
 
-                // If no search value then all events will be displayed
-                if(newValue.isEmpty() || newValue.isBlank() || newValue == null) {
+                // If no search value is entered then all events will be displayed
+                if(newValue == null || newValue.isBlank()) {
                     return true;
                 }
 
                 String searchKeyword = newValue.toLowerCase();
+                Predicate<String> matchPredicate = str -> str.toLowerCase().indexOf(searchKeyword) > -1;
 
                 // Found eventname match
-                if (event.getName().toLowerCase().indexOf(searchKeyword) > -1) {
+                if (matchPredicate.test(event.getName())) {
                     return true;
                 }
+
                 // Found type match
-                else if (event.getType().toString().toLowerCase().indexOf(searchKeyword) > -1) {
+                if (matchPredicate.test(event.getType().toString())) {
                     return true;
                 }
+
                 // Found location match
-                else if (event.getLocation().toLowerCase().indexOf(searchKeyword) > -1) {
+                if (matchPredicate.test(event.getLocation())) {
                     return true;
                 }
-                else {
-                    return false;
-                }
+
+                return false;
             });
         });
 
-        SortedList<Event> sortedList = new SortedList<>(filteredEvents);
-
-        return new SortedList<Event>(sortedList);
+        return filteredEvents;
     }
 
 }

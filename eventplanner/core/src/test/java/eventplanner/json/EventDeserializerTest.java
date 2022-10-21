@@ -21,7 +21,7 @@ public class EventDeserializerTest {
     
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
     private Event event;
-    private Event event2;
+    // private Event event2;
     
     @BeforeEach
     public void setup() {
@@ -33,15 +33,15 @@ public class EventDeserializerTest {
         users.add(new User("thor@test.test", "password", true)); //TODO - pass på følgefeil
         event = new Event(EventType.PARTY, "Thors bursdag", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users);
 
-        List<User> users2 = new ArrayList<>();
-        LocalDateTime localDateTime2 = LocalDateTime.of(2022, 8, 20, 16, 20);
-        event2 = new Event(EventType.PARTY, "LAN", localDateTime2, localDateTime2.plus(3, ChronoUnit.HOURS), "Norway", users2);
+        // List<User> users2 = new ArrayList<>();
+        // LocalDateTime localDateTime2 = LocalDateTime.of(2022, 8, 20, 16, 20);
+        // event2 = new Event(EventType.PARTY, "LAN", localDateTime2, localDateTime2.plus(3, ChronoUnit.HOURS), "Norway", users2);
     }
 
     @Test
     public void testEventDeserialization() throws JsonMappingException, JsonProcessingException {
         Event result = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event), Event.class);
-        Event result2 = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event2), Event.class);
+        // Event result2 = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event2), Event.class);
         assertEquals(event.getType(), result.getType());
         assertEquals(event.getName(), result.getName());
         assertEquals(event.getLocation(), result.getLocation());

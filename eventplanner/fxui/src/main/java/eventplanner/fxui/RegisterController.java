@@ -3,7 +3,6 @@ package eventplanner.fxui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.regex.Pattern;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
@@ -39,52 +38,44 @@ public class RegisterController {
     @FXML
     private Label errorOutput;
 
-    @FXML
-    public void initialize() {
+    private static boolean isOlderThan18(LocalDate localDate) {
+        return Period.between(localDate, LocalDate.now()).getYears() >= 18;
     }
 
-    private static boolean validateRegister(User user) {
-        
-        if(!Pattern.compile("^(.+)@(\\S+)$").matcher(user.email()).matches()) {
-            return false;
-        } else if(user.password() == null) {
-            return false;
-        };
-
-        return true;
-    }
-
-    private boolean checkIfAbove18(LocalDate localDate) {
-        return (Period.between(localDate, LocalDate.now()).getYears() > 17);
-    }
-
-    private Boolean createUser(User user) {
-        boolean saveflag = false;
-        if (validateRegister(user)) {
-            try {
-                IOUtil.appendUserToFile(user, null);
-                saveflag = true;
-            } catch (IOException e) {
-                System.out.println("Something went wrong while saving\nCan't add user to file.");
-                e.printStackTrace();
-            }            
-        } else {
-            System.out.println("User not valid");
+    private static User createUser(String email, String password, boolean isAbove18) {
+        User user;
+        try {
+            user = new User(email, password, isAbove18);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return null;
         }
-        return saveflag;
+
+        try {
+            IOUtil.appendUserToFile(user, null);
+        } catch (IOException e) {
+            System.out.println("Something went wrong while saving\nCan't add user to file.");
+            return null;
+        }
+
+        return user;
     }
 
     @FXML
     private void handleCreateUser() {
-        User newUser = new User(inputEmail.getText(), inputPassword.getText(), checkIfAbove18(inputBirthDate.getValue()));
-        
-        if (createUser(newUser)) {
+        LocalDate date = inputBirthDate.getValue();
+        if (date == null) {
+            errorOutput.setText("Date is not set. (" + Integer.toString(++counter) + ")");
+            return;
+        }
+
+        User user = createUser(inputEmail.getText(), inputPassword.getText(), isOlderThan18(date));
+        if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, newUser);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
             ControllerUtil.setSceneFromChild(loader, btnCreateUser);
         } else {
-            this.counter ++;
-            errorOutput.setText("User already exists or invalid input; " + Integer.toString(this.counter));
+            errorOutput.setText("User already exists or invalid input. (" + Integer.toString(++counter) + ")");
         }
     }
 

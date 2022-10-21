@@ -33,32 +33,9 @@ public class LoginController {
     @FXML
     private Label errorOutput;
 
-    private Boolean validateUser(String email, String password) {
-
-        try {
-            User checkUser = IOUtil.loadUserMatchingEmail(email, null);
-            if (checkUser.password().equals(UserUtil.passwordHash(password))) {
-                System.out.println("Found user, correct password.");
-               return true;
-            } else {
-                System.out.println("Found user, wrong password.");
-                return false;
-            }
-        } catch (Exception e) {
-            System.out.println("Could not find user.");
-            return false;
-        }
-    }
-
     @FXML
     private void handleLogin() {
-
-        if (inputPassword.getText().isBlank() || inputEmail.getText().isBlank()) {
-            System.out.println("Input password or email is null.");
-            counter++;
-            errorOutput.setText("Wrong username or password; "+ Integer.toString(counter));
-        } else if (validateUser(inputEmail.getText(), inputPassword.getText())) {
-            String fxmlFileName = "AllEvents.fxml";
+        if (isValidLogin(inputEmail.getText(), inputPassword.getText())) {
             User user;
             try {
                 user = IOUtil.loadUserMatchingEmail(inputEmail.getText(), null);
@@ -66,12 +43,36 @@ public class LoginController {
                 System.out.println("Something went wrong loading user from file");
                 return;
             }
+
+            String fxmlFileName = "AllEvents.fxml";
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
             ControllerUtil.setSceneFromChild(loader, btnLogin);
         } else {
-            this.counter ++;
-            errorOutput.setText("Wrong username or password; " + Integer.toString(this.counter));
+            errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
         }
+    }
+
+    private Boolean isValidLogin(String email, String password) {
+        User user;
+        try {
+            user = IOUtil.loadUserMatchingEmail(email, null);
+        } catch (IOException e) {
+            System.out.println("Could not load users");
+            return false;
+        }
+        if (user == null) {
+            System.out.println("User not found");
+            return false;
+        }
+
+        if (user.password().equals(UserUtil.passwordHash(password))) {
+            System.out.println("Found user, correct password.");
+           return true;
+        } else {
+            System.out.println("Found user, wrong password.");
+        }
+
+        return false;
     }
 
     @FXML

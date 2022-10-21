@@ -6,12 +6,14 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.json.util.IOUtil;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -82,17 +84,19 @@ public class EventPageController {
     }
 
     private void updateRegisterButton() {
+        EventHandler<MouseEvent> handler;
         if (!isRegistered) {
-            registerButton.setOnMouseClicked((e) -> {
+            handler = (e) -> {
                 handleRegisterEventBtnClicked();
                 registerButton.setText("Deregister");
-            });
+            };
         } else {
-            registerButton.setOnMouseClicked((e) -> {
+            handler = (e) -> {
                 handleDeregisterEventBtnClicked();
                 registerButton.setText("Register");
-            });
+            };
         }
+        registerButton.setOnMouseClicked(handler);
     }
 
     private void handleRegisterEventBtnClicked() {

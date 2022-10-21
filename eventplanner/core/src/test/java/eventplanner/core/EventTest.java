@@ -1,9 +1,9 @@
 package eventplanner.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -113,7 +113,6 @@ public class EventTest {
 		assertEquals(ev1.getStartDate(), ev2.getStartDate());
 		assertEquals(ev1.getEndDate(), ev2.getEndDate());
 		assertEquals(ev1.getLocation(), ev2.getLocation());
-		assertEquals(ev1.getUsers(), ev2.getUsers());
 	}
 
 	private static EventType getRandomEventType() {
