@@ -22,31 +22,31 @@ public class LoginController {
     private int counter = 0;
 
     @FXML
-    private Button btnExit, btnLogin, btnRegisterPage;
+    private Button exitButton, loginButton, registerUserButton;
 
     @FXML
-    private TextField inputEmail;
+    private TextField emailField;
 
     @FXML
-    private PasswordField inputPassword;
+    private PasswordField passwordField;
 
     @FXML
     private Label errorOutput;
 
     @FXML
     private void handleLogin() {
-        if (isValidLogin(inputEmail.getText(), inputPassword.getText())) {
+        if (isValidLogin(emailField.getText(), passwordField.getText())) {
             User user;
             try {
-                user = IOUtil.loadUserMatchingEmail(inputEmail.getText(), null);
+                user = IOUtil.loadUserMatchingEmail(emailField.getText(), null);
             } catch (IOException e) {
                 System.out.println("Something went wrong loading user from file");
                 return;
             }
 
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
-            ControllerUtil.setSceneFromChild(loader, btnLogin);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+            ControllerUtil.setSceneFromChild(loader, loginButton);
         } else {
             errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
         }
@@ -76,10 +76,10 @@ public class LoginController {
     }
 
     @FXML
-    private void handleBtnRegisterPage() {
+    private void handleRegisterUserButtonClicked() {
         String fxmlFileName = "RegisterScreen.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
-        ControllerUtil.setSceneFromChild(loader, btnRegisterPage);
+        ControllerUtil.setSceneFromChild(loader, registerUserButton);
     }
 
     @FXML

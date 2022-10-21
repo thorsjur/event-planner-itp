@@ -17,7 +17,7 @@ import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
-import eventplanner.fxui.AppController;
+import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.EventCell;
 import eventplanner.fxui.NewEventController;
 import javafx.fxml.FXMLLoader;
@@ -57,13 +57,13 @@ public class ControllerUtilTest {
 
     @Test
     public void testGetFXMLLoaderWithFactory_doesNotThrowExceptionOnKnownClass() {
-        assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, AppController.class, null));
+        assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, AllEventsController.class, null));
         assertDoesNotThrow(() -> ControllerUtil.getFXMLLoaderWithFactory(path, NewEventController.class, null));
     }
 
     @Test
     public void testGetFXMLLoaderWithFactory_hasControllerFactory() {
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(path, AppController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(path, AllEventsController.class, user);
         assertNotNull(loader.getControllerFactory());
     }
 

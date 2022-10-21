@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 /**
  * Controller for main view.
  */
-public class AppController {
+public class AllEventsController {
 
     @FXML
     private Button createEventButton;
@@ -47,7 +47,7 @@ public class AppController {
     private boolean checkBoxIsChecked = false;
     private User user;
 
-    public AppController(User user) {
+    public AllEventsController(User user) {
         this.user = user;
     }
 

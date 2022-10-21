@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
-import eventplanner.fxui.AppController;
+import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.NewEventController;
 import javafx.beans.value.ChangeListener;
@@ -100,7 +100,7 @@ public class ControllerUtil {
      */
     private static <T> Callback<Class<?>, Object> getControllerFactory(Class<T> cls, User user) {
         final Map<Class<?>, Object> classMap = Map.of(
-                AppController.class, new AppController(user),
+                AllEventsController.class, new AllEventsController(user),
                 NewEventController.class, new NewEventController(user));
         if (!classMap.containsKey(cls)) {
             throw new IllegalArgumentException("Invalid class provided");

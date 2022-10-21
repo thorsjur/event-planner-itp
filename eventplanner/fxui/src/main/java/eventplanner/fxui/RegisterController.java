@@ -24,16 +24,16 @@ public class RegisterController {
     private int counter = 0;
 
     @FXML
-    private Button btnExit, btnCreateUser, btnLoginPage;
+    private Button exitButton, createUserButton, goToLoginButton;
 
     @FXML
-    private TextField inputEmail;
+    private TextField emailField;
 
     @FXML
-    private PasswordField inputPassword;
+    private PasswordField passwordField;
 
     @FXML
-    private DatePicker inputBirthDate;
+    private DatePicker birthDatePicker;
 
     @FXML
     private Label errorOutput;
@@ -63,27 +63,27 @@ public class RegisterController {
 
     @FXML
     private void handleCreateUser() {
-        LocalDate date = inputBirthDate.getValue();
+        LocalDate date = birthDatePicker.getValue();
         if (date == null) {
             errorOutput.setText("Date is not set. (" + Integer.toString(++counter) + ")");
             return;
         }
 
-        User user = createUser(inputEmail.getText(), inputPassword.getText(), isOlderThan18(date));
+        User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(date));
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
-            ControllerUtil.setSceneFromChild(loader, btnCreateUser);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+            ControllerUtil.setSceneFromChild(loader, createUserButton);
         } else {
             errorOutput.setText("User already exists or invalid input. (" + Integer.toString(++counter) + ")");
         }
     }
 
     @FXML
-    private void handleBtnLoginPage() {
+    private void handleGoToLoginPageButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
-        ControllerUtil.setSceneFromChild(loader, btnLoginPage);
+        ControllerUtil.setSceneFromChild(loader, goToLoginButton);
     }
 
     @FXML

@@ -54,7 +54,7 @@ public class EventPageController {
 
     @FXML
     private void handleReturnBtnClicked() {
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AppController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AllEventsController.class, user);
         ControllerUtil.setSceneFromChild(loader, returnButton);
     }
 
@@ -143,8 +143,8 @@ public class EventPageController {
         // nameLabel, authorLabel, startTimeLabel, endTimeLabel, locationLabel, regUsersLabel;
         nameLabel.setText(event.getName());
         authorLabel.setText("TODO"); // TODO
-        startTimeLabel.setText(event.getStartDate().toString());
-        endTimeLabel.setText(event.getEndDate().toString());
+        startTimeLabel.setText(event.getStartDate().toString().replace("T", " "));
+        endTimeLabel.setText(event.getEndDate().toString().replace("T", " "));
         locationLabel.setText(event.getLocation());
         updateRegisteredUsers(event.getUsers().size());
     }
