@@ -29,6 +29,7 @@
             <TextField fx:id="searchBar" layoutX="463.0" layoutY="135.0" prefHeight="26.0" prefWidth="171.0" promptText="type here ..." />
             <Label layoutX="463.0" layoutY="92.0" prefHeight="35.0" prefWidth="124.0" text="Search:" />
             <CheckBox fx:id="myEventsCheckBox" layoutX="508.0" layoutY="191.0" mnemonicParsing="false" onAction="#handleMyEventsCheckBox" text="Only my Events" />
+            <Button fx:id="logOutButton" layoutX="573.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLogOutButtonClicked" text="Log Out" />
       </children>
     </AnchorPane>
   </children>
