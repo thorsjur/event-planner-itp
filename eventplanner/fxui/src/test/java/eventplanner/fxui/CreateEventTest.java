@@ -1,6 +1,6 @@
 package eventplanner.fxui;
-/* 
-import static org.junit.Assert.assertTrue;
+
+/*import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -24,11 +24,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage; */
+import javafx.stage.Stage;
 
-public class CreateEventTest/*  extends ApplicationTest  */{
+public class CreateEventTest  extends ApplicationTest  {
 
-    /* @BeforeAll
+    @BeforeAll
     public static void setupHeadless() {
         App.supportHeadless();
     }
@@ -43,7 +43,7 @@ public class CreateEventTest/*  extends ApplicationTest  */{
 
     @Test
     public void createValidEvent() {
-        clickOn("#btnConfirm");
+        clickOn("#loginButton");
         clickOn("#createEventButton");
 
         ComboBox<String> cb = lookup("#typeComboBox").queryComboBox();
@@ -102,5 +102,5 @@ public class CreateEventTest/*  extends ApplicationTest  */{
         } catch (IOException e) {
             System.out.println("Error occurred saving events ...");
         }
-    } */
-}
+    }
+}*/
