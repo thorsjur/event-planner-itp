@@ -1,5 +1,6 @@
 package eventplanner.fxui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,7 +30,7 @@ import javafx.scene.control.TextField;
 public class AllEventsController {
 
     @FXML
-    private Button createEventButton, logOutButton;
+    private Button createEventButton, saveEventButton, logOutButton;
 
     @FXML
     private Label saveEventLabel;
@@ -54,20 +55,22 @@ public class AllEventsController {
     /**
      * Reads events from file and displays events in
      * view, sorted after date and time.
-     * Also initializes the filtration search field.  
+     * Also initializes the filtration search field.
      */
     @FXML
     private void initialize() {
-        
+
         observableList = loadEvents();
 
-        // Initializing search filtration functionality
+        // Using a series of transformations to filter using the search field, then
+        // sorting using a comparator. The final FilteredList is used to filter by
+        // events you're either registered to or not (see UpdateListViewPredicate()).
         FilteredList<Event> filteredList = ControllerUtil.searchFiltrator(observableList, searchBar);
         SortedList<Event> sortedList = filteredList.sorted(ControllerUtil.getReverseDateComparator());
         FilteredList<Event> myEventsList = sortedList.filtered(e -> true);
 
         allEventsList.setItems(myEventsList);
-        
+
         // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
         allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -80,7 +83,7 @@ public class AllEventsController {
 
     /**
      * Adds user to selected events' lists of
-     * users and writes canges to file.
+     * users and writes changes to file.
      */
     @FXML
     private void handleSaveEventButtonClicked() {
@@ -89,15 +92,7 @@ public class AllEventsController {
                     .getSelectionModel()
                     .getSelectedItems();
 
-            selectedEvents.forEach(event -> event.addUser(user));
-
-            try {
-                IOUtil.addUserToEvents(selectedEvents, user, null);
-                saveEventLabel.setText("Registration successful");
-            } catch (IOException e) {
-                System.out.println("Could not register to events ...");
-                return;
-            }
+            handleRegistrationOrDeregistration(selectedEvents, null);
 
         } else {
             saveEventLabel.setText("No events chosen");
@@ -108,7 +103,42 @@ public class AllEventsController {
     private void handleMyEventsCheckBox() {
         toggleIsChecked();
         myEventsCheckBox.setSelected(isChecked());
+        updateRegistrationLabel();
+        updateListViewPredicate();
+    }
 
+    private void handleRegistrationOrDeregistration(ObservableList<Event> selectedEvents, File file) {
+        if (checkBoxIsChecked) {
+            deregisterSelectedUsers(selectedEvents, file);
+        } else {
+            registerSelectedUsers(selectedEvents, file);
+        }
+        updateListViewPredicate();
+    }
+
+    private void deregisterSelectedUsers(ObservableList<Event> selectedEvents, File file) {
+        selectedEvents.forEach(event -> event.removeUser(user));
+
+        try {
+            IOUtil.removeUserFromEvents(selectedEvents, user, file);
+            saveEventLabel.setText("Deregistration successful");
+        } catch (IOException e) {
+            System.out.println("Could not deregister from events ...");
+        }
+    }
+
+    private void registerSelectedUsers(ObservableList<Event> selectedEvents, File file) {
+        selectedEvents.forEach(event -> event.addUser(user));
+
+        try {
+            IOUtil.addUserToEvents(selectedEvents, user, file);
+            saveEventLabel.setText("Registration successful");
+        } catch (IOException e) {
+            System.out.println("Could not register to events ...");
+        }
+    }
+
+    private void updateListViewPredicate() {
         Predicate<Event> pred;
         if (checkBoxIsChecked) {
             pred = event -> {
@@ -116,11 +146,16 @@ public class AllEventsController {
                         .anyMatch(user -> user.email().equals(this.user.email()));
             };
         } else {
+            // shows all events
             pred = event -> true;
         }
 
-        FilteredList<Event> ev = (FilteredList<Event>) allEventsList.getItems();
-        ev.setPredicate(pred);
+        FilteredList<Event> underlyingFilteredList = (FilteredList<Event>) allEventsList.getItems();
+        underlyingFilteredList.setPredicate(pred);
+    }
+
+    private void updateRegistrationLabel() {
+        saveEventButton.setText(checkBoxIsChecked ? "Deregister" : "Register");
     }
 
     private boolean isChecked() {
@@ -133,7 +168,7 @@ public class AllEventsController {
 
     private ObservableList<Event> loadEvents() {
         Collection<Event> eventCollection;
-        
+
         try {
             EventCollectionJsonReader reader = new EventCollectionJsonReader();
             eventCollection = reader.load();
