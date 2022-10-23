@@ -31,7 +31,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button eventsButton;
+    private Button eventsButton, logOutButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -172,6 +172,13 @@ public class NewEventController {
         String fxmlFileName = "AllEvents.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
         ControllerUtil.setSceneFromChild(loader, eventsButton);
+    }
+
+    @FXML
+    private void handleLogOutButtonClicked() {
+        String fxmlFileName = "LoginScreen.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);   
     }
 
     private static final String COLOUR_VALID = "#228C22";

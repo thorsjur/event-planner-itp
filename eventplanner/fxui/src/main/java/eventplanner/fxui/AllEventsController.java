@@ -29,7 +29,7 @@ import javafx.scene.control.TextField;
 public class AllEventsController {
 
     @FXML
-    private Button createEventButton;
+    private Button createEventButton, logOutButton;
 
     @FXML
     private Label saveEventLabel;
@@ -150,5 +150,12 @@ public class AllEventsController {
         String fxmlFileName = "CreateEvent.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
         ControllerUtil.setSceneFromChild(loader, createEventButton);
+    }
+
+    @FXML
+    private void handleLogOutButtonClicked() {
+        String fxmlFileName = "LoginScreen.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);   
     }
 }
