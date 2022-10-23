@@ -4,46 +4,50 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import eventplanner.core.Event;
-import eventplanner.core.EventType;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class EventCollectionJsonWriterTest {
 
-    Event event;
+    public static final String FILE_PATH = "src/test/java/resources/data/event.json";
+    private static final File FILE = new File(FILE_PATH);
+
+    private Collection<Event> actualEvents;
+
+    // Gets read before every test, assuming EventCollectionJsonReader works as
+    // expected
+    private final Collection<Event> expectedEvents = new ArrayList<>();
+
+    @BeforeAll
+    public void setup() throws IOException {
+        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+        expectedEvents.addAll(IOTestUtil.getPseudoRandomEvents(15));
+        writer.save(expectedEvents, FILE);
+    }
 
     @BeforeEach
-    public void setup() throws IOException {
-        LocalDateTime localDateTime = LocalDateTime.of(1990, 1, 1, 01, 01);
-        event = new Event(EventType.CONCERT, "randomName" + System.currentTimeMillis(), localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Festningen", new ArrayList<>());
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        Collection<Event> eventCollection = new ArrayList<Event>(List.of(event));
-        writer.save(eventCollection, new File("src/main/java/resources/data/event.json"));
+    public void beforeEach() throws IOException {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        actualEvents = reader.load(FILE);
     }
 
     @Test
-    public void testJsonWriterAndReader() throws IOException {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        assertTrue( () -> {
-            try {
-                for (Event event : reader.load(new File("src/main/java/resources/data/event.json"))) {
-                    if (event.getName().equals(this.event.getName())) {
-                        return true;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        });;
+    public void testSave_retainsTheEventData() {
+        assertTrue(
+                expectedEvents.stream()
+                        .allMatch(expected -> {
+                            return actualEvents.stream()
+                                    .anyMatch(actual -> IOTestUtil.compareEventsUsersExcluded(actual, expected));
+                        }));
     }
-    
+
 }

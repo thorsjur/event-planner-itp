@@ -3,7 +3,6 @@ module eventplanner.core {
     
     exports eventplanner.core;
     exports eventplanner.json;
-    exports eventplanner.core.util;
     exports eventplanner.json.util;
-
+    exports eventplanner.core.util;
 }

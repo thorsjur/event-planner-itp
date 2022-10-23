@@ -32,7 +32,6 @@ public class EventCell extends ListCell<Event> {
         name = new Text();
         eventPageBtn = new Button("Read more");
         
-
         VBox leftContent = new VBox(name, date);
         VBox rightContent = new VBox(eventPageBtn);
         rightContent.setAlignment(Pos.CENTER_RIGHT);
@@ -41,14 +40,13 @@ public class EventCell extends ListCell<Event> {
 
         HBox.setHgrow(leftContent, Priority.ALWAYS);
         HBox.setHgrow(rightContent, Priority.ALWAYS);
-
     }
 
     @Override
     protected void updateItem(Event event, boolean empty) {
         super.updateItem(event, empty);
         if (event != null && !empty) {
-            date.setText(event.getStartDate().toString());
+            date.setText(event.getStartDate().toString().replace("T", " "));
             name.setText(event.getName());
 
             ListView<Event> parentListView = this.getListView();
@@ -57,7 +55,6 @@ public class EventCell extends ListCell<Event> {
                 FXMLLoader loader = ControllerUtil.getFXMLLoaderWithEventPageFactory(user, event);
                 ControllerUtil.setSceneFromChild(loader, parentListView);
             });
-            
 
             setGraphic(content);
         } else {

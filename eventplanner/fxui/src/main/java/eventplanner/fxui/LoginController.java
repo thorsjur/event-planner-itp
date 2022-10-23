@@ -1,8 +1,11 @@
 package eventplanner.fxui;
 
+import java.io.IOException;
+
 import eventplanner.core.User;
-import eventplanner.core.UserUtil;
+import eventplanner.core.util.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.util.IOUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,56 +22,64 @@ public class LoginController {
     private int counter = 0;
 
     @FXML
-    private Button btnExit, btnLogin, btnRegisterPage;
+    private Button exitButton, loginButton, registerUserButton;
 
     @FXML
-    private TextField inputEmail;
+    private TextField emailField;
 
     @FXML
-    private PasswordField inputPassword;
+    private PasswordField passwordField;
 
     @FXML
     private Label errorOutput;
 
-    private Boolean validateUser(String email, String password) {
-
-        try {
-            User checkUser = UserUtil.findUser(email);
-            if (checkUser.password().equals(UserUtil.passwordHash(password))) {
-                System.out.println("Found user, correct password.");
-               return true;
-            } else {
-                System.out.println("Found user, wrong password.");
-                return false;
-            }
-        } catch (Exception e) {
-            System.out.println("Could not find user.");
-            return false;
-        }
-    }
-
     @FXML
     private void handleLogin() {
+        if (isValidLogin(emailField.getText(), passwordField.getText())) {
+            User user;
+            try {
+                user = IOUtil.loadUserMatchingEmail(emailField.getText(), null);
+            } catch (IOException e) {
+                System.out.println("Something went wrong loading user from file");
+                return;
+            }
 
-        if (inputPassword.getText().isBlank() || inputEmail.getText().isBlank()) {
-            System.out.println("Input password or email is null.");
-            counter++;
-            errorOutput.setText("Wrong username or password; "+ Integer.toString(counter));
-        } else if (validateUser(inputEmail.getText(), inputPassword.getText())) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, UserUtil.findUser(inputEmail.getText()));
-            ControllerUtil.setSceneFromChild(loader, btnLogin);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+            ControllerUtil.setSceneFromChild(loader, loginButton);
         } else {
-            this.counter ++;
-            errorOutput.setText("Wrong username or password; " + Integer.toString(this.counter));
+            errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
         }
     }
 
+    private Boolean isValidLogin(String email, String password) {
+        User user;
+        try {
+            user = IOUtil.loadUserMatchingEmail(email, null);
+        } catch (IOException e) {
+            System.out.println("Could not load users");
+            return false;
+        }
+        if (user == null) {
+            System.out.println("User not found");
+            return false;
+        }
+
+        if (user.password().equals(UserUtil.passwordHash(password))) {
+            System.out.println("Found user, correct password.");
+           return true;
+        } else {
+            System.out.println("Found user, wrong password.");
+        }
+
+        return false;
+    }
+
     @FXML
-    private void handleBtnRegisterPage() {
+    private void handleRegisterUserButtonClicked() {
         String fxmlFileName = "RegisterScreen.fxml";
         FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
-        ControllerUtil.setSceneFromChild(loader, btnRegisterPage);
+        ControllerUtil.setSceneFromChild(loader, registerUserButton);
     }
 
     @FXML

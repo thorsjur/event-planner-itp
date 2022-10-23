@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Writes data to a json file using a {@link CustomObjectMapper}.
+ * Writes user data to a json file using a {@link CustomObjectMapper}.
  */
 public class UserCollectionJsonWriter {
 
