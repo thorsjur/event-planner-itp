@@ -31,7 +31,7 @@ public class Event {
     public Event(EventType type, String name, LocalDateTime localDateTime,
             LocalDateTime localDateTime2, String location, List<User> users) {
 
-        validateEvent(type, name, localDateTime, localDateTime2, location, users);
+        validateEventInput(type, name, localDateTime, localDateTime2, location, users);
         if (users != null) {
             this.users.addAll(users);
         }
@@ -106,7 +106,7 @@ public class Event {
         this.users.remove(user);
     }
 
-    private void validateEvent(EventType type, String name, LocalDateTime localDateTime,
+    private void validateEventInput(EventType type, String name, LocalDateTime localDateTime,
             LocalDateTime localDateTime2, String location, List<User> users) {
 
         if (type == null || name == null || localDateTime == null
@@ -126,6 +126,7 @@ public class Event {
 
     /**
      * Logistically compare this event to another object.
+     * Does not compare registered users.
      * Returns true if and only if the events are functionality equivalent.
      */
     @Override

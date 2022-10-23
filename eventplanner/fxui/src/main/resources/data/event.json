@@ -18,28 +18,28 @@
   "start-time" : "2022-09-21T16:50",
   "end-time" : "2022-09-21T19:50",
   "location" : "Beach",
-  "users" : [ "test@test.test" ]
+  "users" : [ "test@test.test", "test.user@gmail.com", "test@test.com", "test@user.com", "test@example.com" ]
 }, {
   "type" : "COURSE",
   "name" : "course6",
   "start-time" : "2016-04-02T14:54",
   "end-time" : "2016-04-03T04:54",
   "location" : "Gløs550",
-  "users" : [ ]
+  "users" : [ "test.user@gmail.com", "awdaw@awdaw.com" ]
 }, {
   "type" : "COURSE",
   "name" : "course4",
   "start-time" : "2012-11-21T20:04",
   "end-time" : "2012-11-22T16:04",
   "location" : "Gløs534",
-  "users" : [ ]
+  "users" : [ "test.user@gmail.com", "test@test.com" ]
 }, {
   "type" : "COURSE",
   "name" : "course3",
   "start-time" : "2010-06-07T07:25",
   "end-time" : "2010-06-07T14:25",
   "location" : "Gløs132",
-  "users" : [ ]
+  "users" : [ "test.user@gmail.com" ]
 }, {
   "type" : "COURSE",
   "name" : "course9",
@@ -81,5 +81,12 @@
   "start-time" : "1999-03-07T10:05",
   "end-time" : "1999-03-07T20:05",
   "location" : "Gløs72",
-  "users" : [ ]
+  "users" : [ "test@example.com" ]
+}, {
+  "type" : "PARTY",
+  "name" : "Party at the Villé",
+  "start-time" : "2022-10-20T11:22",
+  "end-time" : "2022-10-22T23:59",
+  "location" : "The Crib",
+  "users" : [ "test.user@gmail.com", "test@example.com" ]
 } ]

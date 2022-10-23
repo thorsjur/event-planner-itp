@@ -4,45 +4,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import eventplanner.core.User;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class UserCollectionJsonWriterTest {
 
-    User user;
+    public static final String FILE_PATH = "src/test/java/resources/data/user.json";
+    private static final File FILE = new File(FILE_PATH);
 
-    @BeforeEach
+    private Collection<User> actualUsers;
+
+    // Gets read before every test, assuming UserCollectionJsonReader works as
+    // expected
+    private final Collection<User> expectedUsers = new ArrayList<>();
+
+    @BeforeAll
     public void setup() throws IOException {
-        user = new User("test@test2.test", "testPassword", true);
         UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
-        Collection<User> userCollection = new ArrayList<User>(List.of(user));
-        writer.save(userCollection, new File("src/main/java/resources/data/user.json"));
+        expectedUsers.addAll(IOTestUtil.getPseudoRandomUsers(15));
+        writer.save(expectedUsers, FILE);
     }
 
-    // @Test
-    // public void testJsonWriterAndReader() throws IOException {
-    //     UserCollectionJsonReader reader = new UserCollectionJsonReader();
-    //     assertTrue( () -> {
-    //         try {
-    //             for (User user : reader.load(new File("src/main/java/resources/data/user.json"))) {
-    //                 if (user.getEmail().equals(this.user.getEmail())) {
-    //                     return true;
-    //                 }
-    //             }
-    //         } catch (IOException e) {
-    //             e.printStackTrace();
-    //         }
-    //         //return false; TODO
-    //         return true;
-    //     });;
-    // }
-    
+    @BeforeEach
+    public void beforeEach() throws IOException {
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        actualUsers = reader.load(FILE);
+    }
+
+    @Test
+    public void testSave_retainsUserData() {
+        assertTrue(actualUsers.size() == expectedUsers.size());
+        assertTrue(
+                expectedUsers.stream()
+                        .allMatch(expected -> actualUsers.contains(expected)));
+    }
 }
