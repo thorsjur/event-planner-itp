@@ -75,15 +75,7 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            EventCollectionJsonReader reader = new EventCollectionJsonReader();
-            EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-            try {
-                Collection<Event> allEvents = reader.load(null);
-                allEvents.remove(this.event);
-                writer.save(allEvents);
-            } catch (IOException e) {
-                System.out.println("Cannot delete event from file");
-            }
+            ControllerUtil.deleteEventFromFile(this.event);
             handleReturnBtnClicked();
         }
     }

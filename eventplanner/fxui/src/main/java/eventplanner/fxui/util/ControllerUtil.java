@@ -14,6 +14,8 @@ import eventplanner.fxui.App;
 import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.NewEventController;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -202,4 +204,20 @@ public class ControllerUtil {
         return filteredEvents;
     }
 
+    /**
+    * Removes the provided event from default data file 
+    *
+    * @param event    Event to be removed from file
+    */
+    public static void deleteEventFromFile(Event event){
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+        try {
+            Collection<Event> allEvents = reader.load(null);
+            allEvents.remove(event);
+            writer.save(allEvents);
+        } catch (IOException e) {
+            System.out.println("Cannot delete event from file");
+        }
+    }
 }
