@@ -21,7 +21,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-public class CreateEventTest  extends ApplicationTest  {
+public class CreateEventTest extends ApplicationTest  {
 
     @BeforeAll
     public static void setupHeadless() {
@@ -43,7 +43,7 @@ public class CreateEventTest  extends ApplicationTest  {
     }
 
     @Test
-    public void createValidEvent() {
+    public void testCreateValidEvent() {
         String email = "test@test.org";
         String password = "password";
         registerUser(email, password);
