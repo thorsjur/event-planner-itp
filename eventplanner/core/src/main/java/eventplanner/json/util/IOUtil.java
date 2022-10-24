@@ -225,6 +225,32 @@ public class IOUtil {
         removeUserFromEvents(List.of(event), user, file);
     }
 
+    /** Updates event users.
+     * 
+     * @param event
+     * @param file
+     * @throws IOException
+     */
+    public static void updateEvent(Event event, File file) throws IOException {
+        deleteEventFromFile(event, file);
+        appendEventToFile(event, file);
+    }
+
+    /**
+    * Removes the provided event from default data file 
+    *
+    * @param event    Event to be removed from file
+     * @throws IOException
+    */
+    public static void deleteEventFromFile(Event event, File file) throws IOException{
+        Consumer<Collection<Event>> consumer = ec -> {
+            ec.stream()
+                    .filter(ev -> ev.getName().equals(event.getName()))
+                    .forEach(ev -> ec.remove(ev));
+        };
+        alterEvents(consumer, file);
+    }
+
     /**
      * Changes the saved events on the basis of the specified consumer.
      * If file is null, the file defaults to the resources directory.

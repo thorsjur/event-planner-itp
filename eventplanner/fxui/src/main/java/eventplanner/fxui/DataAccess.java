@@ -1,9 +1,11 @@
 package eventplanner.fxui;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -43,7 +45,6 @@ public class DataAccess {
             final HttpRequest request = HttpRequest.newBuilder(requestUri).GET().build();
             final HttpResponse<String> response = HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofString());
             final String responseString = response.body();
-            System.out.println(responseString);
             events = mapper.readValue(responseString, new TypeReference<Collection<Event>>(){});
             return events;
         } catch (Exception e) {
@@ -52,6 +53,22 @@ public class DataAccess {
 
         return events;
 
+    }
+
+    public static void updateEvent(Event event) {
+        try {
+            final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/update"))
+                .header("Content-Type", "application/json")    
+                .PUT(BodyPublishers.ofString(mapper.writeValueAsString(event)))
+                .build();
+              final HttpResponse<InputStream> response = HttpClient.newBuilder()
+                  .build()
+                  .send(request, HttpResponse.BodyHandlers.ofInputStream());
+                System.out.println(response);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+      
     }
 
     public static void main(String[] args) {

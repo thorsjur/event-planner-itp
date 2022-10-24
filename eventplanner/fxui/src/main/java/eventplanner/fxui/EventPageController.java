@@ -75,7 +75,11 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            ControllerUtil.deleteEventFromFile(this.event);
+            try {
+                IOUtil.deleteEventFromFile(event, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             handleReturnBtnClicked();
         }
     }
