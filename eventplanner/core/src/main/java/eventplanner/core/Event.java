@@ -108,7 +108,7 @@ public class Event {
     private void setAuthorEmail(String authorEmail){
         if (authorEmail == null || authorEmail.isBlank()){
             // Creates default user as author of default generated events
-            User author = new User("STUDENTERSAMFUNDET@gmail.no", "Samf2022", true);
+            User author = new User("SAMFUNDET@samf.no", "Samf2022", true);
             this.authorEmail = author.email();
         }
         else{
