@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
@@ -27,6 +28,11 @@ class RegisterScreenTest extends ApplicationTest {
     @BeforeAll
     public static void setupHeadless() {
         App.supportHeadless();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        FxuiTestUtil.cleanUpUsers();
     }
 
     @Override
@@ -51,22 +57,22 @@ class RegisterScreenTest extends ApplicationTest {
     }
 
     @Test
-    public void testRegisterUser() {
+    public void testRegisterUserThenLogin() {
         String email = "test@test.org";
-        String password = "" + System.currentTimeMillis();
+        String password = "password";
         clickOn("#emailField").write(email);
         clickOn("#passwordField").write(password);
         DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
         dp.setValue(LocalDate.of(2001, 8, 4));
         clickOn("#createUserButton");
-
-        // User got added
-        User user1 = new User(email, password, true);
-        Collection<User> users = FxuiTestUtil.loadUsers();
-        assertNotNull(users.stream()
-            .filter(e -> e.equals(user1))
-            .findAny()
-            .orElse(null));
+        
+        // User can log out and back in, meaning they got registered
+        clickOn("#logOutButton");
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password);
+        clickOn("#loginButton");
+        // Should now be on allEvents page
+        FxAssert.verifyThat("#logOutButton", LabeledMatchers.hasText("Log Out"));
     }
 
     @Test

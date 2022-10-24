@@ -1,22 +1,17 @@
 package eventplanner.fxui;
 
-/*import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,9 +28,15 @@ public class CreateEventTest  extends ApplicationTest  {
         App.supportHeadless();
     }
 
+    @AfterAll
+    public static void name() {
+        FxuiTestUtil.cleanUpEvents();
+        FxuiTestUtil.cleanUpUsers();
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
@@ -43,7 +44,9 @@ public class CreateEventTest  extends ApplicationTest  {
 
     @Test
     public void createValidEvent() {
-        clickOn("#loginButton");
+        String email = "test@test.org";
+        String password = "password";
+        registerUser(email, password);
         clickOn("#createEventButton");
 
         ComboBox<String> cb = lookup("#typeComboBox").queryComboBox();
@@ -79,28 +82,14 @@ public class CreateEventTest  extends ApplicationTest  {
                 .orElse(null);
 
         assertTrue(FxuiTestUtil.areEventsEqual(expectedEvent, addedEvent));
-
-        cleanUp();
     }
 
-    private void cleanUp() {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        Collection<Event> loadEvents;
-        try {
-            loadEvents = reader.load();
-        } catch (IOException e) {
-            return;
-        }
-
-        List<Event> events = loadEvents.stream()
-            .filter(event -> !event.getName().equals("TestName"))
-            .collect(Collectors.toList());
-
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        try {
-            writer.save(events);
-        } catch (IOException e) {
-            System.out.println("Error occurred saving events ...");
-        }
+    private void registerUser(String email, String password) {
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password);
+        DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
+        dp.setValue(LocalDate.of(2001, 8, 4));
+        clickOn("#createUserButton");
     }
-}*/
+    
+}

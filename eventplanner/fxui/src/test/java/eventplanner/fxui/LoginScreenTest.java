@@ -3,8 +3,8 @@ package eventplanner.fxui;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Collection;
-
+import java.time.LocalDate;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
@@ -12,10 +12,10 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
 
-import eventplanner.core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -24,6 +24,11 @@ class LoginScreenTest extends ApplicationTest {
     @BeforeAll
     public static void setupHeadless() {
         App.supportHeadless();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        FxuiTestUtil.cleanUpUsers();
     }
 
     @Override
@@ -35,26 +40,40 @@ class LoginScreenTest extends ApplicationTest {
     }
 
     @Test
-    public void testLogin() {
-        Collection<User> users = FxuiTestUtil.loadUsers();
-        User user;
-        if (users.stream().findFirst().isPresent()) {
-            user = users.stream().findFirst().get();
-        }
-        else {
-            System.out.println("No users registered");
-            return;
-        }
-        String email = user.email();
-        String password = user.password().substring(0, user.password().length()-1);
+    public void testLoginWithUnregisteredUser() {
+        // No input
+        clickOn("#loginButton");
+        String errorText1 = lookup("#errorOutput").queryAs(Label.class).getText();
+        assertEquals("Wrong username or password. (1)", errorText1, "Error output should update");
+
+        String email = "test" + System.currentTimeMillis() + "@test.no";
+        String password = "password";
 
         clickOn("#emailField").write(email);
-        clickOn("#passwordField").write(password + "ops");
+        clickOn("#passwordField").write(password);
+        clickOn("#loginButton");
+
+        // No such user
+        String errorText2 = lookup("#errorOutput").queryAs(Label.class).getText();
+        assertEquals("Wrong username or password. (2)", errorText2, "Error output should update");
+    }
+
+    @Test
+    public void testLoginWrongPassword() {
+        // Register new user
+        String email = "test@test.org";
+        String password = "password";
+        registerUser(email, password);
+        clickOn("#logOutButton");
+
+        // Log in to user with non equal password
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password + "opsie");
         clickOn("#loginButton");
 
         // Wrong password
-        String errorText = lookup("#errorOutput").queryAs(Label.class).getText();
-        assertEquals("Wrong username or password. (1)", errorText, "Error output should update");
+        String errorText1 = lookup("#errorOutput").queryAs(Label.class).getText();
+        assertEquals("Wrong username or password. (1)", errorText1, "Error output should update");
         
         // Correct password, should activate login
         doubleClickOn("#passwordField").write(password);
@@ -71,4 +90,14 @@ class LoginScreenTest extends ApplicationTest {
         // Should now be on register page
         FxAssert.verifyThat("#goToLoginButton", LabeledMatchers.hasText("Go to login"));
     }
+
+    private void registerUser(String email, String password) {
+        clickOn("#registerUserButton");
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password);
+        DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
+        dp.setValue(LocalDate.of(2001, 8, 4));
+        clickOn("#createUserButton");
+    }
+
 }

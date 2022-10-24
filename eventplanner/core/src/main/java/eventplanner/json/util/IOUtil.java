@@ -67,7 +67,7 @@ public class IOUtil {
     /**
      * Takes a single user and a specific file and appends the event to file.
      * 
-     * @see IOUtil#appendUserToFile(User user, File file)
+     * @see IOUtil#appendUsersToFile(users, file)
      */
     public static void appendUserToFile(final User user, final File file) throws IOException {
         appendUsersToFile(List.of(user), file);
