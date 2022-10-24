@@ -167,16 +167,7 @@ public class AllEventsController {
     }
 
     private ObservableList<Event> loadEvents() {
-        Collection<Event> eventCollection;
-
-        try {
-            EventCollectionJsonReader reader = new EventCollectionJsonReader();
-            eventCollection = reader.load();
-        } catch (IOException e) {
-            eventCollection = new ArrayList<>();
-            System.out.println("Could not load events");
-        }
-
+        Collection<Event> eventCollection = DataAccess.getAllEvents();
         return FXCollections.observableArrayList(eventCollection);
     }
 

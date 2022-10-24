@@ -146,6 +146,11 @@ public class IOUtil {
         return events.isEmpty() ? null : events.get(0);
     }
 
+    public static Collection<Event> loadAllEvents(final File file) throws IOException {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        return reader.load(file); 
+    }
+
 
 
     /**

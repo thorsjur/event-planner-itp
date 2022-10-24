@@ -1,6 +1,8 @@
 package eventplanner.rest;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,16 @@ public class EventController {
             return null;
         }
 	}
+
+    @GetMapping("/event/all")
+    public Collection<Event> all() {
+        try {
+            return IOUtil.loadAllEvents(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<Event>();
+        }
+    }
 
     @PostMapping("/event/addUser")
     public void add(@RequestParam String eventName, @RequestParam String userEmail) {

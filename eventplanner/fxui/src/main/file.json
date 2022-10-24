@@ -1,0 +1,17 @@
+[
+    {
+        "type" : "COURSE",
+        "name" : "ITP meeting",
+        "start-time" : "2022-10-14T12:00",
+        "end-time" : "2022-10-14T13:00",
+        "location" : "Gløs",
+        "users" : [ ]
+    }, {
+        "type" : "COURSE",
+        "name" : "IT1901 Course",
+        "start-time" : "2022-09-23T12:00",
+        "end-time" : "2022-09-23T16:00",
+        "location" : "Online",
+        "users" : [ ]
+      }
+]
