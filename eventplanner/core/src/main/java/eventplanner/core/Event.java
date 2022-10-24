@@ -15,6 +15,8 @@ public class Event {
     private LocalDateTime endDate;
     private String location;
     private List<User> users = new ArrayList<>();
+    private String authorEmail;
+    private String description;
 
     /**
      * Event constructor which requires valid arguments.
@@ -29,7 +31,7 @@ public class Event {
      * @throws IllegalArgumentException when invalid arguments are passed
      */
     public Event(EventType type, String name, LocalDateTime localDateTime,
-            LocalDateTime localDateTime2, String location, List<User> users) {
+            LocalDateTime localDateTime2, String location, List<User> users, String authorEmail, String description) {
 
         validateEventInput(type, name, localDateTime, localDateTime2, location, users);
         if (users != null) {
@@ -40,6 +42,8 @@ public class Event {
         this.startDate = localDateTime;
         this.endDate = localDateTime2;
         this.location = location;
+        setDescription(description);
+        setAuthorEmail(authorEmail);
     }
 
     /**
@@ -57,7 +61,7 @@ public class Event {
     public Event(EventType type, String name, LocalDateTime localDateTime,
             LocalDateTime localDateTime2, String location) {
 
-        this(type, name, localDateTime, localDateTime2, location, null);
+        this(type, name, localDateTime, localDateTime2, location, null, null, null);
     }
 
     public List<User> getUsers() {
@@ -82,6 +86,34 @@ public class Event {
 
     public String getLocation() {
         return this.location;
+    }
+
+    public String getAuthorEmail() {
+        return this.authorEmail;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    private void setDescription(String description){
+        if (description == null || description.isBlank()){
+            this.description = "No description available";
+        }
+        else{
+            this.description = description;
+        }
+    }
+
+    private void setAuthorEmail(String authorEmail){
+        if (authorEmail == null || authorEmail.isBlank()){
+            // Creates default user as author of default generated events
+            User author = new User("STUDENTERSAMFUNDET@gmail.no", "Samf2022", true);
+            this.authorEmail = author.email();
+        }
+        else{
+            this.authorEmail = authorEmail;
+        }
     }
 
     /**

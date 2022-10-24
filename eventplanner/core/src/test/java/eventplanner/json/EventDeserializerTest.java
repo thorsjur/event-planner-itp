@@ -31,7 +31,7 @@ public class EventDeserializerTest {
         users.add(new User("palina@test.test", "password", true)); //TODO - pass på følgefeil
         users.add(new User("david@test.test", "password", true)); //TODO - pass på følgefeil
         users.add(new User("thor@test.test", "password", true)); //TODO - pass på følgefeil
-        event = new Event(EventType.PARTY, "Thors bursdag", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users);
+        event = new Event(EventType.PARTY, "Thors bursdag", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users, null, null);
 
         // List<User> users2 = new ArrayList<>();
         // LocalDateTime localDateTime2 = LocalDateTime.of(2022, 8, 20, 16, 20);
@@ -49,5 +49,8 @@ public class EventDeserializerTest {
         assertEquals(event.getEndDate(), result.getEndDate());
         //assertEquals(event.getUsers(), result.getUsers()); TODO
         //assertEquals(event2.getUsers(), result2.getUsers()); TODO
+        assertEquals(event.getAuthorEmail(), result.getAuthorEmail());
+        assertEquals(event.getDescription(), result.getDescription());
+
     }
 }
