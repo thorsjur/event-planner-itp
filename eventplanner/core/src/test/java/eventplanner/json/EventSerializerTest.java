@@ -43,11 +43,11 @@ public class EventSerializerTest {
     @Test
     public void testEventSerialization() throws JsonProcessingException {
         String result = OBJECT_MAPPER.writeValueAsString(this.event).replaceAll(REGEX_PATTERN, "");
-        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\",\"author\":\"STUDENTERSAMFUNDET@gmail.no\",\"description\":\"Nodescriptionavailable\",\"users\":\"christian@test.com\",\"palina@test.co.uk\",\"david@example.no\",\"thor@google.com\"}";
+        String expected = "{\"type\":\"PARTY\",\"name\":\"Toga-party\",\"start-time\":\"2022-08-20T16:20\",\"end-time\":\"2022-08-20T19:20\",\"location\":\"Samfundet\",\"author\":\"SAMFUNDET@samf.no\",\"description\":\"Nodescriptionavailable\",\"users\":\"christian@test.com\",\"palina@test.co.uk\",\"david@example.no\",\"thor@google.com\"}";
         assertEquals(expected, result);
 
         String result2 = OBJECT_MAPPER.writeValueAsString(this.event2).replaceAll(REGEX_PATTERN, "");
-        String expected2 = "{\"type\":\"CONCERT\",\"name\":\"NEON\",\"start-time\":\"1990-01-01T01:01\",\"end-time\":\"1990-01-01T04:01\",\"location\":\"Festningen\",\"author\":\"STUDENTERSAMFUNDET@gmail.no\",\"description\":\"Nodescriptionavailable\",\"users\":}";
+        String expected2 = "{\"type\":\"CONCERT\",\"name\":\"NEON\",\"start-time\":\"1990-01-01T01:01\",\"end-time\":\"1990-01-01T04:01\",\"location\":\"Festningen\",\"author\":\"SAMFUNDET@samf.no\",\"description\":\"Nodescriptionavailable\",\"users\":}";
         assertEquals(expected2, result2, "Empty user list in event not displaying as expected");
     }
 }

@@ -71,7 +71,10 @@ public class CreateEventTest extends ApplicationTest  {
             "TestName",
             LocalDateTime.of(2022 ,2 ,5 ,13 ,0),
             LocalDateTime.of(2023, 2, 5, 13, 0),
-            "TestLoc"
+            "TestLoc",
+            null, 
+            email, 
+            "TestDesc"
         );
 
         clickOn("#eventsButton");
