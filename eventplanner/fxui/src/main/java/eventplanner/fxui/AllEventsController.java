@@ -66,7 +66,7 @@ public class AllEventsController {
         // sorting using a comparator. The final FilteredList is used to filter by
         // events you're either registered to or not (see UpdateListViewPredicate()).
         FilteredList<Event> filteredList = ControllerUtil.searchFiltrator(observableList, searchBar);
-        SortedList<Event> sortedList = filteredList.sorted(ControllerUtil.getReverseDateComparator());
+        SortedList<Event> sortedList = filteredList.sorted(ControllerUtil.getDateComparator());
         FilteredList<Event> myEventsList = sortedList.filtered(e -> true);
 
         allEventsList.setItems(myEventsList);

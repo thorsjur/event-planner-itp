@@ -109,6 +109,10 @@ public class NewEventController {
             return;
         }
 
+        String description = descField.getText();
+
+        String authorEmail = user.email();
+
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(
@@ -116,7 +120,10 @@ public class NewEventController {
                 name,
                 localDateTimeStart,
                 localDateTimeEnd,
-                location);
+                location,
+                null,
+                authorEmail,
+                description);
 
         boolean saveFlag = true;
         try {

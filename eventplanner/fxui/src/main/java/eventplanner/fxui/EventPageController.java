@@ -1,10 +1,13 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import eventplanner.json.util.IOUtil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -60,7 +63,7 @@ public class EventPageController {
 
     @FXML
     private void handleDeleteEventButtonClicked() {
-        ButtonType deleteType = new ButtonType("DELETE EVENT", ButtonData.OK_DONE);
+        ButtonType deleteType = new ButtonType("Delete Event", ButtonData.OK_DONE);
         Alert alert = new Alert(
             AlertType.CONFIRMATION,
             "Are you sure you want to delete this event?",
@@ -71,8 +74,8 @@ public class EventPageController {
         alert.setHeaderText(null);
         alert.showAndWait();
 
-        if (alert.getResult() == ButtonType.YES) {
-            // TODO: delete this event
+        if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
+            ControllerUtil.deleteEventFromFile(this.event);
             handleReturnBtnClicked();
         }
     }
@@ -128,7 +131,7 @@ public class EventPageController {
     }
 
     private void initializeDeleteEventButton() {
-        if (!user.email().equals("AUTHOR")) { // TODO: should compare to author/owner of event
+        if (!user.email().equals(event.getAuthorEmail())) { // TODO: should compare to author/owner of event
             deleteEventButton.setDisable(true);
             deleteEventButton.setVisible(false);
         };
@@ -136,13 +139,13 @@ public class EventPageController {
 
     private void initializeDescription() {
         descText.wrappingWidthProperty().bind(scrollPane.widthProperty().add(-25));
-        // TODO: descText.setText(event.getDescription());
+        descText.setText(event.getDescription());
     }
 
     private void initializeTextLabels() {
         // nameLabel, authorLabel, startTimeLabel, endTimeLabel, locationLabel, regUsersLabel;
         nameLabel.setText(event.getName());
-        authorLabel.setText("TODO"); // TODO
+        authorLabel.setText(event.getAuthorEmail()); 
         startTimeLabel.setText(event.getStartDate().toString().replace("T", " "));
         endTimeLabel.setText(event.getEndDate().toString().replace("T", " "));
         locationLabel.setText(event.getLocation());

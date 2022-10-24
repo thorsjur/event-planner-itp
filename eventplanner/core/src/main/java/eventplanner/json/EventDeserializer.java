@@ -46,6 +46,8 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         String location = node.get("location").asText();
         LocalDateTime startDateTime = LocalDateTime.parse(node.get("start-time").asText());
         LocalDateTime endDateTime = LocalDateTime.parse(node.get("end-time").asText());
+        String authorEmail = node.get("author").asText();
+        String description = node.get("description").asText();
 
         List<User> usersList = new ArrayList<>();
         JsonNode usersNode = node.get("users");
@@ -58,7 +60,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
             } catch (IOException e) {}
         }
 
-        return new Event(eventType, name, startDateTime, endDateTime, location, usersList);
+        return new Event(eventType, name, startDateTime, endDateTime, location, usersList, authorEmail, description);
     }
 
 }
