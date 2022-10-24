@@ -40,8 +40,7 @@ public class ControllerUtil {
             loader.load();
             child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
-            e.printStackTrace();
-            //System.out.println("IOException occurred while loading scene.");
+            System.out.println("IOException occurred while loading scene.");
         }
     }
 

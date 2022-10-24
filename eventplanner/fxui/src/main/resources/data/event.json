@@ -115,13 +115,4 @@
   "author" : "STUDENTERSAMFUNDET@gmail.no",
   "description" : "No description available",
   "users" : [ "test.user@gmail.com", "test@example.com" ]
-}, {
-  "type" : "QUIZ",
-  "name" : "TESTING",
-  "start-time" : "2022-10-25T13:00",
-  "end-time" : "2022-10-25T14:00",
-  "location" : "test",
-  "author" : "palina@gmail.com",
-  "description" : "TESTING DESCRIPTION",
-  "users" : [ ]
 } ]

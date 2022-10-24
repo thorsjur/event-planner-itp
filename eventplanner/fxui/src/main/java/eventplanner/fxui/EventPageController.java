@@ -1,10 +1,13 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import eventplanner.json.util.IOUtil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -60,7 +63,7 @@ public class EventPageController {
 
     @FXML
     private void handleDeleteEventButtonClicked() {
-        ButtonType deleteType = new ButtonType("DELETE EVENT", ButtonData.OK_DONE);
+        ButtonType deleteType = new ButtonType("Delete Event", ButtonData.OK_DONE);
         Alert alert = new Alert(
             AlertType.CONFIRMATION,
             "Are you sure you want to delete this event?",
@@ -71,8 +74,16 @@ public class EventPageController {
         alert.setHeaderText(null);
         alert.showAndWait();
 
-        if (alert.getResult() == ButtonType.YES) {
-            // TODO: delete this event
+        if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
+            EventCollectionJsonReader reader = new EventCollectionJsonReader();
+            EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+            try {
+                Collection<Event> allEvents = reader.load(null);
+                allEvents.remove(this.event);
+                writer.save(allEvents);
+            } catch (IOException e) {
+                System.out.println("Cannot delete event from file");
+            }
             handleReturnBtnClicked();
         }
     }
