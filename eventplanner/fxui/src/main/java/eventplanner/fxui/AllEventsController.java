@@ -114,20 +114,16 @@ public class AllEventsController {
 
     private void deregisterSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.removeUser(user));
-
-        for (Event event : selectedEvents) {
-            DataAccess.updateEvent(event);
-        }
+        DataAccess.updateEvents(selectedEvents);
 
         saveEventLabel.setText("Deregistration successful");
     }
 
     private void registerSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.addUser(user));
+        DataAccess.updateEvents(selectedEvents);
 
-        for (Event event : selectedEvents) {
-            DataAccess.updateEvent(event);
-        }
+        saveEventLabel.setText("Registration successful");
     }
 
     private void updateListViewPredicate() {

@@ -35,15 +35,8 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        if (isValidLogin(emailField.getText(), passwordField.getText())) {
-            User user;
-            try {
-                user = IOUtil.loadUserMatchingEmail(emailField.getText(), null);
-            } catch (IOException e) {
-                System.out.println("Something went wrong loading user from file");
-                return;
-            }
-
+        User user = findUser(emailField.getText(), passwordField.getText());
+        if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
             ControllerUtil.setSceneFromChild(loader, loginButton);
@@ -52,27 +45,21 @@ public class LoginController {
         }
     }
 
-    private Boolean isValidLogin(String email, String password) {
-        User user;
-        try {
-            user = IOUtil.loadUserMatchingEmail(email, null);
-        } catch (IOException e) {
-            System.out.println("Could not load users");
-            return false;
-        }
+    private User findUser(String email, String password) {
+        User user = DataAccess.getUser(email);
+
         if (user == null) {
             System.out.println("User not found");
-            return false;
+            return null;
         }
 
         if (user.password().equals(UserUtil.passwordHash(password))) {
             System.out.println("Found user, correct password.");
-           return true;
+            return user;
         } else {
             System.out.println("Found user, wrong password.");
         }
-
-        return false;
+        return null;
     }
 
     @FXML

@@ -126,12 +126,8 @@ public class NewEventController {
                 description);
 
         boolean saveFlag = true;
-        try {
-            IOUtil.appendEventToFile(event, null);
-        } catch (IOException e) {
-            System.out.println("Something went wrong while saving\nCan't add event to file.");
-            saveFlag = false;
-        }
+        // TODO: Add response
+        DataAccess.createEvent(event);
 
         resetFields();
         String outputMessageString = saveFlag

@@ -75,11 +75,7 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            try {
-                IOUtil.deleteEventFromFile(event, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            DataAccess.deleteEvent(event);
             handleReturnBtnClicked();
         }
     }
@@ -107,12 +103,9 @@ public class EventPageController {
     }
 
     private void handleRegisterEventBtnClicked() {
-        try {
-            IOUtil.addUserToEvent(event, user, null);
-        } catch (IOException e) {
-            outputText.setText("An error occurred while trying to register user");
-            return;
-        }
+        event.addUser(user);
+        DataAccess.updateEvent(event);
+        // TODO: Get response if successful or not
         outputText.setText("You have successfully registered to " + event.getName());
         
         incrementRegisteredUsers();
@@ -121,12 +114,9 @@ public class EventPageController {
     }
 
     private void handleDeregisterEventBtnClicked() {
-        try {
-            IOUtil.removeUserFromEvent(event, user, null);
-        } catch (IOException e) {
-            outputText.setText("An error occurred while trying to deregister user");
-            return;
-        }
+        event.removeUser(user);
+        DataAccess.updateEvent(event);
+        // TODO: Get response if successful or not
         outputText.setText("You have successfully deregistered from " + event.getName());
 
         decrementRegisteredUsers();
