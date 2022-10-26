@@ -31,12 +31,30 @@ public class DataAccess {
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofString());
             final String responseString = response.body();
+            if (responseString.isEmpty()) {
+                return null;
+            }
             final User readValue = mapper.readValue(responseString, User.class);
             return readValue;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void createUser(User user) {
+        try {
+            final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/user/create"))
+                    .header("Content-Type", "application/json")
+                    .POST(BodyPublishers.ofString(mapper.writeValueAsString(user)))
+                    .build();
+            final HttpResponse<InputStream> response = HttpClient.newBuilder()
+                    .build()
+                    .send(request, HttpResponse.BodyHandlers.ofInputStream());
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static Collection<Event> getAllEvents() {
@@ -60,7 +78,7 @@ public class DataAccess {
 
     }
 
-    public static void updateEvent(Event event) {
+    public static boolean updateEvent(Event event) {
         try {
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/update"))
                     .header("Content-Type", "application/json")
@@ -70,16 +88,18 @@ public class DataAccess {
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             System.out.println(response);
+            return Boolean.parseBoolean(response.body().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public static void updateEvents(Collection<Event> events) {
         events.forEach(event -> updateEvent(event));
     }
 
-    public static void createEvent(Event event) {
+    public static boolean createEvent(Event event) {
         try {
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/create"))
                     .header("Content-Type", "application/json")
@@ -89,12 +109,14 @@ public class DataAccess {
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             System.out.println(response);
+            return Boolean.parseBoolean(response.body().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public static void deleteEvent(Event event) {
+    public static boolean deleteEvent(Event event) {
         try {
             final HttpRequest request = HttpRequest
                     .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getName())))
@@ -104,9 +126,11 @@ public class DataAccess {
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             System.out.println(response);
+            return Boolean.parseBoolean(response.body().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     private static void syncEvents(Collection<Event> events) {
@@ -131,11 +155,6 @@ public class DataAccess {
         } catch (UnsupportedEncodingException e) {
             return input;
         }
-    }
-
-    public static void main(String[] args) {
-        // System.out.println(DataAccess.getUser("test@test.test"));
-        // System.out.println(DataAccess.getAllEvents());
     }
 
 }

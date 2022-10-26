@@ -1,12 +1,11 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.util.IOUtil;
+import eventplanner.core.util.Validation;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,24 +37,18 @@ public class RegisterController {
     @FXML
     private Label errorOutput;
 
-    private static boolean isOlderThan18(LocalDate localDate) {
-        return Period.between(localDate, LocalDate.now()).getYears() >= 18;
-    }
-
     private static User createUser(String email, String password, boolean isAbove18) {
         User user;
-        try {
-            user = new User(email, password, isAbove18);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-
-        try {
-            IOUtil.appendUserToFile(user, null);
-        } catch (IOException e) {
-            System.out.println("Something went wrong while saving\nCan't add user to file.");
-            return null;
+        if (DataAccess.getUser(email) == null) {
+            try {
+                user = new User(email, password, isAbove18);
+                DataAccess.createUser(user);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        } else {
+            user = null;
         }
 
         return user;
@@ -63,13 +56,19 @@ public class RegisterController {
 
     @FXML
     private void handleCreateUser() {
-        LocalDate date = birthDatePicker.getValue();
-        if (date == null) {
-            errorOutput.setText("Date is not set. (" + Integer.toString(++counter) + ")");
-            return;
+        try {
+            if (!(emailField.getText().isEmpty() 
+                    || passwordField.getText().isBlank()
+                    || birthDatePicker.getValue() == null
+                    || !(validateInput(emailField.getText(), passwordField.getText(), birthDatePicker.getValue())))) {
+                errorOutput.setText("Invalid input; " + ++counter);
+                return;
+            }
+        } catch (Exception e) {
+            errorOutput.setText("Invalid input or servererror; " + ++counter);
         }
 
-        User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(date));
+        User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(birthDatePicker.getValue()));
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
@@ -89,6 +88,14 @@ public class RegisterController {
     @FXML
     private void handleExit() {
         Platform.exit();
+    }
+
+    private static boolean validateInput(String email, String password, LocalDate date) {
+        return (Validation.isValidEmail(email) && Validation.isValidPassword(password) && Validation.isValidDate(date));
+    }
+
+    private static boolean isOlderThan18(LocalDate localDate) {
+        return Period.between(localDate, LocalDate.now()).getYears() >= 18;
     }
 
 }

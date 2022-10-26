@@ -44,32 +44,37 @@ public class EventController {
     @PutMapping(path = "/update",
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void add(@RequestBody Event event) {
+    public boolean add(@RequestBody Event event) {
         try {
             IOUtil.updateEvent(event, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @PostMapping(path = "/create",
     consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Event event) {
+    public boolean create(@RequestBody Event event) {
         try {
             IOUtil.appendEventToFile(event, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     @DeleteMapping("/{name}")
-    public void delete(@PathVariable String name) {
+    public boolean delete(@PathVariable String name) {
 
         try {
             IOUtil.deleteEventFromFile(name, null);
-            ;
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

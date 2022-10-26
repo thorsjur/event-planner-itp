@@ -1,11 +1,8 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
-
 import eventplanner.core.User;
 import eventplanner.core.util.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.util.IOUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

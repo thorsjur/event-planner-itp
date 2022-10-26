@@ -1,9 +1,9 @@
 package eventplanner.rest;
 
-import java.io.File;
-
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,12 +25,14 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/create")
-	public void create(@RequestParam String email, @RequestParam String password, @RequestParam boolean above18) {
+	@PostMapping(path="/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public boolean create(@RequestBody User user) {
 		try {
-			IOUtil.appendUserToFile(new User(email, password, above18), null);
+			IOUtil.appendUserToFile(user, null);
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
