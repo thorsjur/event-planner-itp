@@ -92,7 +92,7 @@ public class IOUtil {
      * 
      * @param emails the collection of emails
      * @param file   the provided file
-     * @return       list of users matching email addresses
+     * @return list of users matching email addresses
      * @throws IOException on I/O error
      */
     public static List<User> loadUsersMatchingEmail(final List<String> emails, final File file) throws IOException {
@@ -106,9 +106,9 @@ public class IOUtil {
      * Loads user from file, matching the provided email addresses.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param email  the email to match
-     * @param file   the provided file
-     * @return       the user matching the email address or null if no such user exists
+     * @param email the email to match
+     * @param file  the provided file
+     * @return the user matching the email address or null if no such user exists
      * @throws IOException on I/O error
      */
     public static User loadUserMatchingEmail(final String email, final File file) throws IOException {
@@ -120,9 +120,9 @@ public class IOUtil {
      * Loads events from file, matching the provided email addresses.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param name   the collection of names
-     * @param file   the provided file
-     * @return       list of events matching names
+     * @param name the collection of names
+     * @param file the provided file
+     * @return list of events matching names
      * @throws IOException on I/O error
      */
     public static List<Event> loadEventsMatchingName(final List<String> names, final File file) throws IOException {
@@ -136,9 +136,9 @@ public class IOUtil {
      * Loads event from file, matching the provided name.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param name   the name to match
-     * @param file   the provided file
-     * @return       the event matching the event or null if no such user exists
+     * @param name the name to match
+     * @param file the provided file
+     * @return the event matching the event or null if no such user exists
      * @throws IOException on I/O error
      */
     public static Event loadEventMatchingName(final String name, final File file) throws IOException {
@@ -148,10 +148,8 @@ public class IOUtil {
 
     public static Collection<Event> loadAllEvents(final File file) throws IOException {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        return reader.load(file); 
+        return reader.load(file);
     }
-
-
 
     /**
      * Adds the specified user to a list of events in the provided file.
@@ -225,7 +223,8 @@ public class IOUtil {
         removeUserFromEvents(List.of(event), user, file);
     }
 
-    /** Updates event users.
+    /**
+     * Updates event users.
      * 
      * @param event
      * @param file
@@ -237,16 +236,28 @@ public class IOUtil {
     }
 
     /**
-    * Removes the provided event from default data file 
-    *
-    * @param event    Event to be removed from file
+     * Removes the provided event from provided data file
+     *
+     * @param event Event to be removed from file
      * @throws IOException
-    */
-    public static void deleteEventFromFile(Event event, File file) throws IOException{
+     */
+    public static void deleteEventFromFile(Event event, File file) throws IOException {
+        Consumer<Collection<Event>> consumer = ec -> ec.remove(event);
+        alterEvents(consumer, file);
+    }
+
+    /**
+     * Removes the provided event from the provided data file
+     *
+     * @param event name of the event to be removed
+     * @throws IOException
+     */
+    public static void deleteEventFromFile(String name, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> {
-            ec.stream()
-                    .filter(ev -> ev.getName().equals(event.getName()))
-                    .forEach(ev -> ec.remove(ev));
+            ec.remove(ec.stream()
+                    .filter(e -> e.getName().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No such event is save")));
         };
         alterEvents(consumer, file);
     }

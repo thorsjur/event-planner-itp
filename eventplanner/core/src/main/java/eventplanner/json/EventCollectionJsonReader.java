@@ -1,14 +1,14 @@
 package eventplanner.json;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import eventplanner.core.Event;
-import eventplanner.json.util.IOUtil;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import eventplanner.core.Event;
+import eventplanner.json.util.IOUtil;
 
 /**
  * Reads data from a JSON file using the {@link CustomObjectMapper}.
@@ -28,9 +28,7 @@ public class EventCollectionJsonReader {
      */
     public Collection<Event> load(File file) throws IOException {
         if (file == null) {
-            file = new File(EventCollectionJsonWriter.DIRECTORY_PATH
-                    + EventCollectionJsonWriter.DEFAULT_FILE_NAME
-                    + EventCollectionJsonWriter.FILE_EXTENSION);
+            file = EventCollectionJsonWriter.DEFAULT_FILE;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
@@ -38,6 +36,7 @@ public class EventCollectionJsonReader {
         if (!IOUtil.hasFileExtension(file, EventCollectionJsonWriter.FILE_EXTENSION)) {
             throw new IllegalArgumentException("File is not of type .json");
         }
+
         return OBJECT_MAPPER.readValue(file, new TypeReference<Collection<Event>>() {
         });
     }
