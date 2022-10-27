@@ -6,6 +6,7 @@ import eventplanner.json.util.IOUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,9 +16,12 @@ import java.util.List;
  */
 public class UserCollectionJsonWriter {
 
-    public static final String DIRECTORY_PATH = "src/main/resources/data/";
-    public static final String DEFAULT_FILE_NAME = "user";
+    /* public static final String DIRECTORY_PATH = "src/main/resources/data/";
+    public static final String DEFAULT_FILE_NAME = "user"; */
     public static final String FILE_EXTENSION = ".json";
+    public static final File DEFAULT_FILE = Paths
+            .get("eventplanner", "core", "src", "main", "java", "resources", "data", "user.json")
+            .toFile();
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
 
@@ -31,7 +35,7 @@ public class UserCollectionJsonWriter {
      */
     public void save(final Collection<User> collection, File file) throws IOException {
         if (file == null) {
-            file = new File(DIRECTORY_PATH + DEFAULT_FILE_NAME + FILE_EXTENSION);
+            file = DEFAULT_FILE;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());

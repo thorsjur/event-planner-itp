@@ -1,5 +1,7 @@
 package eventplanner.core.util;
 
+import java.time.LocalDate;
+
 /**
  * Static validation methods to be used for validating input.
  */
@@ -30,5 +32,16 @@ public class Validation {
                 && password.length() >= MIN_PASSWORD_LENGTH
                 && password.length() <= MAX_PASSWORD_LENGTH;
     }
+
+    /**
+     * Static method for validating a birthdate is not in the future
+     * 
+     * @param date the date to be validated
+     * @return true if in past : false
+     */
+    public static boolean isValidDate(LocalDate date) {
+        return LocalDate.now().isAfter(date);
+    }
+
 
 }

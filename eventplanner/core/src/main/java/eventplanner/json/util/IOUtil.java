@@ -92,7 +92,7 @@ public class IOUtil {
      * 
      * @param emails the collection of emails
      * @param file   the provided file
-     * @return       list of users matching email addresses
+     * @return list of users matching email addresses
      * @throws IOException on I/O error
      */
     public static List<User> loadUsersMatchingEmail(final List<String> emails, final File file) throws IOException {
@@ -106,14 +106,49 @@ public class IOUtil {
      * Loads user from file, matching the provided email addresses.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param email  the email to match
-     * @param file   the provided file
-     * @return       the user matching the email address or null if no such user exists
+     * @param email the email to match
+     * @param file  the provided file
+     * @return the user matching the email address or null if no such user exists
      * @throws IOException on I/O error
      */
     public static User loadUserMatchingEmail(final String email, final File file) throws IOException {
         List<User> users = loadUsersMatchingEmail(List.of(email), file);
         return users.isEmpty() ? null : users.get(0);
+    }
+
+    /**
+     * Loads events from file, matching the provided email addresses.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param name the collection of names
+     * @param file the provided file
+     * @return list of events matching names
+     * @throws IOException on I/O error
+     */
+    public static List<Event> loadEventsMatchingName(final List<String> names, final File file) throws IOException {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        return reader.load(file).stream()
+                .filter(event -> names.contains(event.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Loads event from file, matching the provided name.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param name the name to match
+     * @param file the provided file
+     * @return the event matching the event or null if no such user exists
+     * @throws IOException on I/O error
+     */
+    public static Event loadEventMatchingName(final String name, final File file) throws IOException {
+        List<Event> events = loadEventsMatchingName(List.of(name), file);
+        return events.isEmpty() ? null : events.get(0);
+    }
+
+    public static Collection<Event> loadAllEvents(final File file) throws IOException {
+        EventCollectionJsonReader reader = new EventCollectionJsonReader();
+        return reader.load(file);
     }
 
     /**
@@ -186,6 +221,45 @@ public class IOUtil {
             throws IOException {
 
         removeUserFromEvents(List.of(event), user, file);
+    }
+
+    /**
+     * Updates event users.
+     * 
+     * @param event
+     * @param file
+     * @throws IOException
+     */
+    public static void updateEvent(Event event, File file) throws IOException {
+        deleteEventFromFile(event, file);
+        appendEventToFile(event, file);
+    }
+
+    /**
+     * Removes the provided event from provided data file
+     *
+     * @param event Event to be removed from file
+     * @throws IOException
+     */
+    public static void deleteEventFromFile(Event event, File file) throws IOException {
+        Consumer<Collection<Event>> consumer = ec -> ec.remove(event);
+        alterEvents(consumer, file);
+    }
+
+    /**
+     * Removes the provided event from the provided data file
+     *
+     * @param event name of the event to be removed
+     * @throws IOException
+     */
+    public static void deleteEventFromFile(String name, File file) throws IOException {
+        Consumer<Collection<Event>> consumer = ec -> {
+            ec.remove(ec.stream()
+                    .filter(e -> e.getName().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No such event is save")));
+        };
+        alterEvents(consumer, file);
     }
 
     /**

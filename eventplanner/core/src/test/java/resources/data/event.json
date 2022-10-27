@@ -4,7 +4,7 @@
   "start-time" : "2022-04-22T22:44",
   "end-time" : "2022-04-26T21:25",
   "location" : "location4359",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test@example.com", "ok@com.com", "ok@com.com", "10test_test@example.test.com", "ok@com.com", "test@example.com" ]
 }, {
@@ -13,7 +13,7 @@
   "start-time" : "2017-07-05T22:01",
   "end-time" : "2017-07-06T03:32",
   "location" : "location1086",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ ]
 }, {
@@ -22,7 +22,7 @@
   "start-time" : "2003-09-08T17:56",
   "end-time" : "2003-09-11T12:16",
   "location" : "location4209",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test.example@test.co.uk", "test.example@test.co.uk", "ok@com.com", "ok@com.com" ]
 }, {
@@ -31,7 +31,7 @@
   "start-time" : "2013-04-04T01:15",
   "end-time" : "2013-04-08T00:57",
   "location" : "location2699",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ ]
 }, {
@@ -40,7 +40,7 @@
   "start-time" : "2016-11-07T23:08",
   "end-time" : "2016-11-13T18:19",
   "location" : "location1375",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test.example@test.co.uk", "test.example@test.co.uk", "test@example.com", "10test_test@example.test.com", "test@example.com", "test.example@test.co.uk", "test.example@test.co.uk", "test.example@test.co.uk" ]
 }, {
@@ -49,7 +49,7 @@
   "start-time" : "2022-08-09T21:34",
   "end-time" : "2022-08-16T02:04",
   "location" : "location922",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test@example.com", "test@example.com" ]
 }, {
@@ -58,7 +58,7 @@
   "start-time" : "1992-12-01T16:36",
   "end-time" : "1992-12-05T18:03",
   "location" : "location4295",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test@gmail.com" ]
 }, {
@@ -67,7 +67,7 @@
   "start-time" : "2024-05-13T05:25",
   "end-time" : "2024-05-15T00:43",
   "location" : "location5222",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ ]
 }, {
@@ -76,7 +76,7 @@
   "start-time" : "2027-08-01T06:49",
   "end-time" : "2027-08-04T18:50",
   "location" : "location8608",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "ok@com.com", "test.example@test.co.uk", "ok@com.com" ]
 }, {
@@ -85,7 +85,7 @@
   "start-time" : "1994-06-04T13:38",
   "end-time" : "1994-06-11T04:24",
   "location" : "location635",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "10test_test@example.test.com" ]
 }, {
@@ -94,7 +94,7 @@
   "start-time" : "1993-06-23T17:54",
   "end-time" : "1993-06-27T02:08",
   "location" : "location4620",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test.example@test.co.uk", "ok@com.com", "ok@com.com", "10test_test@example.test.com" ]
 }, {
@@ -103,7 +103,7 @@
   "start-time" : "2021-11-28T11:43",
   "end-time" : "2021-12-02T07:38",
   "location" : "location4805",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "10test_test@example.test.com", "ok@com.com" ]
 }, {
@@ -112,7 +112,7 @@
   "start-time" : "2024-08-01T17:13",
   "end-time" : "2024-08-08T04:03",
   "location" : "location8392",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test@example.com", "test.example@test.co.uk", "test@example.com", "test@example.com", "test@example.com", "test@gmail.com", "test@gmail.com", "test.example@test.co.uk" ]
 }, {
@@ -121,7 +121,7 @@
   "start-time" : "2010-11-05T13:46",
   "end-time" : "2010-11-07T05:29",
   "location" : "location6989",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test.example@test.co.uk", "test.example@test.co.uk" ]
 }, {
@@ -130,7 +130,7 @@
   "start-time" : "2008-09-16T09:26",
   "end-time" : "2008-09-19T23:39",
   "location" : "location4492",
-  "author" : "STUDENTERSAMFUNDET@gmail.no",
+  "author" : "SAMFUNDET@samf.no",
   "description" : "No description available",
   "users" : [ "test@example.com" ]
 } ]
