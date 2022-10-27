@@ -96,6 +96,7 @@ public class ControllerUtilTest {
 
     private static Event createEvent(LocalDateTime dateStart) {
         return new Event(
+            null,
             EventType.COURSE,
             "name",
             dateStart,

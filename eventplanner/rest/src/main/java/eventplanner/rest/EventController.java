@@ -66,11 +66,11 @@ public class EventController {
         }
     }
 
-    @DeleteMapping("/{name}")
-    public boolean delete(@PathVariable String name) {
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable String id) {
 
         try {
-            IOUtil.deleteEventFromFile(name, null);
+            IOUtil.deleteEventFromFile(id, null);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

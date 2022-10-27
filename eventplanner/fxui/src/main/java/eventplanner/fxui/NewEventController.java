@@ -114,6 +114,7 @@ public class NewEventController {
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(
+                null,
                 eventType,
                 name,
                 localDateTimeStart,

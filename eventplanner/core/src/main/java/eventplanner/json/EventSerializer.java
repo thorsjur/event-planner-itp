@@ -32,6 +32,7 @@ public class EventSerializer extends JsonSerializer<Event> {
             throws IOException {
 
         jsonGen.writeStartObject();
+        jsonGen.writeStringField("id", event.getId().toString());
         jsonGen.writeStringField("type", event.getType().toString());
         jsonGen.writeStringField("name", event.getName());
         jsonGen.writeStringField("start-time", event.getStartDate().toString());

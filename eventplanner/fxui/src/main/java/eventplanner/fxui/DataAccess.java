@@ -119,7 +119,7 @@ public class DataAccess {
     public static boolean deleteEvent(Event event) {
         try {
             final HttpRequest request = HttpRequest
-                    .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getName())))
+                    .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getId().toString())))
                     .DELETE()
                     .build();
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
