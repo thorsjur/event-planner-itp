@@ -1,6 +1,7 @@
 package eventplanner.fxui;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
@@ -78,7 +79,7 @@ class LoginScreenTest extends ApplicationTest {
         // Correct password, should activate login
         doubleClickOn("#passwordField").write(password);
         clickOn("#loginButton");
-        FxAssert.verifyThat("#logOutButton", LabeledMatchers.hasText("Log Out"));
+        assertDoesNotThrow(() -> FxAssert.verifyThat("#logOutButton", LabeledMatchers.hasText("Log Out")));
     }
 
     @Test
@@ -88,7 +89,7 @@ class LoginScreenTest extends ApplicationTest {
         clickOn("#registerUserButton");
         
         // Should now be on register page
-        FxAssert.verifyThat("#goToLoginButton", LabeledMatchers.hasText("Go to login"));
+        assertDoesNotThrow(() -> FxAssert.verifyThat("#goToLoginButton", LabeledMatchers.hasText("Go to login")));
     }
 
     private void registerUser(String email, String password) {

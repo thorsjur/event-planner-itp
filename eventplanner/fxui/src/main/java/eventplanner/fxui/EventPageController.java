@@ -1,13 +1,10 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
 import eventplanner.json.util.IOUtil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

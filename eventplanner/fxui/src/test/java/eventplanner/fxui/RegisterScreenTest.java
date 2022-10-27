@@ -1,6 +1,7 @@
 package eventplanner.fxui;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,7 +16,6 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
 
-import eventplanner.core.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,7 +72,7 @@ class RegisterScreenTest extends ApplicationTest {
         clickOn("#passwordField").write(password);
         clickOn("#loginButton");
         // Should now be on allEvents page
-        FxAssert.verifyThat("#logOutButton", LabeledMatchers.hasText("Log Out"));
+        assertDoesNotThrow(() -> FxAssert.verifyThat("#logOutButton", LabeledMatchers.hasText("Log Out")));
     }
 
     @Test
@@ -82,7 +82,7 @@ class RegisterScreenTest extends ApplicationTest {
         clickOn("#goToLoginButton");
 
         // Should now be on login page
-        FxAssert.verifyThat("#loginButton", LabeledMatchers.hasText("Login"));
+        assertDoesNotThrow(() -> FxAssert.verifyThat("#loginButton", LabeledMatchers.hasText("Login")));
     }
 
     
