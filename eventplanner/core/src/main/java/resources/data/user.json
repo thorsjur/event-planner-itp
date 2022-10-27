@@ -26,8 +26,4 @@
   "email" : "test@example.com",
   "password" : "passwordh",
   "above18" : false
-}, {
-  "email" : "palina@gmail.com",
-  "password" : "123abch",
-  "above18" : true
 } ]

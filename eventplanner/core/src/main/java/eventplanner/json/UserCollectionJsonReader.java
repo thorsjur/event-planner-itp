@@ -29,9 +29,7 @@ public class UserCollectionJsonReader {
      */
     public Collection<User> load(File file) throws IOException {
         if (file == null) {
-            file = new File(UserCollectionJsonWriter.DIRECTORY_PATH
-                    + UserCollectionJsonWriter.DEFAULT_FILE_NAME
-                    + UserCollectionJsonWriter.FILE_EXTENSION);
+            file = UserCollectionJsonWriter.DEFAULT_FILE;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());

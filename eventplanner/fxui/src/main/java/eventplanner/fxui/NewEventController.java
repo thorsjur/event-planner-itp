@@ -6,9 +6,7 @@ import eventplanner.core.EventType;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;
-import eventplanner.json.util.IOUtil;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -116,6 +114,7 @@ public class NewEventController {
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(
+                null,
                 eventType,
                 name,
                 localDateTimeStart,
@@ -125,18 +124,12 @@ public class NewEventController {
                 authorEmail,
                 description);
 
-        boolean saveFlag = true;
-        try {
-            IOUtil.appendEventToFile(event, null);
-        } catch (IOException e) {
-            System.out.println("Something went wrong while saving\nCan't add event to file.");
-            saveFlag = false;
-        }
+        boolean saveFlag = DataAccess.createEvent(event);
 
         resetFields();
         String outputMessageString = saveFlag
                 ? "New event created successfully"
-                : "Error while saving event ...";
+                : ControllerUtil.SERVER_ERROR;
         outputMessage.setText(outputMessageString);
     }
 

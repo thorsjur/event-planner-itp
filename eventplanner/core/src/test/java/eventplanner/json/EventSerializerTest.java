@@ -33,11 +33,11 @@ public class EventSerializerTest {
         users.add(new User("palina@test.co.uk", "password", true)); //TODO - pass på følgefeil
         users.add(new User("david@example.no", "password", true)); //TODO - pass på følgefeil
         users.add(new User("thor@google.com", "password", true)); //TODO - pass på følgefeil
-        event = new Event(EventType.PARTY, "Toga-party", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Samfundet", users, null, null);
+        event = new Event(null, EventType.PARTY, "Toga-party", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Samfundet", users, null, null);
 
         LocalDateTime localDateTime2 = LocalDateTime.of(1990, 1, 1, 01, 01);
         List<User> users2 = new ArrayList<>();
-        event2 = new Event(EventType.CONCERT, "NEON", localDateTime2, localDateTime2.plus(3, ChronoUnit.HOURS), "Festningen", users2, null, null);
+        event2 = new Event(null, EventType.CONCERT, "NEON", localDateTime2, localDateTime2.plus(3, ChronoUnit.HOURS), "Festningen", users2, null, null);
     }
     
     @Test

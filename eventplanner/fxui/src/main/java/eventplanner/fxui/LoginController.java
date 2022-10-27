@@ -1,11 +1,8 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
-
 import eventplanner.core.User;
 import eventplanner.core.util.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.util.IOUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,44 +32,37 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        if (isValidLogin(emailField.getText(), passwordField.getText())) {
-            User user;
-            try {
-                user = IOUtil.loadUserMatchingEmail(emailField.getText(), null);
-            } catch (IOException e) {
-                System.out.println("Something went wrong loading user from file");
-                return;
-            }
-
+        User user = findUser(emailField.getText(), passwordField.getText());
+        if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
             ControllerUtil.setSceneFromChild(loader, loginButton);
         } else {
-            errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
+            try {
+                DataAccess.connection();
+                errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
+            } catch (Exception e) {
+                errorOutput.setText(ControllerUtil.SERVER_ERROR);
+            }
         }
     }
 
-    private Boolean isValidLogin(String email, String password) {
-        User user;
-        try {
-            user = IOUtil.loadUserMatchingEmail(email, null);
-        } catch (IOException e) {
-            System.out.println("Could not load users");
-            return false;
-        }
+    private User findUser(String email, String password) {
+        User user = DataAccess.getUser(email);
+
         if (user == null) {
             System.out.println("User not found");
-            return false;
+            errorOutput.setText(ControllerUtil.SERVER_ERROR);
+            return null;
         }
 
         if (user.password().equals(UserUtil.passwordHash(password))) {
             System.out.println("Found user, correct password.");
-           return true;
+            return user;
         } else {
             System.out.println("Found user, wrong password.");
         }
-
-        return false;
+        return null;
     }
 
     @FXML

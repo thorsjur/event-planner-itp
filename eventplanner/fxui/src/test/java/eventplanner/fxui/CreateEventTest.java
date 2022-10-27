@@ -67,6 +67,7 @@ public class CreateEventTest extends ApplicationTest  {
 
         // Verify that the event is created
         Event expectedEvent = new Event(
+            null,
             EventType.CONCERT,
             "TestName",
             LocalDateTime.of(2022 ,2 ,5 ,13 ,0),

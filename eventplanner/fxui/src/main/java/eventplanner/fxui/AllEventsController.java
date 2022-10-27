@@ -1,16 +1,12 @@
 package eventplanner.fxui;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Predicate;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.util.IOUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -109,32 +105,28 @@ public class AllEventsController {
 
     private void handleRegistrationOrDeregistration(ObservableList<Event> selectedEvents, File file) {
         if (checkBoxIsChecked) {
-            deregisterSelectedUsers(selectedEvents, file);
+            deregisterSelectedUser(selectedEvents, file);
         } else {
-            registerSelectedUsers(selectedEvents, file);
+            registerSelectedUser(selectedEvents, file);
         }
         updateListViewPredicate();
     }
 
-    private void deregisterSelectedUsers(ObservableList<Event> selectedEvents, File file) {
+    private void deregisterSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.removeUser(user));
-
-        try {
-            IOUtil.removeUserFromEvents(selectedEvents, user, file);
+        if (DataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Deregistration successful");
-        } catch (IOException e) {
-            System.out.println("Could not deregister from events ...");
+        } else {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
         }
     }
 
-    private void registerSelectedUsers(ObservableList<Event> selectedEvents, File file) {
+    private void registerSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.addUser(user));
-
-        try {
-            IOUtil.addUserToEvents(selectedEvents, user, file);
+        if (DataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Registration successful");
-        } catch (IOException e) {
-            System.out.println("Could not register to events ...");
+        } else {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
         }
     }
 
@@ -167,17 +159,13 @@ public class AllEventsController {
     }
 
     private ObservableList<Event> loadEvents() {
-        Collection<Event> eventCollection;
-
-        try {
-            EventCollectionJsonReader reader = new EventCollectionJsonReader();
-            eventCollection = reader.load();
-        } catch (IOException e) {
-            eventCollection = new ArrayList<>();
-            System.out.println("Could not load events");
+        Collection<Event> eventCollection = DataAccess.getAllEvents();
+        if (eventCollection.isEmpty() || eventCollection == null) {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
+            return null;
+        } else {
+            return FXCollections.observableArrayList(eventCollection);
         }
-
-        return FXCollections.observableArrayList(eventCollection);
     }
 
     @FXML

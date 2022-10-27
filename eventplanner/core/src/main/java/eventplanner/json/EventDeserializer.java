@@ -3,7 +3,9 @@ package eventplanner.json;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -41,6 +43,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
 
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
+        UUID id = UUID.fromString(node.get("id").asText());
         EventType eventType = EventType.valueOf(node.get("type").asText());
         String name = node.get("name").asText();
         String location = node.get("location").asText();
@@ -49,18 +52,30 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         String authorEmail = node.get("author").asText();
         String description = node.get("description").asText();
 
-        List<User> usersList = new ArrayList<>();
+        /* List<User> usersList = new ArrayList<>(); */
         JsonNode usersNode = node.get("users");
-
+        List<User> dummyUsers = new ArrayList<>();
         if (usersNode instanceof ArrayNode) {
-            List<String> emails = new ArrayList<>();
-            ((ArrayNode) usersNode).forEach(element -> emails.add(element.asText()));
-            try {
-                usersList = IOUtil.loadUsersMatchingEmail(emails, null);
-            } catch (IOException e) {}
+            /*
+             * List<String> emails = new ArrayList<>();
+             * ((ArrayNode) usersNode).forEach(element -> emails.add(element.asText()));
+             * try {
+             * usersList = IOUtil.loadUsersMatchingEmail(emails, null);
+             * } catch (IOException e) {
+             * e.printStackTrace();
+             * }
+             */
+            // Try to add dummy users
+            
+            ((ArrayNode) usersNode).forEach(element -> {
+                dummyUsers.add(new User(
+                        element.asText(),
+                        "dummy_password",
+                        false));
+            });
         }
 
-        return new Event(eventType, name, startDateTime, endDateTime, location, usersList, authorEmail, description);
+        return new Event(id, eventType, name, startDateTime, endDateTime, location, dummyUsers, authorEmail, description);
     }
 
 }

@@ -1,11 +1,8 @@
 package eventplanner.fxui;
 
-import java.io.IOException;
-
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.json.util.IOUtil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,8 +69,11 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            ControllerUtil.deleteEventFromFile(this.event);
-            handleReturnBtnClicked();
+            if(DataAccess.deleteEvent(event)) {
+                handleReturnBtnClicked();
+            } else {
+                outputText.setText(ControllerUtil.SERVER_ERROR);
+            }
         }
     }
 
@@ -100,31 +100,28 @@ public class EventPageController {
     }
 
     private void handleRegisterEventBtnClicked() {
-        try {
-            IOUtil.addUserToEvent(event, user, null);
-        } catch (IOException e) {
-            outputText.setText("An error occurred while trying to register user");
-            return;
-        }
-        outputText.setText("You have successfully registered to " + event.getName());
-        
-        incrementRegisteredUsers();
-        isRegistered = true;
-        updateRegisterButton();
+        event.addUser(user);
+        if(DataAccess.updateEvent(event)) {
+            outputText.setText("You have successfully registered to " + event.getName());
+            incrementRegisteredUsers();
+            isRegistered = true;
+            updateRegisterButton();
+        } else {
+            outputText.setText(ControllerUtil.SERVER_ERROR);
+        };        
     }
 
     private void handleDeregisterEventBtnClicked() {
-        try {
-            IOUtil.removeUserFromEvent(event, user, null);
-        } catch (IOException e) {
-            outputText.setText("An error occurred while trying to deregister user");
-            return;
+        event.removeUser(user);
+        if(DataAccess.updateEvent(event)) {
+            outputText.setText("You have successfully deregistered from " + event.getName());
+            decrementRegisteredUsers();
+            isRegistered = false;
+            updateRegisterButton();
+        } else {
+            outputText.setText(ControllerUtil.SERVER_ERROR);
         }
-        outputText.setText("You have successfully deregistered from " + event.getName());
 
-        decrementRegisteredUsers();
-        isRegistered = false;
-        updateRegisterButton();
     }
 
     private void initializeDeleteEventButton() {

@@ -204,20 +204,6 @@ public class ControllerUtil {
         return filteredEvents;
     }
 
-    /**
-    * Removes the provided event from default data file 
-    *
-    * @param event    Event to be removed from file
-    */
-    public static void deleteEventFromFile(Event event){
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        try {
-            Collection<Event> allEvents = reader.load(null);
-            allEvents.remove(event);
-            writer.save(allEvents);
-        } catch (IOException e) {
-            System.out.println("Cannot delete event from file");
-        }
-    }
+    public static String SERVER_ERROR = "Server error. Please try again.";
+
 }
