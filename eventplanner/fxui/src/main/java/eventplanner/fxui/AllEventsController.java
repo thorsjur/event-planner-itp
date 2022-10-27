@@ -114,16 +114,20 @@ public class AllEventsController {
 
     private void deregisterSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.removeUser(user));
-        DataAccess.updateEvents(selectedEvents);
-
-        saveEventLabel.setText("Deregistration successful");
+        if (DataAccess.updateEvents(selectedEvents)) {
+            saveEventLabel.setText("Deregistration successful");
+        } else {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
+        }
     }
 
     private void registerSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.addUser(user));
-        DataAccess.updateEvents(selectedEvents);
-
-        saveEventLabel.setText("Registration successful");
+        if (DataAccess.updateEvents(selectedEvents)) {
+            saveEventLabel.setText("Registration successful");
+        } else {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
+        }
     }
 
     private void updateListViewPredicate() {
@@ -156,7 +160,12 @@ public class AllEventsController {
 
     private ObservableList<Event> loadEvents() {
         Collection<Event> eventCollection = DataAccess.getAllEvents();
-        return FXCollections.observableArrayList(eventCollection);
+        if (eventCollection.isEmpty() || eventCollection == null) {
+            saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
+            return null;
+        } else {
+            return FXCollections.observableArrayList(eventCollection);
+        }
     }
 
     @FXML

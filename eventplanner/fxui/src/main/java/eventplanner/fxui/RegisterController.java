@@ -37,7 +37,7 @@ public class RegisterController {
     @FXML
     private Label errorOutput;
 
-    private static User createUser(String email, String password, boolean isAbove18) {
+    private User createUser(String email, String password, boolean isAbove18) {
         User user;
         if (DataAccess.getUser(email) == null) {
             try {
@@ -45,6 +45,7 @@ public class RegisterController {
                 DataAccess.createUser(user);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                errorOutput.setText(ControllerUtil.SERVER_ERROR);
                 return null;
             }
         } else {

@@ -29,7 +29,7 @@ public class IOTestUtil {
             String location = "location" + String.valueOf(RANDOM.nextInt(10000));
             List<User> users = getPseudoRandomUsers(RANDOM.nextInt(10));
 
-            Event event = new Event(type, name, startDateTime, endDateTime, location, users, null, null);
+            Event event = new Event(null, type, name, startDateTime, endDateTime, location, users, null, null);
             events.add(event);
         }
         return events;

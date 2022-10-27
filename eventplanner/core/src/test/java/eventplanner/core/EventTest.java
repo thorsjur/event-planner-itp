@@ -33,22 +33,22 @@ public class EventTest {
 	public void beforeEach() {
 		users = IOTestUtil.getPseudoRandomUsers(5);
 		type = getRandomEventType();
-		event = new Event(type, "test_name", NOW, NOW_PLUS, "test_location", users, null, null);
+		event = new Event(null, type, "test_name", NOW, NOW_PLUS, "test_location", users, null, null);
 	}
 
 	@ParameterizedTest
 	@NullAndEmptySource
 	public void testConstructor_throwsIllegalArgumentExceptionOnNullOrEmptyStrings(String input) {
-		assertThrows(IllegalArgumentException.class, () -> new Event(type, input, NOW, NOW_PLUS, "loc", users, null, null));
-		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", NOW, NOW_PLUS, input, users, null, null));
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, type, input, NOW, NOW_PLUS, "loc", users, null, null));
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, type, "name", NOW, NOW_PLUS, input, users, null, null));
 	}
 
 	@Test
 	public void testConstructor_throwsIllegalArgumentExceptionOnInvalidNullInput() {
-		assertThrows(IllegalArgumentException.class, () -> new Event(null, "name", NOW, NOW_PLUS, "loc", users, "author", "desc"));
-		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", NOW, null, "loc", users, "author", "desc"));
-		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", null, null, "loc"));
-		assertDoesNotThrow(() -> new Event(type, "name", NOW, NOW_PLUS, "loc", null, null, null));
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, null, "name", NOW, NOW_PLUS, "loc", users, "author", "desc"));
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, type, "name", NOW, null, "loc", users, "author", "desc"));
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, type, "name", null, null, "loc"));
+		assertDoesNotThrow(() -> new Event(null, type, "name", NOW, NOW_PLUS, "loc", null, null, null));
 	}
 
 	@ParameterizedTest
@@ -122,6 +122,7 @@ public class EventTest {
 
 	private static Event getSimpleEvent() {
 		return new Event(
+			event.getId(),
 			event.getType(),
 			event.getName(),
 			event.getStartDate(),

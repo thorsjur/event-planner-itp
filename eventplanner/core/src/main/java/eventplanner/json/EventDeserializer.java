@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -42,6 +43,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
 
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
+        UUID id = UUID.fromString(node.get("id").asText());
         EventType eventType = EventType.valueOf(node.get("type").asText());
         String name = node.get("name").asText();
         String location = node.get("location").asText();
@@ -73,7 +75,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
             });
         }
 
-        return new Event(eventType, name, startDateTime, endDateTime, location, dummyUsers, authorEmail, description);
+        return new Event(id, eventType, name, startDateTime, endDateTime, location, dummyUsers, authorEmail, description);
     }
 
 }

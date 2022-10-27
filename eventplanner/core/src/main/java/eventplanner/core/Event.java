@@ -3,12 +3,14 @@ package eventplanner.core;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents an event of type {@link EventType}.
  */
 public class Event {
 
+    private UUID id;
     private EventType type;
     private String name;
     private LocalDateTime startDate;
@@ -30,13 +32,20 @@ public class Event {
      * 
      * @throws IllegalArgumentException when invalid arguments are passed
      */
-    public Event(EventType type, String name, LocalDateTime localDateTime,
+    public Event(UUID id, EventType type, String name, LocalDateTime localDateTime,
             LocalDateTime localDateTime2, String location, List<User> users, String authorEmail, String description) {
 
         validateEventInput(type, name, localDateTime, localDateTime2, location, users);
         if (users != null) {
             this.users.addAll(users);
         }
+
+        if (id == null) {
+            this.id = UUID.randomUUID();
+        } else {
+            this.id = id;
+        }
+
         this.type = type;
         this.name = name;
         this.startDate = localDateTime;
@@ -58,14 +67,18 @@ public class Event {
      * 
      * @throws IllegalArgumentException when invalid arguments are passed
      */
-    public Event(EventType type, String name, LocalDateTime localDateTime,
+    public Event(UUID id, EventType type, String name, LocalDateTime localDateTime,
             LocalDateTime localDateTime2, String location) {
 
-        this(type, name, localDateTime, localDateTime2, location, null, null, null);
+        this(id, type, name, localDateTime, localDateTime2, location, null, null, null);
     }
 
     public List<User> getUsers() {
         return new ArrayList<>(this.users);
+    }
+
+    public UUID getId() {
+        return this.id;
     }
 
     public EventType getType() {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -252,10 +253,10 @@ public class IOUtil {
      * @param event name of the event to be removed
      * @throws IOException
      */
-    public static void deleteEventFromFile(String name, File file) throws IOException {
+    public static void deleteEventFromFile(String id, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> {
             ec.remove(ec.stream()
-                    .filter(e -> e.getName().equals(name))
+                    .filter(e -> e.getId().equals(UUID.fromString(id)))
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("No such event is save")));
         };
