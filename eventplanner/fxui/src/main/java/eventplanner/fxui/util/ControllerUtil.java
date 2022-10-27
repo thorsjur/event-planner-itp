@@ -1,22 +1,28 @@
 package eventplanner.fxui.util;
 
-import eventplanner.core.Event;
-import eventplanner.core.User;
-import eventplanner.fxui.App;
-import eventplanner.fxui.AppController;
-import eventplanner.fxui.MyEventsController;
-import eventplanner.fxui.NewEventController;
-
 import java.io.IOException;
-import java.util.function.Supplier;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Random;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
+import eventplanner.core.Event;
+import eventplanner.core.User;
+import eventplanner.fxui.App;
+import eventplanner.fxui.AllEventsController;
+import eventplanner.fxui.EventPageController;
+import eventplanner.fxui.NewEventController;
+import eventplanner.json.EventCollectionJsonReader;
+import eventplanner.json.EventCollectionJsonWriter;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 /**
@@ -69,6 +75,23 @@ public class ControllerUtil {
     }
 
     /**
+     * Returns a FXMLLoader with a controller factory for the EventPage controller.
+     * 
+     * @param event        the event to be displayed
+     * @param user         the user to be passed to the controller
+     * @return a FXMLLoader with the associated event page controller
+     */
+    public static FXMLLoader getFXMLLoaderWithEventPageFactory(User user, Event event) {
+        FXMLLoader loader = getFXMLLoader("EventPage.fxml");
+        loader.setControllerFactory(getEventPageControllerFactory(user, event));
+        return loader;
+    }
+
+    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event) {
+        return param -> new EventPageController(user, event);
+    }
+
+    /**
      * Returns a controller factory from the given class, and provides the created
      * controller with the user.
      * 
@@ -79,15 +102,14 @@ public class ControllerUtil {
      */
     private static <T> Callback<Class<?>, Object> getControllerFactory(Class<T> cls, User user) {
         final Map<Class<?>, Object> classMap = Map.of(
-                AppController.class, new AppController(user),
-                MyEventsController.class, new MyEventsController(user),
+                AllEventsController.class, new AllEventsController(user),
                 NewEventController.class, new NewEventController(user));
         if (!classMap.containsKey(cls)) {
             throw new IllegalArgumentException("Invalid class provided");
         }
         return param -> classMap.get(cls);
     }
-
+    
     /**
      * Returns a ChangeListener based on a specific validation.
      * Runs actionIfValid if supplier validation return true,
@@ -99,7 +121,6 @@ public class ControllerUtil {
      * @param actionIfInvalid action of invalid supplier return
      * @return ChangeListener for change in object focus
      */
-
     public static ChangeListener<Boolean> getValidationFocusListener(
             Supplier<Boolean> validation,
             Runnable actionIfValid,
@@ -114,18 +135,6 @@ public class ControllerUtil {
                 }
             }
         };
-    }
-
-    /**
-     * Generates a random 5-digit number as a string.
-     * 
-     * @return 5-digit number string
-     */
-    public static String getRandomFiveDigitString() {
-        Random random = new Random();
-        return random.ints(5, 0, 10)
-                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                .toString();
     }
 
     /**
@@ -146,6 +155,53 @@ public class ControllerUtil {
      */
     public static Comparator<Event> getReverseDateComparator() {
         return Collections.reverseOrder(getDateComparator());
+    }
+
+   /**
+    * Takes events, and filters out the ones
+    * that don't match with the value in the searchbar. 
+    * Returns a sortedList of the matching events.
+    *
+    * @param eventCollection    Collection of events
+    * @param searchBar          TextField with input that gets observed
+    * @return SortedList of matching events
+    */
+    public static FilteredList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
+        
+        ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventCollection);
+        FilteredList<Event> filteredEvents = new FilteredList<>(observableEventList, b -> true);
+        
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredEvents.setPredicate(event -> {
+
+                // If no search value is entered then all events will be displayed
+                if(newValue == null || newValue.isBlank()) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+                Predicate<String> matchPredicate = str -> str.toLowerCase().indexOf(searchKeyword) > -1;
+
+                // Found eventname match
+                if (matchPredicate.test(event.getName())) {
+                    return true;
+                }
+
+                // Found type match
+                if (matchPredicate.test(event.getType().toString())) {
+                    return true;
+                }
+
+                // Found location match
+                if (matchPredicate.test(event.getLocation())) {
+                    return true;
+                }
+
+                return false;
+            });
+        });
+
+        return filteredEvents;
     }
 
 }

@@ -1,0 +1,29 @@
+[ {
+  "email" : "test@test.test",
+  "password" : "testoxh",
+  "above18" : false
+}, {
+  "email" : "test2@test2.test.mail",
+  "password" : "test2h",
+  "above18" : false
+}, {
+  "email" : "test.user@gmail.com",
+  "password" : "passwordh",
+  "above18" : false
+}, {
+  "email" : "test@test.com",
+  "password" : "passwordh",
+  "above18" : false
+}, {
+  "email" : "test@user.com",
+  "password" : "passwordh",
+  "above18" : false
+}, {
+  "email" : "awdaw@awdaw.com",
+  "password" : "awdawdawh",
+  "above18" : false
+}, {
+  "email" : "test@example.com",
+  "password" : "passwordh",
+  "above18" : false
+} ]

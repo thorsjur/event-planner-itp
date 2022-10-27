@@ -6,9 +6,7 @@ import eventplanner.core.EventType;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;
-import eventplanner.json.util.IOUtil;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ import javafx.scene.control.TextField;
 public class NewEventController {
 
     @FXML
-    private Button eventsButton, myEventsButton;
+    private Button eventsButton, logOutButton;
 
     @FXML
     private DatePicker startDatePicker, endDatePicker;
@@ -109,6 +107,10 @@ public class NewEventController {
             return;
         }
 
+        String description = descField.getText();
+
+        String authorEmail = user.email();
+
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
         LocalDateTime localDateTimeEnd = getLocalDateTimeObject(endTime, endDate);
         Event event = new Event(
@@ -116,15 +118,14 @@ public class NewEventController {
                 name,
                 localDateTimeStart,
                 localDateTimeEnd,
-                location);
+                location,
+                null,
+                authorEmail,
+                description);
 
         boolean saveFlag = true;
-        try {
-            IOUtil.appendEventToFile(event, null);
-        } catch (IOException e) {
-            System.out.println("Something went wrong while saving\nCan't add event to file.");
-            saveFlag = false;
-        }
+        // TODO: Add response
+        DataAccess.createEvent(event);
 
         resetFields();
         String outputMessageString = saveFlag
@@ -168,17 +169,17 @@ public class NewEventController {
     }
 
     @FXML
-    private void handleMyEventsButtonClicked() {
-        String fxmlFileName = "MyEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, MyEventsController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+    private void handleEventsButtonClicked() {
+        String fxmlFileName = "AllEvents.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+        ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 
     @FXML
-    private void handleEventsButtonClicked() {
-        String fxmlFileName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AppController.class, user);
-        ControllerUtil.setSceneFromChild(loader, myEventsButton);
+    private void handleLogOutButtonClicked() {
+        String fxmlFileName = "LoginScreen.fxml";
+        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);   
     }
 
     private static final String COLOUR_VALID = "#228C22";

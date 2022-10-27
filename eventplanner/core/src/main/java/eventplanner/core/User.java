@@ -1,21 +1,33 @@
 package eventplanner.core;
 
+import eventplanner.core.util.UserUtil;
+import eventplanner.core.util.Validation;
+
 /**
  * A User data record that represents a user.
  * The data is unmodifiable, and can be retrieved with
  * standard getters.
  */
-public record User(String username) {
+public record User(String email, String password, boolean above18) {
 
     /**
      * Takes a username that is not null and not blank.
      * 
-     * @param username  the username of the user
+     * @param email    the username of the user
+     * @param password the password of the user
+     * @param above18  user above 18 (true) or not (false)
      */
-    public User(String username) {
-        if (username == null || username.isBlank()) {
-            throw new IllegalArgumentException("User name is null or blank");
+    public User(String email, String password, boolean above18) {
+
+        if (!Validation.isValidEmail(email)) {
+            throw new IllegalArgumentException("Email is invalid");
         }
-        this.username = username;
+        if (!Validation.isValidPassword(password)) {
+            throw new IllegalArgumentException("Password is invalid");
+        }
+
+        this.email = email;
+        this.password = UserUtil.passwordHash(password);
+        this.above18 = above18;
     }
 }

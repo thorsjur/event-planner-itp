@@ -1,6 +1,6 @@
 package eventplanner.fxui;
 
-import static org.junit.Assert.assertThrows;
+/*import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -13,11 +13,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.stage.Stage;*/
 
-class LoginScreenTest extends ApplicationTest {
+class LoginScreenTest /* extends ApplicationTest */ {
 
-    @BeforeAll
+    /* @BeforeAll
     public static void setupHeadless() {
         App.supportHeadless();
     }
@@ -36,5 +36,5 @@ class LoginScreenTest extends ApplicationTest {
         this.clickOn("#inputUsername").write(username);
         clickOn("#btnConfirm");
         lookup("#allEventsList");
-    }
+    } */
 }

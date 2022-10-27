@@ -1,147 +1,138 @@
 package eventplanner.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+
+import eventplanner.json.IOTestUtil;
 
 /**
  * Test class for Event class in core module
  */
-@TestInstance(Lifecycle.PER_CLASS)
-@TestMethodOrder(OrderAnnotation.class)
 public class EventTest {
 
-    private LocalDateTime localDateTime;
-    private User user1;
-    private User user2;
-    private User user3;
-    private User user4;
-    private List<User> users;
-    private Event event1;
-    private Event event2;
-    private Event event3;
+	private static final LocalDateTime NOW = LocalDateTime.now();
+	private static final LocalDateTime NOW_PLUS = NOW.plusHours(10);
+	private static Event event;
+	private List<User> users;
+	private EventType type;
+	
 
-    @BeforeAll
-    public void setup() {
-        localDateTime = LocalDateTime.of(2022, 2, 22, 16, 30);
-        user1 = new User("user1");
-        user2 = new User("user2");
-        user3 = new User("user3");
-        user4 = new User("user4");
-        users = Arrays.asList(user1, user2, user3, user4);
-        event1 = new Event(EventType.CONCERT, "event1", localDateTime,
-                localDateTime.plus(3, ChronoUnit.HOURS), "loc1", null);
-        event2 = new Event(EventType.CONCERT, "event2", localDateTime,
-                localDateTime.plus(2, ChronoUnit.HOURS), "loc2");
-        event3 = new Event(EventType.CONCERT, "event3", localDateTime,
-                localDateTime.plus(4, ChronoUnit.HOURS), "loc3", users);
-    }
-    
-    @Test
-    @Order(1)
-    public void testConstructor_noUsersOnNullInput() {
-        assertEquals(0, event1.getUsers().size());
-        assertEquals(0, event2.getUsers().size());
-        assertEquals(event1.getUsers(), event2.getUsers());
-    }
+	@BeforeEach
+	public void beforeEach() {
+		users = IOTestUtil.getPseudoRandomUsers(5);
+		type = getRandomEventType();
+		event = new Event(type, "test_name", NOW, NOW_PLUS, "test_location", users, null, null);
+	}
 
-    @Test
-    @Order(2)
-    public void testConstructor_throwsOnAnyNullInput() {
-        assertThrows(IllegalArgumentException.class, () -> new Event(null, null, null, null, null));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(null, "name", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "loc"));
-        assertThrows(IllegalArgumentException.class, () -> new Event(EventType.COURSE, null, localDateTime,
-                localDateTime.plus(3, ChronoUnit.HOURS), "loc2"));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(EventType.COURSE, "Hello", null, localDateTime, "location"));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(EventType.COURSE, "Hello", localDateTime, null, "location1"));
-        assertThrows(IllegalArgumentException.class, () -> new Event(EventType.COURSE, "Hello", localDateTime,
-                localDateTime.plus(3, ChronoUnit.HOURS), null));
-    }
+	@ParameterizedTest
+	@NullAndEmptySource
+	public void testConstructor_throwsIllegalArgumentExceptionOnNullOrEmptyStrings(String input) {
+		assertThrows(IllegalArgumentException.class, () -> new Event(type, input, NOW, NOW_PLUS, "loc", users, null, null));
+		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", NOW, NOW_PLUS, input, users, null, null));
+	}
 
-    @Test
-    @Order(3)
-    public void testConstructor_throwsOnBlankNameOrLocation() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(EventType.COURSE, "", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "loc2"));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(EventType.COURSE, " ", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "loc2"));
-        assertThrows(IllegalArgumentException.class,
-                () -> new Event(EventType.COURSE, "name1", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), ""));
-        assertThrows(IllegalArgumentException.class, () -> new Event(EventType.COURSE, "name2", localDateTime,
-                localDateTime.plus(3, ChronoUnit.HOURS), " "));
-    }
+	@Test
+	public void testConstructor_throwsIllegalArgumentExceptionOnInvalidNullInput() {
+		assertThrows(IllegalArgumentException.class, () -> new Event(null, "name", NOW, NOW_PLUS, "loc", users, "author", "desc"));
+		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", NOW, null, "loc", users, "author", "desc"));
+		assertThrows(IllegalArgumentException.class, () -> new Event(type, "name", null, null, "loc"));
+		assertDoesNotThrow(() -> new Event(type, "name", NOW, NOW_PLUS, "loc", null, null, null));
+	}
 
-    @Test
-    @Order(4)
-    public void testGetters_getsValuesAsExpected() {
-        assertEquals("event1", event1.getName());
-        assertEquals("event2", event2.getName());
-        assertEquals("event3", event3.getName());
-        assertEquals("loc1", event1.getLocation());
-        assertEquals("loc2", event2.getLocation());
-        assertEquals("loc3", event3.getLocation());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 16, 30), event1.getStartDate());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 16, 30), event2.getStartDate());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 16, 30), event3.getStartDate());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 19, 30), event1.getEndDate());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 18, 30), event2.getEndDate());
-        assertEquals(LocalDateTime.of(2022, 2, 22, 20, 30), event3.getEndDate());
-        assertEquals(0, event1.getUsers().size());
-        assertEquals(0, event2.getUsers().size());
-        assertEquals(4, event3.getUsers().size());
-    }
+	@ParameterizedTest
+	@NullSource
+	public void testAddUser_throwsExceptionOnNullUser(User user) {
+		assertThrows(IllegalArgumentException.class, () -> event.addUser(user));
+	}
 
-    @Test
-    @Order(5)
-    public void testAddUser_throwsIllegalArgumentExceptionOnNullInput() {
-        assertThrows(IllegalArgumentException.class, () -> event1.addUser(null));
-        assertThrows(IllegalArgumentException.class, () -> event2.addUser(null));
-        assertThrows(IllegalArgumentException.class, () -> event3.addUser(null));
-    }
+	@ParameterizedTest
+	@NullSource
+	public void testRemoveUser_throwsExceptionOnNullUser(User user) {
+		assertThrows(IllegalArgumentException.class, () -> event.removeUser(user));
+	}
 
-    @Test
-    @Order(6)
-    public void testRemoveUser_throwsIllegalArgumentExceptionOnNullInput() {
-        assertThrows(IllegalArgumentException.class, () -> event1.removeUser(null));
-        assertThrows(IllegalArgumentException.class, () -> event2.removeUser(null));
-        assertThrows(IllegalArgumentException.class, () -> event3.removeUser(null));
-    }
+	@Test
+	public void testAddUser_addsUser() {
+		int userCount = event.getUsers().size();
+		User user = new User("test@example.com", "password", true);
+		event.addUser(user);
 
-    @Test
-    @Order(7)
-    public void testAddUser_addsAsExpected() {
-        event1.addUser(user1);
-        event1.addUser(user2);
-        event2.addUser(user3);
-        assertEquals(user1, event1.getUsers().get(0));
-        assertEquals(4, event3.getUsers().size());
-        assertEquals(1, event2.getUsers().size());
-    }
+		assertEquals(userCount + 1, event.getUsers().size());
+		assertEquals(user, event.getUsers().get(event.getUsers().size() - 1));
+	}
 
-    @Test
-    @Order(8)
-    public void testRemoveUser_removesAsExpected() {
-        event3.removeUser(user1);
-        assertEquals(3, event3.getUsers().size());
-        event3.removeUser(user2);
-        event3.removeUser(user3);
-        assertEquals(1, event3.getUsers().size());
-        event3.removeUser(user4);
-        assertEquals(0, event3.getUsers().size());
-    }
+	@Test
+	public void testAddUser_doesNotAddDuplicateUsers() {
+		int userCount = event.getUsers().size();
+		User user = new User("test@example.com", "password", true);
+		User user2 = new User("test@example.com", "password", true);
+		event.addUser(user);
+
+		assertEquals(userCount + 1, event.getUsers().size());
+		assertEquals(user, event.getUsers().get(event.getUsers().size() - 1));
+
+		event.addUser(user2);
+		assertEquals(userCount + 1, event.getUsers().size());
+	}
+
+	@Test
+	public void testRemoveUser_removesUser() {
+		User user = event.getUsers().get(0);
+		int userCount = event.getUsers().size();
+		event.removeUser(user);
+		
+		assertEquals(userCount - 1, event.getUsers().size());
+		assertFalse(user == event.getUsers().get(0));
+	}
+
+	@Test
+	public void testRemoveUser_doesNotThrowIfNoSuchUser() {
+		User user = new User("no@such.email", "no_such_password", false);
+		assertDoesNotThrow(() -> event.removeUser(user));
+	}
+
+	@Test
+	public void testEquals() {
+		Event ev1 = getSimpleEvent();
+		Event ev2 = getSimpleEvent();
+
+		assertEquals(ev1.getType(), ev2.getType());
+		assertEquals(ev1.getName(), ev2.getName());
+		assertEquals(ev1.getStartDate(), ev2.getStartDate());
+		assertEquals(ev1.getEndDate(), ev2.getEndDate());
+		assertEquals(ev1.getLocation(), ev2.getLocation());
+	}
+
+	private static EventType getRandomEventType() {
+		Random random = new Random(10101);
+		return EventType.values()[random.nextInt(EventType.values().length)];
+	}
+
+	private static Event getSimpleEvent() {
+		return new Event(
+			event.getType(),
+			event.getName(),
+			event.getStartDate(),
+			event.getEndDate(),
+			event.getLocation(),
+			List.of(
+				new User("test@example.com", "password", false),
+				new User("example@test.com", "dworssap", false)
+				),
+			event.getAuthorEmail(),
+			event.getDescription()
+		);
+	}
 }
