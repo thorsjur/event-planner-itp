@@ -23,6 +23,7 @@ public class DataAccess {
 
     public static User getUser(String email) {
         try {
+            DataAccess.connection();
             final URI requestUri = new URI("http://localhost:8080/user?email=" + email);
             final HttpRequest request = HttpRequest.newBuilder(requestUri)
                     .GET()
@@ -37,13 +38,14 @@ public class DataAccess {
             final User readValue = mapper.readValue(responseString, User.class);
             return readValue;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
 
     public static void createUser(User user) {
         try {
+            DataAccess.connection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/user/create"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(user)))
@@ -61,6 +63,7 @@ public class DataAccess {
 
         Collection<Event> events = new ArrayList<>();
         try {
+            DataAccess.connection();
             final URI requestUri = new URI("http://localhost:8080/event/all");
             final HttpRequest request = HttpRequest.newBuilder(requestUri).GET().build();
             final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
@@ -80,6 +83,7 @@ public class DataAccess {
 
     public static boolean updateEvent(Event event) {
         try {
+            DataAccess.connection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/update"))
                     .header("Content-Type", "application/json")
                     .PUT(BodyPublishers.ofString(mapper.writeValueAsString(event)))
@@ -95,12 +99,19 @@ public class DataAccess {
         return false;
     }
 
-    public static void updateEvents(Collection<Event> events) {
-        events.forEach(event -> updateEvent(event));
+    public static boolean updateEvents(Collection<Event> events) {
+        boolean flag = true;
+        for (Event event : events) {
+            if (!updateEvent(event)) {
+                flag = false;   
+            }
+        }
+        return flag;
     }
 
     public static boolean createEvent(Event event) {
         try {
+            DataAccess.connection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/create"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(event)))
@@ -118,6 +129,7 @@ public class DataAccess {
 
     public static boolean deleteEvent(Event event) {
         try {
+            DataAccess.connection();
             final HttpRequest request = HttpRequest
                     .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getId().toString())))
                     .DELETE()
@@ -157,4 +169,15 @@ public class DataAccess {
         }
     }
 
+
+    public static void connection() throws Exception {
+        final HttpRequest request = HttpRequest
+                .newBuilder(new URI("http://localhost:8080/user"))
+                .GET()
+                .build();
+        final HttpResponse<InputStream> response = HttpClient.newBuilder()
+                .build()
+                .send(request, HttpResponse.BodyHandlers.ofInputStream());
+        System.out.println(response.statusCode());
+    }
 }

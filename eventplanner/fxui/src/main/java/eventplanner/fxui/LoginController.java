@@ -38,7 +38,12 @@ public class LoginController {
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
             ControllerUtil.setSceneFromChild(loader, loginButton);
         } else {
-            errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
+            try {
+                DataAccess.connection();
+                errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
+            } catch (Exception e) {
+                errorOutput.setText(ControllerUtil.SERVER_ERROR);
+            }
         }
     }
 
@@ -47,6 +52,7 @@ public class LoginController {
 
         if (user == null) {
             System.out.println("User not found");
+            errorOutput.setText(ControllerUtil.SERVER_ERROR);
             return null;
         }
 

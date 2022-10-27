@@ -69,8 +69,11 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            DataAccess.deleteEvent(event);
-            handleReturnBtnClicked();
+            if(DataAccess.deleteEvent(event)) {
+                handleReturnBtnClicked();
+            } else {
+                outputText.setText(ControllerUtil.SERVER_ERROR);
+            }
         }
     }
 
@@ -98,24 +101,27 @@ public class EventPageController {
 
     private void handleRegisterEventBtnClicked() {
         event.addUser(user);
-        DataAccess.updateEvent(event);
-        // TODO: Get response if successful or not
-        outputText.setText("You have successfully registered to " + event.getName());
-        
-        incrementRegisteredUsers();
-        isRegistered = true;
-        updateRegisterButton();
+        if(DataAccess.updateEvent(event)) {
+            outputText.setText("You have successfully registered to " + event.getName());
+            incrementRegisteredUsers();
+            isRegistered = true;
+            updateRegisterButton();
+        } else {
+            outputText.setText(ControllerUtil.SERVER_ERROR);
+        };        
     }
 
     private void handleDeregisterEventBtnClicked() {
         event.removeUser(user);
-        DataAccess.updateEvent(event);
-        // TODO: Get response if successful or not
-        outputText.setText("You have successfully deregistered from " + event.getName());
+        if(DataAccess.updateEvent(event)) {
+            outputText.setText("You have successfully deregistered from " + event.getName());
+            decrementRegisteredUsers();
+            isRegistered = false;
+            updateRegisterButton();
+        } else {
+            outputText.setText(ControllerUtil.SERVER_ERROR);
+        }
 
-        decrementRegisteredUsers();
-        isRegistered = false;
-        updateRegisterButton();
     }
 
     private void initializeDeleteEventButton() {

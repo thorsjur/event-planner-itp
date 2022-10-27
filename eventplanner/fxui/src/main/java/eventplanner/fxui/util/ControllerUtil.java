@@ -204,4 +204,6 @@ public class ControllerUtil {
         return filteredEvents;
     }
 
+    public static String SERVER_ERROR = "Server error. Please try again.";
+
 }

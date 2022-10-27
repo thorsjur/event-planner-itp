@@ -160,5 +160,4 @@ public class Validation {
         int minute = Integer.parseInt(split[1]);
         return new int[] { hour, minute };
     }
-
 }

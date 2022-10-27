@@ -124,14 +124,12 @@ public class NewEventController {
                 authorEmail,
                 description);
 
-        boolean saveFlag = true;
-        // TODO: Add response
-        DataAccess.createEvent(event);
+        boolean saveFlag = DataAccess.createEvent(event);
 
         resetFields();
         String outputMessageString = saveFlag
                 ? "New event created successfully"
-                : "Error while saving event ...";
+                : ControllerUtil.SERVER_ERROR;
         outputMessage.setText(outputMessageString);
     }
 
