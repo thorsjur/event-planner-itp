@@ -33,11 +33,13 @@ public class EventPageController {
     private User user;
     private Event event;
     private boolean isRegistered;
+    private DataAccess dataAccess;
 
-    public EventPageController(User user, Event event) {
+    public EventPageController(User user, Event event, DataAccess dataAccess) {
         this.user = user;
         this.event = event;
         this.isRegistered = event.getUsers().contains(user);
+        this.dataAccess = dataAccess;
     }
 
     @FXML
@@ -51,7 +53,7 @@ public class EventPageController {
 
     @FXML
     private void handleReturnBtnClicked() {
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AllEventsController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AllEventsController.class, user, dataAccess);
         ControllerUtil.setSceneFromChild(loader, returnButton);
     }
 
@@ -69,7 +71,7 @@ public class EventPageController {
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            if(DataAccess.deleteEvent(event)) {
+            if(dataAccess.deleteEvent(event)) {
                 handleReturnBtnClicked();
             } else {
                 outputText.setText(ControllerUtil.SERVER_ERROR);
@@ -101,7 +103,7 @@ public class EventPageController {
 
     private void handleRegisterEventBtnClicked() {
         event.addUser(user);
-        if(DataAccess.updateEvent(event)) {
+        if(dataAccess.updateEvent(event)) {
             outputText.setText("You have successfully registered to " + event.getName());
             incrementRegisteredUsers();
             isRegistered = true;
@@ -113,7 +115,7 @@ public class EventPageController {
 
     private void handleDeregisterEventBtnClicked() {
         event.removeUser(user);
-        if(DataAccess.updateEvent(event)) {
+        if(dataAccess.updateEvent(event)) {
             outputText.setText("You have successfully deregistered from " + event.getName());
             decrementRegisteredUsers();
             isRegistered = false;

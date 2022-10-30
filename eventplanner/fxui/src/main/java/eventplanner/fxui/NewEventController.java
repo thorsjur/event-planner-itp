@@ -42,10 +42,13 @@ public class NewEventController {
 
     @FXML
     private TextArea outputMessage;
+    
     private User user;
+    private DataAccess dataAccess;
 
-    public NewEventController(User user) {
+    public NewEventController(User user, DataAccess dataAccess) {
         this.user = user;
+        this.dataAccess = dataAccess;
     }
 
     @FXML
@@ -124,7 +127,7 @@ public class NewEventController {
                 authorEmail,
                 description);
 
-        boolean saveFlag = DataAccess.createEvent(event);
+        boolean saveFlag = dataAccess.createEvent(event);
 
         resetFields();
         String outputMessageString = saveFlag
@@ -170,14 +173,14 @@ public class NewEventController {
     @FXML
     private void handleEventsButtonClicked() {
         String fxmlFileName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, dataAccess);
         ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 
     @FXML
     private void handleLogOutButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, dataAccess);
         ControllerUtil.setSceneFromChild(loader, logOutButton);   
     }
 

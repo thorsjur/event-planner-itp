@@ -1,6 +1,8 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
+
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +28,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
+        DataAccess dataAccess;
+        try {
+            DataAccess.connection();
+            dataAccess = new RemoteDataAccess();
+            System.out.println("Remote dataaccess");
+        } catch (Exception e) {
+            dataAccess = new LocalDataAccess();
+            System.out.println("Local dataaccess");
+        }
+        FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("LoginScreen.fxml", LoginController.class, null, dataAccess);
         Parent parent = fxmlLoader.load();
         this.scene = new Scene(parent);
 

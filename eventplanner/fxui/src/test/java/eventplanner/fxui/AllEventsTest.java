@@ -1,9 +1,9 @@
 package eventplanner.fxui;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import eventplanner.core.Event;
-import eventplanner.core.EventType;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-public class CreateEventTest extends ApplicationTest  {
+public class AllEventsTest extends ApplicationTest  {
 
     @BeforeAll
     public static void setupHeadless() {
@@ -44,12 +43,53 @@ public class CreateEventTest extends ApplicationTest  {
     }
 
     @Test
-    public void testCreateValidEvent() {
+    public void testSearchAndRegisterDeregisterEvent() {
         String email = "test@test.org";
         String password = "password";
         registerUser(email, password);
-        clickOn("#createEventButton");
+        createEvent();
 
+        ListView<Event> listView = lookup("#allEventsList").queryListView();
+        Event event = listView.getItems().get(0);
+
+        // Can't find event by search before saving event
+        clickOn("#myEventsCheckBox");
+        clickOn("#searchBar").write(event.getName());
+        listView.getSelectionModel().selectAll();
+        assertFalse(listView.getSelectionModel().getSelectedItems().stream()
+                .anyMatch(e -> e.equals(event)));
+
+        clickOn("#myEventsCheckBox");
+
+        listView.getSelectionModel().select(event);
+        clickOn("#saveEventButton");
+        clickOn("#myEventsCheckBox");
+
+        // Can find event by search (serach word is still in the searchbar)
+        listView.getSelectionModel().selectAll();
+        assertTrue(listView.getSelectionModel().getSelectedItems().stream()
+                .anyMatch(e -> e.equals(event)));
+
+        listView.getSelectionModel().select(event);
+        clickOn("#saveEventButton");
+
+        // Event deregistered
+        listView.getSelectionModel().selectAll();
+        assertFalse(listView.getSelectionModel().getSelectedItems().stream()
+                .anyMatch(e -> e.equals(event)));
+    }
+
+    private void registerUser(String email, String password) {
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password);
+        DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
+        dp.setValue(LocalDate.of(2001, 8, 4));
+        clickOn("#createUserButton");
+        
+    }
+
+    private void createEvent() {
+        clickOn("#createEventButton");
         ComboBox<String> cb = lookup("#typeComboBox").queryComboBox();
         Platform.runLater(() -> cb.getSelectionModel().selectFirst());
 
@@ -65,37 +105,7 @@ public class CreateEventTest extends ApplicationTest  {
         clickOn("#locationField").write("TestLoc");
         clickOn("#descField").write("TestDesc");
         clickOn("#createButton");
-
-        // Verify that the event is created
-        Event expectedEvent = new Event(
-            null,
-            EventType.CONCERT,
-            "TestName",
-            LocalDateTime.of(2022 ,2 ,5 ,13 ,0),
-            LocalDateTime.of(2023, 2, 5, 13, 0),
-            "TestLoc",
-            null, 
-            email, 
-            "TestDesc"
-        );
-
         clickOn("#eventsButton");
-        ListView<Event> listView = lookup("#allEventsList").queryListView();
-        Event addedEvent = listView.getItems().stream()
-                .filter(e -> FxuiTestUtil.areEventsEqual(expectedEvent, e))
-                .findFirst()
-                .orElse(null);
-
-        assertTrue(FxuiTestUtil.areEventsEqual(expectedEvent, addedEvent));
     }
-    
-    private void registerUser(String email, String password) {
-        clickOn("#emailField").write(email);
-        clickOn("#passwordField").write(password);
-        DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
-        dp.setValue(LocalDate.of(2001, 8, 4));
-        clickOn("#createUserButton");
-    }
-    
     
 }

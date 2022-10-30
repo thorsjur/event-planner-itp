@@ -68,7 +68,7 @@ public class IOUtil {
     /**
      * Takes a single user and a specific file and appends the event to file.
      * 
-     * @see IOUtil#appendUserToFile(User user, File file)
+     * @see IOUtil#appendUsersToFile(users, file)
      */
     public static void appendUserToFile(final User user, final File file) throws IOException {
         appendUsersToFile(List.of(user), file);
@@ -115,6 +115,42 @@ public class IOUtil {
     public static User loadUserMatchingEmail(final String email, final File file) throws IOException {
         List<User> users = loadUsersMatchingEmail(List.of(email), file);
         return users.isEmpty() ? null : users.get(0);
+    }
+
+    /** Method for loading/returning all users in file.
+     * 
+     * 
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static Collection<User> loadAllUsers(final File file) throws IOException{
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        return reader.load(file);
+    }
+
+    /** Method for overwriting userfile.
+     * 
+     * 
+     * @param usersthe      users that overwrites the previous file
+     * @param file          file to overwrite
+     * @throws IOException
+     */
+    public static void overwriteUsers(List<User> users, File file) throws IOException {
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(users, file);
+    }
+
+    /** Method for overwriting eventsfile.
+     * 
+     * 
+     * @param events        the events that overwrites the previous file
+     * @param file          file to overwrite
+     * @throws IOException
+     */
+    public static void overwriteEvents(List<Event> events, File file) throws IOException {
+        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+        writer.save(events, file);
     }
 
     /**

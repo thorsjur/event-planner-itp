@@ -1,0 +1,11 @@
+[ {
+  "id" : "123e4567-e89b-12d3-a456-656642440000",
+  "type" : "PARTY",
+  "name" : "Temafest: Halloween",
+  "start-time" : "2022-10-31T22:00",
+  "end-time" : "2022-11-01T02:00",
+  "location" : "Hele huset",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Den skumleste kvelden i året står for tur med Halloweenfest på Samfundet den 31. oktober! Samfundets mest populære temafest er endelig her igjen! Det blir stas og fjas med forskjellig tema i alle lokaler.",
+  "users" : [ ]
+} ]
