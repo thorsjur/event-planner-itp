@@ -22,14 +22,16 @@ public class EventCell extends ListCell<Event> {
     private Text name;
     private HBox content;
     private Button eventPageBtn;
+    private DataAccess dataAccess;
 
     /**
      * Constructor.
      */
-    public EventCell() {
+    public EventCell(DataAccess dataAccess) {
         super();
         date = new Text();
         name = new Text();
+        this.dataAccess = dataAccess;
         eventPageBtn = new Button("Read more");
         
         VBox leftContent = new VBox(name, date);
@@ -52,7 +54,7 @@ public class EventCell extends ListCell<Event> {
             ListView<Event> parentListView = this.getListView();
             User user = (User) parentListView.getUserData();
             eventPageBtn.setOnMouseClicked((e) -> {
-                FXMLLoader loader = ControllerUtil.getFXMLLoaderWithEventPageFactory(user, event);
+                FXMLLoader loader = ControllerUtil.getFXMLLoaderWithEventPageFactory(user, event, dataAccess);
                 ControllerUtil.setSceneFromChild(loader, parentListView);
             });
 

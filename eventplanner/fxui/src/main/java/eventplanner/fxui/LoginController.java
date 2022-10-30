@@ -6,10 +6,13 @@ import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Controller for startup view.
@@ -30,25 +33,42 @@ public class LoginController {
     @FXML
     private Label errorOutput;
 
+    private DataAccess dataAccess;
+
+    public LoginController(DataAccess dataAccess) {
+        this.dataAccess = dataAccess;
+        if (!dataAccess.isRemote()) {
+            // Alert alert = new Alert(
+            // AlertType.CONFIRMATION,
+            // "Server not connected. Using local data access.",
+            // ButtonType.OK);
+            // alert.setGraphic(null);
+            // alert.setHeaderText(null);
+            // alert.showAndWait(); TODO - need to implement tests with this.
+        }
+    }
+
     @FXML
     private void handleLogin() {
         User user = findUser(emailField.getText(), passwordField.getText());
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, dataAccess);
             ControllerUtil.setSceneFromChild(loader, loginButton);
-        } else {
+        } else if (dataAccess.isRemote()) {
             try {
                 DataAccess.connection();
                 errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
             } catch (Exception e) {
                 errorOutput.setText(ControllerUtil.SERVER_ERROR);
             }
+        } else {
+            errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
         }
     }
 
     private User findUser(String email, String password) {
-        User user = DataAccess.getUser(email);
+        User user = dataAccess.getUser(email);
 
         if (user == null) {
             System.out.println("User not found");
@@ -68,7 +88,7 @@ public class LoginController {
     @FXML
     private void handleRegisterUserButtonClicked() {
         String fxmlFileName = "RegisterScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, RegisterController.class, null, dataAccess);
         ControllerUtil.setSceneFromChild(loader, registerUserButton);
     }
 

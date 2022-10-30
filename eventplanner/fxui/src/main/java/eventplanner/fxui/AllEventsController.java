@@ -43,9 +43,11 @@ public class AllEventsController {
     private ObservableList<Event> observableList;
     private boolean checkBoxIsChecked = false;
     private User user;
+    private DataAccess dataAccess;
 
-    public AllEventsController(User user) {
+    public AllEventsController(User user, DataAccess dataAccess) {
         this.user = user;
+        this.dataAccess = dataAccess;
     }
 
     /**
@@ -72,7 +74,7 @@ public class AllEventsController {
         allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
-        allEventsList.setCellFactory((param) -> new EventCell());
+        allEventsList.setCellFactory((param) -> new EventCell(dataAccess));
 
         allEventsList.setUserData(user);
     }
@@ -114,7 +116,7 @@ public class AllEventsController {
 
     private void deregisterSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.removeUser(user));
-        if (DataAccess.updateEvents(selectedEvents)) {
+        if (dataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Deregistration successful");
         } else {
             saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
@@ -123,7 +125,7 @@ public class AllEventsController {
 
     private void registerSelectedUser(ObservableList<Event> selectedEvents, File file) {
         selectedEvents.forEach(event -> event.addUser(user));
-        if (DataAccess.updateEvents(selectedEvents)) {
+        if (dataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Registration successful");
         } else {
             saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
@@ -159,7 +161,7 @@ public class AllEventsController {
     }
 
     private ObservableList<Event> loadEvents() {
-        Collection<Event> eventCollection = DataAccess.getAllEvents();
+        Collection<Event> eventCollection = dataAccess.getAllEvents();
         if (eventCollection.isEmpty() || eventCollection == null) {
             saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
             return null;
@@ -171,14 +173,14 @@ public class AllEventsController {
     @FXML
     private void handleCreateEventButtonClicked() {
         String fxmlFileName = "CreateEvent.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user, dataAccess);
         ControllerUtil.setSceneFromChild(loader, createEventButton);
     }
 
     @FXML
     private void handleLogOutButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, dataAccess);
         ControllerUtil.setSceneFromChild(loader, logOutButton);   
     }
 }

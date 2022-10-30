@@ -11,11 +11,12 @@ import java.util.function.Supplier;
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.fxui.App;
+import eventplanner.fxui.DataAccess;
 import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.EventPageController;
+import eventplanner.fxui.LoginController;
 import eventplanner.fxui.NewEventController;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
+import eventplanner.fxui.RegisterController;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,9 +69,9 @@ public class ControllerUtil {
      * @param user         the user to be passed to the controller
      * @return a FXMLLoader with an associated controller factory
      */
-    public static <T> FXMLLoader getFXMLLoaderWithFactory(String fxmlFilename, Class<T> cls, User user) {
+    public static <T> FXMLLoader getFXMLLoaderWithFactory(String fxmlFilename, Class<T> cls, User user, DataAccess dataAccess) {
         FXMLLoader loader = getFXMLLoader(fxmlFilename);
-        loader.setControllerFactory(getControllerFactory(cls, user));
+        loader.setControllerFactory(getControllerFactory(cls, user, dataAccess));
         return loader;
     }
 
@@ -81,14 +82,14 @@ public class ControllerUtil {
      * @param user         the user to be passed to the controller
      * @return a FXMLLoader with the associated event page controller
      */
-    public static FXMLLoader getFXMLLoaderWithEventPageFactory(User user, Event event) {
-        FXMLLoader loader = getFXMLLoader("EventPage.fxml");
-        loader.setControllerFactory(getEventPageControllerFactory(user, event));
+    public static FXMLLoader getFXMLLoaderWithEventPageFactory(User user, Event event, DataAccess dataAccess) {
+        FXMLLoader loader =  getFXMLLoader("EventPage.fxml");
+        loader.setControllerFactory(getEventPageControllerFactory(user, event, dataAccess));
         return loader;
     }
 
-    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event) {
-        return param -> new EventPageController(user, event);
+    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event, DataAccess dataAccess) {
+        return param -> new EventPageController(user, event, dataAccess);
     }
 
     /**
@@ -100,10 +101,13 @@ public class ControllerUtil {
      * @param user the user to be passed to the controller
      * @return the controller factory
      */
-    private static <T> Callback<Class<?>, Object> getControllerFactory(Class<T> cls, User user) {
+    private static <T> Callback<Class<?>, Object> getControllerFactory(Class<T> cls, User user, DataAccess dataAccess) {
         final Map<Class<?>, Object> classMap = Map.of(
-                AllEventsController.class, new AllEventsController(user),
-                NewEventController.class, new NewEventController(user));
+                AllEventsController.class, new AllEventsController(user, dataAccess),
+                NewEventController.class, new NewEventController(user, dataAccess), 
+                LoginController.class, new LoginController(dataAccess), 
+                RegisterController.class, new RegisterController(dataAccess)
+                );
         if (!classMap.containsKey(cls)) {
             throw new IllegalArgumentException("Invalid class provided");
         }
