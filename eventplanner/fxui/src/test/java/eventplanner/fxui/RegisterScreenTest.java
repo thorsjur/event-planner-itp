@@ -3,10 +3,8 @@ package eventplanner.fxui;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,6 +14,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
 
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,11 +32,12 @@ class RegisterScreenTest extends ApplicationTest {
     @AfterAll
     public static void tearDown() {
         FxuiTestUtil.cleanUpUsers();
+        FxuiTestUtil.cleanUpEvents();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
+        final FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("RegisterScreen.fxml", RegisterController.class, null, new LocalDataAccess());
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
@@ -47,13 +47,13 @@ class RegisterScreenTest extends ApplicationTest {
     public void testNoInput() {
         clickOn("#createUserButton");
         String errorText = lookup("#errorOutput").queryAs(Label.class).getText();
-        assertEquals("Date is not set. (1)", errorText, "Error output should update");
+        assertEquals("Invalid input; 1", errorText, "Error output should update");
         
         DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
         dp.setValue(LocalDate.of(2001, 8, 4));
         clickOn("#createUserButton");
         String errorText2 = lookup("#errorOutput").queryAs(Label.class).getText();
-        assertEquals("User already exists or invalid input. (2)", errorText2, "Error output should update");
+        assertEquals("Invalid input; 2", errorText2, "Error output should update");
     }
 
     @Test

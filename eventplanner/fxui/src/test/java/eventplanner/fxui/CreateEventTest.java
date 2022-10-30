@@ -12,6 +12,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,7 +37,7 @@ public class CreateEventTest extends ApplicationTest  {
 
     @Override
     public void start(Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegisterScreen.fxml"));
+        final FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("RegisterScreen.fxml", RegisterController.class, null, new LocalDataAccess());
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
@@ -87,7 +88,7 @@ public class CreateEventTest extends ApplicationTest  {
 
         assertTrue(FxuiTestUtil.areEventsEqual(expectedEvent, addedEvent));
     }
-
+    
     private void registerUser(String email, String password) {
         clickOn("#emailField").write(email);
         clickOn("#passwordField").write(password);
@@ -95,5 +96,6 @@ public class CreateEventTest extends ApplicationTest  {
         dp.setValue(LocalDate.of(2001, 8, 4));
         clickOn("#createUserButton");
     }
+    
     
 }

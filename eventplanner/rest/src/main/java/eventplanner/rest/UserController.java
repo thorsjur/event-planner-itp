@@ -15,7 +15,12 @@ import eventplanner.json.util.IOUtil;
 @RequestMapping("/user")
 public class UserController {
 
-	@GetMapping
+	@GetMapping("")
+	public void connect() {
+		return;
+	}
+
+	@GetMapping("/get")
 	public User user(@RequestParam(value = "email", defaultValue = " ") String email) {
 		try {
 			return IOUtil.loadUserMatchingEmail(email, null);

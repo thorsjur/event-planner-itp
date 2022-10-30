@@ -37,12 +37,18 @@ public class RegisterController {
     @FXML
     private Label errorOutput;
 
+    private DataAccess dataAccess;
+
+    public RegisterController(DataAccess dataAccess) {
+        this.dataAccess = dataAccess;
+    }
+
     private User createUser(String email, String password, boolean isAbove18) {
         User user;
-        if (DataAccess.getUser(email) == null) {
+        if (dataAccess.getUser(email) == null) {
             try {
                 user = new User(email, password, isAbove18);
-                DataAccess.createUser(user);
+                dataAccess.createUser(user);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 errorOutput.setText(ControllerUtil.SERVER_ERROR);
@@ -58,7 +64,7 @@ public class RegisterController {
     @FXML
     private void handleCreateUser() {
         try {
-            if (!(emailField.getText().isEmpty() 
+            if ((emailField.getText().isEmpty() 
                     || passwordField.getText().isBlank()
                     || birthDatePicker.getValue() == null
                     || !(validateInput(emailField.getText(), passwordField.getText(), birthDatePicker.getValue())))) {
@@ -72,7 +78,7 @@ public class RegisterController {
         User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(birthDatePicker.getValue()));
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, this.dataAccess);
             ControllerUtil.setSceneFromChild(loader, createUserButton);
         } else {
             errorOutput.setText("User already exists or invalid input. (" + Integer.toString(++counter) + ")");
@@ -82,7 +88,7 @@ public class RegisterController {
     @FXML
     private void handleGoToLoginPageButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoader(fxmlFileName);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, this.dataAccess);
         ControllerUtil.setSceneFromChild(loader, goToLoginButton);
     }
 

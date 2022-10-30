@@ -1,14 +1,4 @@
 [ {
-  "id" : "123e4567-e89b-12d3-a456-456642440000",
-  "type" : "QUIZ",
-  "name" : "Musikkquiz",
-  "start-time" : "2022-10-28T20:00",
-  "end-time" : "2022-10-28T22:00",
-  "location" : "Edgar",
-  "author" : "SAMFUNDET@samf.no",
-  "description" : "Musikkquizen er en perfekt måte å sparke i gang fredagskveldene på, enten du er musikknerd eller bare er på utkikk etter en utfordring. Alle er velkomne for å bryne seg på rykende ferske kategorier i Edgar, alles favoritt-kafé!",
-  "users" : [ ]
-}, {
   "id" : "123e4567-e89b-12d3-a456-356642440000",
   "type" : "COURSE",
   "name" : "Paint & Sip",
@@ -59,6 +49,16 @@
   "description" : "No description needed",
   "users" : [ ]
 }, {
+  "id" : "123e4567-e89b-12d3-a456-556642440000",
+  "type" : "COURSE",
+  "name" : "Debattkafe",
+  "start-time" : "2022-11-13T15:00",
+  "end-time" : "2022-11-13T23:59",
+  "location" : "Gløs293",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Bli med på politisk nachspiel etter Onsdagsdebatten: Monarkiet. Etter onsdagsdebatten rigges det det om til debattkafé hvor temaet fra debatten, monarkiet, kan diskuteres videre.",
+  "users" : [ ]
+}, {
   "id" : "123e4567-e89b-12d3-a456-756642440000",
   "type" : "QUIZ",
   "name" : "Tirsdagsquiz",
@@ -77,16 +77,6 @@
   "location" : "Hele huset",
   "author" : "SAMFUNDET@samf.no",
   "description" : "Den skumleste kvelden i året står for tur med Halloweenfest på Samfundet den 31. oktober! Samfundets mest populære temafest er endelig her igjen! Det blir stas og fjas med forskjellig tema i alle lokaler.",
-  "users" : [ ]
-}, {
-  "id" : "123e4567-e89b-12d3-a456-556642440000",
-  "type" : "COURSE",
-  "name" : "Debattkafe",
-  "start-time" : "2022-11-13T15:00",
-  "end-time" : "2022-11-13T23:59",
-  "location" : "Gløs293",
-  "author" : "SAMFUNDET@samf.no",
-  "description" : "Bli med på politisk nachspiel etter Onsdagsdebatten: Monarkiet. Etter onsdagsdebatten rigges det det om til debattkafé hvor temaet fra debatten, monarkiet, kan diskuteres videre.",
   "users" : [ "test@test.test" ]
 }, {
   "id" : "123e4567-e89b-12d3-a456-566642440000",
@@ -97,5 +87,15 @@
   "location" : "Selskapssiden",
   "author" : "SAMFUNDET@samf.no",
   "description" : "Samfundet adopterer en av Trondheims mange søndagstradisjoner og “BOBLESØNDAG” vil holdes i Selskapssiden, hver eneste uke! Hver søndag kl. 17-22 holdes BOBLESØNDAG i Selskapssiden. Her finner du bobler i en hyggelig atmosfære! Ta med deg nære, kjære og fjerne og møt opp i Selskapssiden for å avslutte uken på riktig måte. Vi sees!!",
-  "users" : [ "test@test.test" ]
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-456642440000",
+  "type" : "QUIZ",
+  "name" : "Musikkquiz",
+  "start-time" : "2022-10-28T20:00",
+  "end-time" : "2022-10-28T22:00",
+  "location" : "Edgar",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Musikkquizen er en perfekt måte å sparke i gang fredagskveldene på, enten du er musikknerd eller bare er på utkikk etter en utfordring. Alle er velkomne for å bryne seg på rykende ferske kategorier i Edgar, alles favoritt-kafé!",
+  "users" : [ ]
 } ]

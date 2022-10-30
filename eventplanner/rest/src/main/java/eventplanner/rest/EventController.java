@@ -47,6 +47,7 @@ public class EventController {
     public boolean add(@RequestBody Event event) {
         try {
             IOUtil.updateEvent(event, null);
+            System.out.println("Updated events succesfully. Should return true;");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

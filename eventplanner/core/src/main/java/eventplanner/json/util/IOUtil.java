@@ -117,6 +117,42 @@ public class IOUtil {
         return users.isEmpty() ? null : users.get(0);
     }
 
+    /** Method for loading/returning all users in file.
+     * 
+     * 
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static Collection<User> loadAllUsers(final File file) throws IOException{
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        return reader.load(file);
+    }
+
+    /** Method for overwriting userfile.
+     * 
+     * 
+     * @param usersthe      users that overwrites the previous file
+     * @param file          file to overwrite
+     * @throws IOException
+     */
+    public static void overwriteUsers(List<User> users, File file) throws IOException {
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(users, file);
+    }
+
+    /** Method for overwriting eventsfile.
+     * 
+     * 
+     * @param events        the events that overwrites the previous file
+     * @param file          file to overwrite
+     * @throws IOException
+     */
+    public static void overwriteEvents(List<Event> events, File file) throws IOException {
+        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
+        writer.save(events, file);
+    }
+
     /**
      * Loads events from file, matching the provided email addresses.
      * If file is null, the file defaults to the resources directory.

@@ -65,7 +65,7 @@ public class EventDeserializer extends JsonDeserializer<Event> {
              * e.printStackTrace();
              * }
              */
-            // Try to add dummy users
+            // Try to add dummy users TODO
             
             ((ArrayNode) usersNode).forEach(element -> {
                 dummyUsers.add(new User(
@@ -74,7 +74,6 @@ public class EventDeserializer extends JsonDeserializer<Event> {
                         false));
             });
         }
-
         return new Event(id, eventType, name, startDateTime, endDateTime, location, dummyUsers, authorEmail, description);
     }
 

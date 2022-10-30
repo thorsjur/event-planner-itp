@@ -13,6 +13,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
 
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,11 +31,12 @@ class LoginScreenTest extends ApplicationTest {
     @AfterAll
     public static void tearDown() {
         FxuiTestUtil.cleanUpUsers();
+        FxuiTestUtil.cleanUpEvents();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+        final FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("LoginScreen.fxml", LoginController.class, null, new LocalDataAccess());
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
@@ -66,12 +68,12 @@ class LoginScreenTest extends ApplicationTest {
         String password = "password";
         registerUser(email, password);
         clickOn("#logOutButton");
-
+        
         // Log in to user with non equal password
         clickOn("#emailField").write(email);
         clickOn("#passwordField").write(password + "opsie");
         clickOn("#loginButton");
-
+        
         // Wrong password
         String errorText1 = lookup("#errorOutput").queryAs(Label.class).getText();
         assertEquals("Wrong username or password. (1)", errorText1, "Error output should update");
