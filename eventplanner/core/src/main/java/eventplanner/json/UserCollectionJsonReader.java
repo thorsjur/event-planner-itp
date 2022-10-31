@@ -8,6 +8,7 @@ import eventplanner.json.util.IOUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,6 +18,13 @@ import java.util.Collection;
 public class UserCollectionJsonReader {
 
     private static final CustomObjectMapper USER_MAPPER = new CustomObjectMapper();
+    private File file;
+
+    public UserCollectionJsonReader() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "user.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        file = path.toFile();
+    }
 
     /**
      * Method to load a collection of users from a JSON file.
@@ -29,7 +37,7 @@ public class UserCollectionJsonReader {
      */
     public Collection<User> load(File file) throws IOException {
         if (file == null) {
-            file = UserCollectionJsonWriter.DEFAULT_FILE;
+            file = this.file;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
