@@ -22,9 +22,9 @@ import eventplanner.json.util.IOUtil;
 public class EventController {
 
     @GetMapping
-    public Event event(@RequestParam String eventName) {
+    public Event event(@RequestParam String id) {
         try {
-            return IOUtil.loadEventMatchingName(eventName, null);
+            return IOUtil.loadEventMatchingId(id, null);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -69,7 +69,6 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable String id) {
-
         try {
             IOUtil.deleteEventFromFile(id, null);
             return true;
