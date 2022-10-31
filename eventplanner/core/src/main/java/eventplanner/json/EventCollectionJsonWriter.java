@@ -3,6 +3,7 @@ package eventplanner.json;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,11 +20,15 @@ public class EventCollectionJsonWriter {
     /* public static final String DIRECTORY_PATH = "src/main/resources/data/";
     public static final String DEFAULT_FILE_NAME = "event"; */
     public static final String FILE_EXTENSION = ".json";
-    public static final File DEFAULT_FILE = Paths
-            .get("eventplanner", "core", "src", "main", "java", "resources", "data", "event.json")
-            .toFile();
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
+    private File file;
+
+    public EventCollectionJsonWriter() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        file = path.toFile();
+    }
 
     /**
      * Method to save a collection of events to a JSON file.
@@ -35,7 +40,7 @@ public class EventCollectionJsonWriter {
      */
     public void save(final Collection<Event> collection, File file) throws IOException {
         if (file == null) {
-            file = DEFAULT_FILE;
+            file = this.file;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
