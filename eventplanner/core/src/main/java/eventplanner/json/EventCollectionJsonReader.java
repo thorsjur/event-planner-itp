@@ -3,6 +3,7 @@ package eventplanner.json;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,6 +17,13 @@ import eventplanner.json.util.IOUtil;
 public class EventCollectionJsonReader {
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
+    private File file;
+
+    public EventCollectionJsonReader() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        file = path.toFile();
+    }
 
     /**
      * Method to load a collection of events from a JSON file.
@@ -27,8 +35,9 @@ public class EventCollectionJsonReader {
      * @throws IOException on low level I/O errors
      */
     public Collection<Event> load(File file) throws IOException {
+        
         if (file == null) {
-            file = EventCollectionJsonWriter.DEFAULT_FILE;
+            file = this.file;
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
@@ -49,4 +58,6 @@ public class EventCollectionJsonReader {
     public Collection<Event> load() throws IOException {
         return load(null);
     }
+
+    
 }

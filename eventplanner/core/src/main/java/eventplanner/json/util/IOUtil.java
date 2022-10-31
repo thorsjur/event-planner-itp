@@ -2,6 +2,8 @@ package eventplanner.json.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -315,5 +317,27 @@ public class IOUtil {
 
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
         writer.save(loadEvents, file);
+    }
+
+    /**
+     * Returns a path relative to project root directory.
+     * Each segment given is resolved to root.
+     * 
+     * @param segments the pathing segments from project root
+     */
+    public static Path getPathRelativeToProjectRoot(String... segments) {
+        Path path = getProjectRoot();
+        for (String segment : segments) {
+            path = path.resolve(segment);
+        }
+        return path;
+    }
+
+    private static Path getProjectRoot() {
+        Path path = Paths.get(".").normalize().toAbsolutePath();
+        while(!path.endsWith("gr2225")) {
+            path = path.getParent();
+        }
+        return path;
     }
 }
