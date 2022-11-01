@@ -70,6 +70,16 @@ Ideally we would add functionality for sending request with an api-key. The key 
 
 We will not implement api-keys, but if the server were to run on an remote server, this is functionality we would implement.
 
+## Rest module Architecture
+![Architecture diagram](../../docs/diagrams/rest_architecture.png)
+
+**Legend:**
+ - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.
+    - Arrows from a module indicate that all layers in the module has the dependency
+ - The "box" named *eventplanner* represents the collection of local modules.
+ - The components with a symbol in the top-right corner represents modules, such as *javafx* and *core*.
+ - The folders represent the current packages or layers of the modules.
+
 ## Reports
 
 Spotbugs and checkstyle:

@@ -56,7 +56,7 @@ The distinction between local and remote data access might seem irrelevant consi
 This feature also gives the user possibility for running the application offline. However, the data-files are not the same as when remote data-access is used.
 
 ## FXUI module Architecture
-![Architecture diagram](../../docs/diagrams/architecture.png)
+![Architecture diagram](../../docs/diagrams/fxui_architecture.png)
 
 **Legend:**
  - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.

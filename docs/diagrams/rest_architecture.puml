@@ -1,0 +1,43 @@
+
+@startuml rest_architecture
+title rest dependency diagram
+skinparam useBetaStyle true
+
+<style>
+    .package {
+        BackgroundColor Khaki
+    }
+</style>
+
+skinparam component {
+  ArrowColor #FF6655
+}
+
+node spring {
+    component [boot] as boot {
+        package autoconfigure
+    }
+    component [context] as ctx
+    component [web] as web
+    component [beans] as beans
+    component [core] as c2
+
+}
+
+component [core] {
+    package eventplanner.core
+    package eventplanner.json
+}
+
+component [rest] {
+    package eventplanner.rest
+
+}
+
+component [jackson] as jack
+
+rest .> jack
+rest ..> spring
+rest ...> core
+
+@enduml

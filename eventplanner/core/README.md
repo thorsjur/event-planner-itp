@@ -44,7 +44,7 @@ This layer contains classes that represent the core logic of the project. The Ev
 The user-class can be used to initiate an user object. This object will have the property name.
 
 ## Module Architecture
-![Architecture diagram](../../docs/diagrams/architecture.png)
+![Architecture diagram](../../docs/diagrams/core_architecture.png)
 
 **Legend:**
  - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.
