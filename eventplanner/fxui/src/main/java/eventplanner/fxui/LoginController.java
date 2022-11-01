@@ -1,18 +1,14 @@
 package eventplanner.fxui;
 
 import eventplanner.core.User;
-import eventplanner.core.util.UserUtil;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 
 /**
  * Controller for startup view.
@@ -67,7 +63,7 @@ public class LoginController {
             return null;
         }
 
-        if (user.password().equals(UserUtil.passwordHash(password))) {
+        if (user.password().equals(password)) {
             System.out.println("Found user, correct password.");
             return user;
         } else {

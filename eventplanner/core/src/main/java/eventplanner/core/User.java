@@ -1,6 +1,5 @@
 package eventplanner.core;
 
-import eventplanner.core.util.UserUtil;
 import eventplanner.core.util.Validation;
 
 /**
@@ -27,7 +26,7 @@ public record User(String email, String password, boolean above18) {
         }
 
         this.email = email;
-        this.password = UserUtil.passwordHash(password);
+        this.password = password;
         this.above18 = above18;
     }
 }
