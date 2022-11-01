@@ -22,6 +22,20 @@ public class ValidationTest {
 
     private static final int NUMBER_OF_STRINGS = 20;
     
+    @Test
+    public void testErrorType_hasErrMessage() {
+        for (Validation.ErrorType type : Validation.ErrorType.values()) {
+            assertTrue(type.errMessage.length() > 0);
+        }
+    }
+
+    @Test
+    public void testIsValidTextInput_throwsOnInvalidInputType() {
+        final String input = "This is an input";
+        assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.EVENT_TYPE));
+        assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.DATE));
+    }
+
     @ParameterizedTest
     @NullSource
     public void testIsValidTextInput_throwsOnNullInput(String input) {
@@ -65,9 +79,21 @@ public class ValidationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "12:60", "00;00", "24:00", "31:00", "59:12", ":", "1:2", "233:2", "ac:dc" })
+    @ValueSource(strings = { "12:60", "00;00", "24:00", "31:00", "-01:-2", ":", "1:2", "233:2", "ac:dc" })
     public void testIsValidTextInput_returnsFalseOnInvalidTimeStrings(String input) {
         assertFalse(Validation.isValidTextInput(input, InputType.TIME));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    public void testIsValidEventType_falseOnNullInput(String input) {
+        assertFalse(Validation.isValidEventType(input));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "Time", "time", "rhyme", "", "\n", " ", "1", "23" })
+    public void testIsValidEventType_returnsFalseOnInvalidType(String input) {
+        assertFalse(Validation.isValidEventType(input));
     }
 
     @Test
@@ -100,6 +126,16 @@ public class ValidationTest {
         assertTrue(Validation.isStartBeforeEnd(start2, startTime2, end2, endTime2));
     }
 
+    @Test
+    public void isStartBeforeEnd_shouldReturnTrueOnInvalidInputs() {
+        LocalDate start = LocalDate.of(2020, 8, 14);
+        LocalDate end = LocalDate.of(2010, 8, 15);
+        String startTime = "12:243";
+        String endTime = "13:00";
+        assertTrue(Validation.isStartBeforeEnd(start, startTime, end, endTime));
+        assertTrue(Validation.isStartBeforeEnd(null, null, null, null));
+    }
+
 
     private static Stream<String> provideValidLocationStrings() {
         return provideStrings(MIN_LOCATION_LENGTH, 100, NUMBER_OF_STRINGS);
@@ -124,8 +160,9 @@ public class ValidationTest {
     }
 
     private static String getRandomString(int minLength, int maxLength) {
-        Random random = new Random();
-        int length = random.nextInt(minLength, maxLength + 1);
+        final long SEED = 15150242;
+        Random random = new Random(SEED);
+        int length = random.nextInt((maxLength - minLength) + 1) + minLength;
 
         return random.ints(0, 256)
             .limit(length)

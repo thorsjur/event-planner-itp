@@ -1,0 +1,101 @@
+[ {
+  "id" : "123e4567-e89b-12d3-a456-356642440000",
+  "type" : "COURSE",
+  "name" : "Paint & Sip",
+  "start-time" : "2022-11-15T18:00",
+  "end-time" : "2022-11-15T22:00",
+  "location" : "Bodegaen",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Kom og ta et glass vin mens du kaster litt farger på et lerret.",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-256642440000",
+  "type" : "CONCERT",
+  "name" : "UNDERGRUNN",
+  "start-time" : "2022-12-30T21:00",
+  "end-time" : "2022-12-30T23:59",
+  "location" : "Storsalen",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Rapkometene Undergrunn slapp sitt nye album UNDERGRUNN den 6. april. I over 10 låter utforsker ungguttene en rekke sjangere samtidig som de leverer tekster på skyhøyt nivå. Over lekne beats fra Loverboy og Rikpappa maler undergrunn bilder om et liv i full fart der flex, sex og rus går hånd i hånd med kjærlighet, selvransakelse og melankoli.",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-156642440000",
+  "type" : "COURSE",
+  "name" : "IT-course",
+  "start-time" : "2023-01-10T12:15",
+  "end-time" : "2023-01-10T18:00",
+  "location" : "Realfagsbygget",
+  "author" : "NTNU@ntnu.no",
+  "description" : "Course in OOP for first year students in datatek",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-956642440000",
+  "type" : "CONCERT",
+  "name" : "Emma Steinbakken",
+  "start-time" : "2023-08-17T22:00",
+  "end-time" : "2023-08-18T02:00",
+  "location" : "Storsalen",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Emma Steinbakken gjester Storsalen! Vi gleder oss.",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-856642440000",
+  "type" : "PARTY",
+  "name" : "Party at the Villé",
+  "start-time" : "2023-08-20T11:22",
+  "end-time" : "2023-08-22T23:59",
+  "location" : "The Crib",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "No description needed",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-556642440000",
+  "type" : "COURSE",
+  "name" : "Debattkafe",
+  "start-time" : "2022-11-13T15:00",
+  "end-time" : "2022-11-13T23:59",
+  "location" : "Gløs293",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Bli med på politisk nachspiel etter Onsdagsdebatten: Monarkiet. Etter onsdagsdebatten rigges det det om til debattkafé hvor temaet fra debatten, monarkiet, kan diskuteres videre.",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-756642440000",
+  "type" : "QUIZ",
+  "name" : "Tirsdagsquiz",
+  "start-time" : "2022-11-08T18:00",
+  "end-time" : "2022-11-08T20:00",
+  "location" : "Edgar",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Edgar har lange tradisjoner for å arrangere den prestisjetunge Tirsdagsquizen. Det blir nok en gang triviell kappestrid og måling av intellektuell kapasitet.",
+  "users" : [ "test@example.com" ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-656642440000",
+  "type" : "PARTY",
+  "name" : "Temafest: Halloween",
+  "start-time" : "2022-10-31T22:00",
+  "end-time" : "2022-11-01T02:00",
+  "location" : "Hele huset",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Den skumleste kvelden i året står for tur med Halloweenfest på Samfundet den 31. oktober! Samfundets mest populære temafest er endelig her igjen! Det blir stas og fjas med forskjellig tema i alle lokaler.",
+  "users" : [ "test@test.test" ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-566642440000",
+  "type" : "PARTY",
+  "name" : "BOBLESØNDAG",
+  "start-time" : "2022-10-30T17:00",
+  "end-time" : "2022-10-30T22:00",
+  "location" : "Selskapssiden",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Samfundet adopterer en av Trondheims mange søndagstradisjoner og “BOBLESØNDAG” vil holdes i Selskapssiden, hver eneste uke! Hver søndag kl. 17-22 holdes BOBLESØNDAG i Selskapssiden. Her finner du bobler i en hyggelig atmosfære! Ta med deg nære, kjære og fjerne og møt opp i Selskapssiden for å avslutte uken på riktig måte. Vi sees!!",
+  "users" : [ ]
+}, {
+  "id" : "123e4567-e89b-12d3-a456-456642440000",
+  "type" : "QUIZ",
+  "name" : "Musikkquiz",
+  "start-time" : "2022-10-28T20:00",
+  "end-time" : "2022-10-28T22:00",
+  "location" : "Edgar",
+  "author" : "SAMFUNDET@samf.no",
+  "description" : "Musikkquizen er en perfekt måte å sparke i gang fredagskveldene på, enten du er musikknerd eller bare er på utkikk etter en utfordring. Alle er velkomne for å bryne seg på rykende ferske kategorier i Edgar, alles favoritt-kafé!",
+  "users" : [ ]
+} ]
