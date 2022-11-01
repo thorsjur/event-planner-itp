@@ -28,11 +28,13 @@ public class LocalDataAccess implements DataAccess{
     }
 
     @Override
-    public void createUser(User user) {
+    public boolean createUser(User user) {
         try {
             IOUtil.appendUserToFile(user, userFile);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

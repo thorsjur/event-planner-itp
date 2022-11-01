@@ -10,7 +10,7 @@ public interface DataAccess {
 
     public User getUser(String email);
 
-    public void createUser(User user);
+    public boolean createUser(User user);
 
     public Collection<Event> getAllEvents();
 

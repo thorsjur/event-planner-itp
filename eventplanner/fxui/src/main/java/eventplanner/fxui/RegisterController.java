@@ -2,10 +2,14 @@ package eventplanner.fxui;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 import eventplanner.core.User;
 import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.core.util.Validation;
+import eventplanner.fxui.util.InputType;
+import eventplanner.fxui.util.Validation;
+import eventplanner.fxui.util.Validation.ErrorType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +39,7 @@ public class RegisterController {
     private DatePicker birthDatePicker;
 
     @FXML
-    private Label errorOutput;
+    private Label errorOutput, errorCounter;
 
     private DataAccess dataAccess;
 
@@ -43,36 +47,20 @@ public class RegisterController {
         this.dataAccess = dataAccess;
     }
 
-    private User createUser(String email, String password, boolean isAbove18) {
-        User user;
-        if (dataAccess.getUser(email) == null) {
-            try {
-                user = new User(email, password, isAbove18);
-                dataAccess.createUser(user);
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-                errorOutput.setText(ControllerUtil.SERVER_ERROR);
-                return null;
-            }
-        } else {
-            user = null;
-        }
-
-        return user;
+    @FXML
+    public void initialize() {
+        // Adds listeners to all input fields that signals input-validity to the user.
+        ControllerUtil.addValidationFocusListener(emailField, InputType.EMAIL);
+        ControllerUtil.addValidationFocusListener(passwordField, InputType.PASSWORD);
+        ControllerUtil.addValidationFocusListener(birthDatePicker, InputType.BIRTH_DATE);
     }
 
     @FXML
     private void handleCreateUser() {
         try {
-            if ((emailField.getText().isEmpty() 
-                    || passwordField.getText().isBlank()
-                    || birthDatePicker.getValue() == null
-                    || !(validateInput(emailField.getText(), passwordField.getText(), birthDatePicker.getValue())))) {
-                errorOutput.setText("Invalid input; " + ++counter);
-                return;
-            }
-        } catch (Exception e) {
-            errorOutput.setText("Invalid input or servererror; " + ++counter);
+            validateUserInputs();
+        } catch (IllegalArgumentException e) {
+            return;
         }
 
         User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(birthDatePicker.getValue()));
@@ -81,8 +69,26 @@ public class RegisterController {
             FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, this.dataAccess);
             ControllerUtil.setSceneFromChild(loader, createUserButton);
         } else {
-            errorOutput.setText("User already exists or invalid input. (" + Integer.toString(++counter) + ")");
+            errorOutput.setText("User already exists!");
+            incrementErrorCounter();
         }
+    }
+
+    private User createUser(String email, String password, boolean isAbove18) {
+        User user;
+        if (dataAccess.getUser(email) == null) {
+            user = new User(email, password, isAbove18);
+            boolean created = dataAccess.createUser(user);
+
+            if (!created) {
+                errorOutput.setText(ControllerUtil.SERVER_ERROR);
+                return null;
+            }
+        } else {
+            user = null;
+        }
+
+        return user;
     }
 
     @FXML
@@ -97,8 +103,38 @@ public class RegisterController {
         Platform.exit();
     }
 
-    private static boolean validateInput(String email, String password, LocalDate date) {
-        return (Validation.isValidEmail(email) && Validation.isValidPassword(password) && Validation.isValidDate(date));
+    private void validateUserInputs() {
+        List<ErrorType> errors = new ArrayList<>();
+
+        if (!Validation.isValidTextInput(emailField.getText(), InputType.EMAIL)) {
+            errors.add(Validation.ErrorType.INVALID_EMAIL);
+        }
+
+        if (!Validation.isValidTextInput(passwordField.getText(), InputType.PASSWORD)) {
+            errors.add(Validation.ErrorType.INVALID_PASSWORD);
+        }
+
+        if (!Validation.isValidDateInput(birthDatePicker.getValue(), InputType.BIRTH_DATE)) {
+            errors.add(Validation.ErrorType.INVALID_BIRTH_DATE);
+        }
+
+        if (errors.size() > 0) {
+            displayErrorMessages(errors);
+            incrementErrorCounter();
+            throw new IllegalArgumentException("Invalid input(s)!");
+        }
+    }
+
+    private void incrementErrorCounter() {
+        errorCounter.setText("(" + ++counter + ")");
+    }
+
+    private void displayErrorMessages(List<ErrorType> errors) {
+        StringBuilder sb = new StringBuilder();
+        for (ErrorType error : errors) {
+            sb.append(error.errMessage + "\n");
+        }
+        errorOutput.setText(sb.toString());
     }
 
     private static boolean isOlderThan18(LocalDate localDate) {

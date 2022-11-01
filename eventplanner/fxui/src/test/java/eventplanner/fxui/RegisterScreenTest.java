@@ -46,14 +46,14 @@ class RegisterScreenTest extends ApplicationTest {
     @Test
     public void testNoInput() {
         clickOn("#createUserButton");
-        String errorText = lookup("#errorOutput").queryAs(Label.class).getText();
-        assertEquals("Invalid input; 1", errorText, "Error output should update");
+        String errorText = lookup("#errorCounter").queryAs(Label.class).getText();
+        assertEquals("(1)", errorText, "Error output should update");
         
         DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
         dp.setValue(LocalDate.of(2001, 8, 4));
         clickOn("#createUserButton");
-        String errorText2 = lookup("#errorOutput").queryAs(Label.class).getText();
-        assertEquals("Invalid input; 2", errorText2, "Error output should update");
+        String errorText2 = lookup("#errorCounter").queryAs(Label.class).getText();
+        assertEquals("(2)", errorText2, "Error output should update");
     }
 
     @Test

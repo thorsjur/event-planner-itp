@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -23,6 +24,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
@@ -43,6 +48,7 @@ public class ControllerUtil {
             loader.load();
             child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("IOException occurred while loading scene.");
         }
     }
@@ -208,6 +214,97 @@ public class ControllerUtil {
         return filteredEvents;
     }
 
+    public static void addValidationFocusListener(Control control, InputType type) {
+        control.focusedProperty().addListener(getValidationListener(control, type));
+    }
+
     public static String SERVER_ERROR = "Server error. Please try again.";
 
+    private static final String COLOUR_VALID = "#228C22";
+    private static final String COLOUR_INVALID = "#B33333";
+
+    private static void handleInputField(Control inputField, boolean isValid) {
+        String hex = isValid ? COLOUR_VALID : COLOUR_INVALID;
+
+        if (inputField instanceof TextField) {
+            TextField tf = (TextField) inputField;
+            tf.setStyle("-fx-text-box-border: " + hex);
+
+        } else if (inputField instanceof DatePicker) {
+            DatePicker dp = (DatePicker) inputField;
+            dp.setStyle("-fx-border-color: " + hex);
+
+        } else {
+            throw new IllegalArgumentException("Only TextField and DatePicker are supported by this method");
+        }
+    }
+
+    /**
+     * Getter for ValidationListener
+     * 
+     * @param control input control
+     * @param type    specified type of input
+     * @return ChangeListener that signals validity of input
+     */
+    private static ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
+        validateArguments(control, type);
+
+        switch (type) {
+            case DATE:
+            case BIRTH_DATE:
+                return getDatePickerValidationListener((DatePicker) control, type);
+            case EVENT_TYPE:
+                return null;
+            default: // All text inputs are handled by the default case
+                return getTextFieldValidationListener((TextField) control, type);
+        }
+    }
+
+    private static ChangeListener<Boolean> getTextFieldValidationListener(
+            TextField field,
+            InputType type) {
+        return ControllerUtil.getValidationFocusListener(
+                () -> {
+                    return Validation.isValidTextInput(field.getText(), type);
+                },
+                () -> handleInputField(field, true),
+                () -> handleInputField(field, false));
+    }
+
+    private static ChangeListener<Boolean> getDatePickerValidationListener(DatePicker dp, InputType type) {
+                return ControllerUtil.getValidationFocusListener(
+                        () -> {
+                            return Validation.isValidDateInput(dp.getValue(), type);
+                        },
+                        () -> handleInputField(dp, true),
+                        () -> handleInputField(dp, false));
+    }
+
+    /**
+     * Asserts that the given arguments are compatible.
+     * 
+     * @param control                   Input field
+     * @param type                      Input type
+     * @throws IllegalArgumentException if fields are not compatible
+     */
+    private static void validateArguments(Control control, InputType type) {
+        if (control == null || type == null) {
+            throw new IllegalArgumentException("Null inputs are not permitted");
+        }
+        Set<InputType> textInputs = Set.of(
+                InputType.DESCRIPION,
+                InputType.LOCATION,
+                InputType.NAME,
+                InputType.EMAIL,
+                InputType.TIME);
+        if (!(control instanceof TextField) && textInputs.contains(type)) {
+            throw new IllegalArgumentException("Only text fields support this input type.");
+        } else if (!(control instanceof DatePicker) && (type == InputType.DATE || type == InputType.BIRTH_DATE)) {
+            throw new IllegalArgumentException("Only date pickers support this input type.");
+        } else if (!(control instanceof ComboBox) && type == InputType.EVENT_TYPE) {
+            throw new IllegalArgumentException("Only combo boxes support this input type.");
+        } else if (!(control instanceof PasswordField) && type == InputType.PASSWORD) {
+            throw new IllegalArgumentException("Only PasswordFields support this input type.");
+        }
+    }
 }

@@ -38,8 +38,8 @@ public class ValidationTest {
 
     @ParameterizedTest
     @NullSource
-    public void testIsValidTextInput_throwsOnNullInput(String input) {
-        assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.NAME));
+    public void testIsValidTextInput_returnsFalseOnNullInput(String input) {
+        assertFalse(Validation.isValidTextInput(input, InputType.NAME));
     }
 
     @ParameterizedTest
