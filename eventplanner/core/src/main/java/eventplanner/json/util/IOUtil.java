@@ -312,7 +312,7 @@ public class IOUtil {
             uc.remove(uc.stream()
                     .filter(u -> u.email().equals(email))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("No such event is saved")));
+                    .orElseThrow(() -> new IllegalStateException("No such user is saved")));
         };
         alterUsers(consumer, file);
     }
