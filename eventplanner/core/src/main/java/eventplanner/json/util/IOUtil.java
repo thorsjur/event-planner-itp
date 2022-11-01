@@ -156,32 +156,32 @@ public class IOUtil {
     }
 
     /**
-     * Loads events from file, matching the provided email addresses.
+     * Loads events from file, matching the provided IDs.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param name the collection of names
+     * @param id the collection of IDs
      * @param file the provided file
-     * @return list of events matching names
+     * @return list of events matching IDs
      * @throws IOException on I/O error
      */
-    public static List<Event> loadEventsMatchingName(final List<String> names, final File file) throws IOException {
+    public static List<Event> loadEventsMatchingId(final List<String> ids, final File file) throws IOException {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         return reader.load(file).stream()
-                .filter(event -> names.contains(event.getName()))
+                .filter(event -> ids.contains(event.getId().toString()))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Loads event from file, matching the provided name.
+     * Loads event from file, matching the provided ID.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param name the name to match
+     * @param id the id to match
      * @param file the provided file
-     * @return the event matching the event or null if no such user exists
+     * @return the event matching the id or null if no such user exists
      * @throws IOException on I/O error
      */
-    public static Event loadEventMatchingName(final String name, final File file) throws IOException {
-        List<Event> events = loadEventsMatchingName(List.of(name), file);
+    public static Event loadEventMatchingId(final String id, final File file) throws IOException {
+        List<Event> events = loadEventsMatchingId(List.of(id), file);
         return events.isEmpty() ? null : events.get(0);
     }
 
@@ -296,9 +296,25 @@ public class IOUtil {
             ec.remove(ec.stream()
                     .filter(e -> e.getId().equals(UUID.fromString(id)))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("No such event is save")));
+                    .orElseThrow(() -> new IllegalStateException("No such event is saved")));
         };
         alterEvents(consumer, file);
+    }
+
+    /**
+     * Removes the provided event from the provided data file
+     *
+     * @param event name of the event to be removed
+     * @throws IOException
+     */
+    public static void deleteUserFromFile(String email, File file) throws IOException {
+        Consumer<Collection<User>> consumer = uc -> {
+            uc.remove(uc.stream()
+                    .filter(u -> u.email().equals(email))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No such event is saved")));
+        };
+        alterUsers(consumer, file);
     }
 
     /**
@@ -317,6 +333,24 @@ public class IOUtil {
 
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
         writer.save(loadEvents, file);
+    }
+
+    /**
+     * Changes the saved users on the basis of the specified consumer.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param consumer a consumer that alters the collection of users in some way
+     * @param file     the provided file
+     * @throws IOException on I/O error
+     */
+    private static void alterUsers(Consumer<Collection<User>> consumer, final File file) throws IOException {
+        UserCollectionJsonReader reader = new UserCollectionJsonReader();
+        Collection<User> loadUsers = reader.load(file);
+
+        consumer.accept(loadUsers);
+
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(loadUsers, file);
     }
 
     /**
