@@ -42,7 +42,8 @@ public class App extends Application {
         this.scene = new Scene(parent);
 
         stage.setResizable(false);
-        stage.setTitle("Event Planner");
+        String title = (dataAccess.isRemote()) ? "Event Planner - Connected" : "Event Planner - Local data access.";
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
     }

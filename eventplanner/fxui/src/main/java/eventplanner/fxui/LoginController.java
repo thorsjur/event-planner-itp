@@ -37,15 +37,6 @@ public class LoginController {
 
     public LoginController(DataAccess dataAccess) {
         this.dataAccess = dataAccess;
-        if (!dataAccess.isRemote()) {
-            // Alert alert = new Alert(
-            // AlertType.CONFIRMATION,
-            // "Server not connected. Using local data access.",
-            // ButtonType.OK);
-            // alert.setGraphic(null);
-            // alert.setHeaderText(null);
-            // alert.showAndWait(); TODO - need to implement tests with this.
-        }
     }
 
     @FXML
