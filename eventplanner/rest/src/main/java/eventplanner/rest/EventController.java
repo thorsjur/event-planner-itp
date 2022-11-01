@@ -21,7 +21,7 @@ import eventplanner.json.util.IOUtil;
 @RequestMapping("/event")
 public class EventController {
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Event event(@RequestParam String id) {
         try {
             return IOUtil.loadEventMatchingId(id, null);
@@ -31,7 +31,8 @@ public class EventController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping(path = "/all",
+    produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Event> all() {
         try {
             return IOUtil.loadAllEvents(null);
@@ -42,8 +43,7 @@ public class EventController {
     }
 
     @PutMapping(path = "/update",
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    produces = MediaType.APPLICATION_JSON_VALUE)
+    consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean add(@RequestBody Event event) {
         try {
             IOUtil.updateEvent(event, null);

@@ -22,7 +22,8 @@ public class UserController {
 		return;
 	}
 
-	@GetMapping("/get")
+	@GetMapping(path = "/get",
+	produces = MediaType.APPLICATION_JSON_VALUE)
 	public User user(@RequestParam(value = "email", defaultValue = " ") String email) {
 		try {
 			return IOUtil.loadUserMatchingEmail(email, null);
