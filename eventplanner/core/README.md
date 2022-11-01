@@ -9,6 +9,8 @@ Core module contains core layer and persistence layer.
 - The persistence layer can be found at [/src/main/java/eventplanner/json](./src/main/java/eventplanner/json/)
 - The core layer can be found at [/src/main/java/eventplanner/core](./src/main/java/eventplanner/core/)
 
+We found it practical to create a common module for both the persistance and core -logic. The reason for this is that the persistence layer is very dependent on the core logic. And the core logic is mainly used in the persistence layer.
+
 ### Persistence layer
 
 The persistence layer can be found [here](./src/main/java/eventplanner/json/).

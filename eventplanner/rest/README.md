@@ -63,6 +63,13 @@ This class implements methodes for:
 - Getting single user
 - Creating users
 
+## Enchancement - API-key
+As per now, the api-server is accesible by anyone. This is bad practice for api-servers.
+
+Ideally we would add functionality for sending request with an api-key. The key would then be verified at the api-server. The response would depond on wether the given key is associated with access to the requested data.
+
+We will not implement api-keys, but if the server were to run on an remote server, this is functionality we would implement.
+
 ## Reports
 
 Spotbugs and checkstyle:
