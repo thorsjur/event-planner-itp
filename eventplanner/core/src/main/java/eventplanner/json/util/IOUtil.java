@@ -49,10 +49,10 @@ public class IOUtil {
     }
 
     /**
-     * method that reads the current saved events, and appends the new events, then
+     * method that reads the current saved users, and appends the new users, then
      * writes back to file.
      * 
-     * @param events the collection of events to append to file
+     * @param users the collection of users to append to file
      * @param file   the file to append to
      * @throws IOException on I/O error
      */
@@ -119,36 +119,36 @@ public class IOUtil {
         return users.isEmpty() ? null : users.get(0);
     }
 
-    /** Method for loading/returning all users in file.
+    /**
+     * Method for loading/returning all users from a file.
      * 
-     * 
-     * @param file
-     * @return
-     * @throws IOException
+     * @param file the file to read from
+     * @return collection of users
+     * @throws IOException on I/O error  
      */
-    public static Collection<User> loadAllUsers(final File file) throws IOException{
+    public static Collection<User> loadAllUsers(final File file) throws IOException {
         UserCollectionJsonReader reader = new UserCollectionJsonReader();
         return reader.load(file);
     }
 
-    /** Method for overwriting userfile.
+    /**
+     * Method for overwriting userfile.
      * 
-     * 
-     * @param usersthe      users that overwrites the previous file
-     * @param file          file to overwrite
-     * @throws IOException
+     * @param users the users that overwrite the previous file
+     * @param file the file to overwrite
+     * @throws IOException on I/O error
      */
     public static void overwriteUsers(List<User> users, File file) throws IOException {
         UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
         writer.save(users, file);
     }
 
-    /** Method for overwriting eventsfile.
+    /**
+     * Method for overwriting eventsfile.
      * 
-     * 
-     * @param events        the events that overwrites the previous file
-     * @param file          file to overwrite
-     * @throws IOException
+     * @param events the events that overwrites the previous file
+     * @param file the file to overwrite
+     * @throws IOException on I/O error
      */
     public static void overwriteEvents(List<Event> events, File file) throws IOException {
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
@@ -185,6 +185,13 @@ public class IOUtil {
         return events.isEmpty() ? null : events.get(0);
     }
 
+    /**
+     * Method for loading/returning all events from a file.
+     * 
+     * @param file the file to read from
+     * @return collection of events
+     * @throws IOException on I/O error  
+     */
     public static Collection<Event> loadAllEvents(final File file) throws IOException {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         return reader.load(file);
@@ -265,9 +272,9 @@ public class IOUtil {
     /**
      * Updates event users.
      * 
-     * @param event
-     * @param file
-     * @throws IOException
+     * @param event the event to update
+     * @param file the provided file
+     * @throws IOException on I/O error
      */
     public static void updateEvent(Event event, File file) throws IOException {
         deleteEventFromFile(event, file);
@@ -275,10 +282,10 @@ public class IOUtil {
     }
 
     /**
-     * Removes the provided event from provided data file
+     * Removes the provided event from provided data file.
      *
      * @param event Event to be removed from file
-     * @throws IOException
+     * @throws IOException on I/O error
      */
     public static void deleteEventFromFile(Event event, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> ec.remove(event);
@@ -286,10 +293,11 @@ public class IOUtil {
     }
 
     /**
-     * Removes the provided event from the provided data file
+     * Removes the event with matching id from the provided data file.
      *
-     * @param event name of the event to be removed
-     * @throws IOException
+     * @param id the id of the event to delete
+     * @param file the provided file
+     * @throws IOException on I/O error
      */
     public static void deleteEventFromFile(String id, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> {
@@ -358,6 +366,7 @@ public class IOUtil {
      * Each segment given is resolved to root.
      * 
      * @param segments the pathing segments from project root
+     * @return the path relative to project root directory
      */
     public static Path getPathRelativeToProjectRoot(String... segments) {
         Path path = getProjectRoot();
@@ -369,7 +378,7 @@ public class IOUtil {
 
     private static Path getProjectRoot() {
         Path path = Paths.get(".").normalize().toAbsolutePath();
-        while(!path.endsWith("gr2225")) {
+        while (path != null && !path.endsWith("gr2225")) {
             path = path.getParent();
         }
         return path;

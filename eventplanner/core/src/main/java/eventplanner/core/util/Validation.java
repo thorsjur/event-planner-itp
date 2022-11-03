@@ -7,7 +7,8 @@ import java.time.LocalDate;
  */
 public class Validation {
 
-    public static final String EMAIL_REGEX = "^(([A-Za-z\\d]|[\\.\\-_\\+][A-Za-z\\d]){1,100}@[A-Za-z\\d]{1,100}(\\.[A-Za-z]{2,10}){1,2})$";
+    public static final String EMAIL_REGEX = 
+            "^(([A-Za-z\\d]|[\\.\\-_\\+][A-Za-z\\d]){1,100}@[A-Za-z\\d]{1,100}(\\.[A-Za-z]{2,10}){1,2})$";
     public static final int MIN_PASSWORD_LENGTH = 5;
     public static final int MAX_PASSWORD_LENGTH = 100;
 
@@ -34,7 +35,7 @@ public class Validation {
     }
 
     /**
-     * Static method for validating a birthdate is not in the future
+     * Static method for validating a birthdate is not in the future.
      * 
      * @param date the date to be validated
      * @return true if in past : false

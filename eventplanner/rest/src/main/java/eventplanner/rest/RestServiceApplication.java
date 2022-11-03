@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eventplanner.json.CustomObjectMapper;
 
+/**
+ * Launches the Spring API.
+ */
 @SpringBootApplication
 public class RestServiceApplication {
 
