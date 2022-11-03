@@ -74,7 +74,8 @@ public class EventDeserializer extends JsonDeserializer<Event> {
                         false));
             });
         }
-        return new Event(id, eventType, name, startDateTime, endDateTime, location, dummyUsers, authorEmail, description);
+        return new Event(id, eventType, name, startDateTime, 
+                endDateTime, location, dummyUsers, authorEmail, description);
     }
 
 }

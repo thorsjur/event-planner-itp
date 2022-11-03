@@ -109,22 +109,20 @@ public class Event {
         return this.description;
     }
 
-    private void setDescription(String description){
-        if (description == null || description.isBlank()){
+    private void setDescription(String description) {
+        if (description == null || description.isBlank()) {
             this.description = "No description available";
-        }
-        else{
+        } else {
             this.description = description;
         }
     }
 
-    private void setAuthorEmail(String authorEmail){
-        if (authorEmail == null || authorEmail.isBlank()){
+    private void setAuthorEmail(String authorEmail) {
+        if (authorEmail == null || authorEmail.isBlank()) {
             // Creates default user as author of default generated events
             User author = new User("SAMFUNDET@samf.no", "Samf2022", true);
             this.authorEmail = author.email();
-        }
-        else{
+        } else {
             this.authorEmail = authorEmail;
         }
     }
@@ -185,5 +183,19 @@ public class Event {
                 && startDate.isEqual(event.getStartDate())
                 && name.equals(event.getName())
                 && type.equals(event.getType());
+    }
+
+    /**
+     * Overrides the inherited method hashCode.
+     * Equal objects must have equal hashcodes,
+     * since Events overrides equals, hashCode must be overwritten
+     * to assign a arbitrary constant.
+     * 
+     * @return an arbitrary constant
+     */
+    @Override
+    public int hashCode() {
+        assert false : "hashCode not designed";
+        return 42;
     }
 }
