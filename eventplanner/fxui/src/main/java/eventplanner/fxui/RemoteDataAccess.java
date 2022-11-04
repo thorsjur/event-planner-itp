@@ -48,7 +48,7 @@ public class RemoteDataAccess implements DataAccess{
     }
 
     @Override
-    public void createUser(User user) {
+    public boolean createUser(User user) {
         try {
             DataAccess.connection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/user/create"))
@@ -58,9 +58,11 @@ public class RemoteDataAccess implements DataAccess{
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
+            return response.statusCode() == 200;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
