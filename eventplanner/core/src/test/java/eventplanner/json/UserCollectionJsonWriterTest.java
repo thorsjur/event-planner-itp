@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,12 @@ public class UserCollectionJsonWriterTest {
         UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
         expectedUsers.addAll(IOTestUtil.getPseudoRandomUsers(15));
         writer.save(expectedUsers, FILE);
+    }
+
+    @AfterAll
+    public void tearDown() throws IOException {
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(new ArrayList<User>(), FILE);
     }
 
     @BeforeEach
