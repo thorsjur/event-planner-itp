@@ -127,7 +127,7 @@ public class EventPageController {
     }
 
     private void initializeDeleteEventButton() {
-        if (!user.email().equals(event.getAuthorEmail())) { // TODO: should compare to author/owner of event
+        if (!user.email().equals(event.getAuthorEmail())) {
             deleteEventButton.setDisable(true);
             deleteEventButton.setVisible(false);
         };

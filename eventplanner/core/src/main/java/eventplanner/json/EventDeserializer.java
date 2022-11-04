@@ -56,17 +56,6 @@ public class EventDeserializer extends JsonDeserializer<Event> {
         JsonNode usersNode = node.get("users");
         List<User> dummyUsers = new ArrayList<>();
         if (usersNode instanceof ArrayNode) {
-            /*
-             * List<String> emails = new ArrayList<>();
-             * ((ArrayNode) usersNode).forEach(element -> emails.add(element.asText()));
-             * try {
-             * usersList = IOUtil.loadUsersMatchingEmail(emails, null);
-             * } catch (IOException e) {
-             * e.printStackTrace();
-             * }
-             */
-            // Try to add dummy users TODO
-            
             ((ArrayNode) usersNode).forEach(element -> {
                 dummyUsers.add(new User(
                         element.asText(),

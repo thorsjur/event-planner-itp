@@ -29,10 +29,10 @@ public class EventSerializerTest {
     public void setup() {
         LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
         List<User> users = new ArrayList<>();
-        users.add(new User("christian@test.com", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("palina@test.co.uk", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("david@example.no", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("thor@google.com", "password", true)); //TODO - pass på følgefeil
+        users.add(new User("christian@test.com", "password", true));
+        users.add(new User("palina@test.co.uk", "password", true));
+        users.add(new User("david@example.no", "password", true));
+        users.add(new User("thor@google.com", "password", true));
         event = new Event(null, EventType.PARTY, "Toga-party", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Samfundet", users, null, null);
 
         LocalDateTime localDateTime2 = LocalDateTime.of(1990, 1, 1, 01, 01);

@@ -125,7 +125,6 @@ public class LocalDataAccess implements DataAccess{
         }
     }
 
-    @Override
     public void overwriteUsers(List<User> users) {
         
         try {
@@ -136,7 +135,6 @@ public class LocalDataAccess implements DataAccess{
 
     }
 
-    @Override
     public void overwriteEvents(List<Event> events) {
 
         try {

@@ -44,7 +44,7 @@ public class LoginController {
             ControllerUtil.setSceneFromChild(loader, loginButton);
         } else if (dataAccess.isRemote()) {
             try {
-                DataAccess.connection();
+                RemoteDataAccess.checkConnection();
                 errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
             } catch (Exception e) {
                 errorOutput.setText(ControllerUtil.SERVER_ERROR);

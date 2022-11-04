@@ -9,7 +9,7 @@ import eventplanner.core.User;
 
 public class FxuiTestUtil {
 
-    private static DataAccess dA = new LocalDataAccess();
+    private static LocalDataAccess dA = new LocalDataAccess();
     
     public static boolean areEventsEqual(Event ev1, Event ev2) {
         return ev1.equals(ev2) && ev1.getUsers().equals(ev2.getUsers());

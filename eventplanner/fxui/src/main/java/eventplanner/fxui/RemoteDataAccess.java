@@ -1,8 +1,10 @@
 package eventplanner.fxui;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -10,7 +12,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -27,7 +28,7 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public User getUser(String email) {
         try {
-            DataAccess.connection();
+            checkConnection();
             final URI requestUri = new URI("http://localhost:8080/user/get?email=" + email);
             final HttpRequest request = HttpRequest.newBuilder(requestUri)
                     .GET()
@@ -50,7 +51,7 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean createUser(User user) {
         try {
-            DataAccess.connection();
+            checkConnection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/user/create"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(user)))
@@ -70,7 +71,7 @@ public class RemoteDataAccess implements DataAccess{
 
         Collection<Event> events = new ArrayList<>();
         try {
-            DataAccess.connection();
+            checkConnection();
             final URI requestUri = new URI("http://localhost:8080/event/all");
             final HttpRequest request = HttpRequest.newBuilder(requestUri).GET().build();
             final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
@@ -91,7 +92,7 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean updateEvent(Event event) {
         try {
-            DataAccess.connection();
+            checkConnection();
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/update"))
                     .header("Content-Type", "application/json")
                     .PUT(BodyPublishers.ofString(mapper.writeValueAsString(event)))
@@ -120,7 +121,7 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean createEvent(Event event) {
         try {
-            DataAccess.connection();
+            checkConnection();;
             final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/create"))
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(event)))
@@ -138,7 +139,7 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean deleteEvent(Event event) {
         try {
-            DataAccess.connection();
+            checkConnection();
             final HttpRequest request = HttpRequest
                     .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getId().toString())))
                     .DELETE()
@@ -181,12 +182,12 @@ public class RemoteDataAccess implements DataAccess{
         return this.isRemote;
     }
 
-    public static void checkConnection() throws Exception {
+    public static void checkConnection() throws URISyntaxException, IOException, InterruptedException {
         final HttpRequest request = HttpRequest
             .newBuilder(new URI("http://localhost:8080/user"))
             .GET()
             .build();
-        final HttpResponse<InputStream> response = HttpClient.newBuilder()
+        HttpClient.newBuilder()
             .build()
             .send(request, HttpResponse.BodyHandlers.ofInputStream());
     }
@@ -197,21 +198,5 @@ public class RemoteDataAccess implements DataAccess{
     public Collection<User> loadUsers() {
         return null;
     }
-
-    /* Not valid method for remote dataAccess.
-     */
-    @Override
-    public void overwriteUsers(List<User> users) {
-        return;
-        
-    }
-
-    /* Not valid method for remote dataAccess.
-     */
-    @Override
-    public void overwriteEvents(List<Event> events) {
-        return;        
-    }
-
     
 }

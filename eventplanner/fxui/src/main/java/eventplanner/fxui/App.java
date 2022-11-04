@@ -30,7 +30,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         DataAccess dataAccess;
         try {
-            DataAccess.connection();
+            RemoteDataAccess.checkConnection();
             dataAccess = new RemoteDataAccess();
             System.out.println("Remote dataaccess");
         } catch (Exception e) {

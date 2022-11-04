@@ -16,14 +16,14 @@ public class UserTest {
 
     @Test
     public void testConstructor_setsValidValues() {
-        User user1 = new User("User1@test.test", "password", true); // TODO - pass på følgefeil
+        User user1 = new User("User1@test.test", "password", true);
         assertEquals("User1@test.test", user1.email());
         assertNotEquals("user1@test.test", user1.email());
     }
 
     @ParameterizedTest
     @NullSource
-    public void testConstructor_throwsIllegalArgumentExceptionOnNullInput(String input) { // TODO - trenger kanskje flere tester her
+    public void testConstructor_throwsIllegalArgumentExceptionOnNullInput(String input) {
         assertThrows(IllegalArgumentException.class, () -> new User(input, "password", false));
         assertThrows(IllegalArgumentException.class, () -> new User("valid@email.com", input, true));
     }

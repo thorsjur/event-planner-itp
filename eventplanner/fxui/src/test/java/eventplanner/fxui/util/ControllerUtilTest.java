@@ -27,7 +27,7 @@ import javafx.fxml.FXMLLoader;
 public class ControllerUtilTest {
 
     private boolean flag = false;
-    private final User user = new User("test@test.test", "testox", true); //TODO - sjekk om dette ble korrekt
+    private final User user = new User("test@test.test", "testox", true);
     private final String path = "path";
     private final DataAccess dataAccess = new LocalDataAccess();
     
