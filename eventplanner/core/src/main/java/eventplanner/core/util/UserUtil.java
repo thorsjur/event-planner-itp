@@ -1,5 +1,8 @@
 package eventplanner.core.util;
 
+/**
+ * Static utility methods used in User class.
+ */
 public class UserUtil {
 
     public static String passwordHash(String password) {

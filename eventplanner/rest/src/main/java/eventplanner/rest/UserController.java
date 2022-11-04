@@ -1,5 +1,7 @@
 package eventplanner.rest;
 
+import java.io.IOException;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import eventplanner.core.User;
 import eventplanner.json.util.IOUtil;
 
+/**
+ * API requests containing "/user" get 
+ * sent to this class. Which has methods for requests expanding
+ * on "/user", with functionality that controls user manipulation
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
