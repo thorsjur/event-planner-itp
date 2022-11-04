@@ -33,7 +33,7 @@ public class EventController {
      * @param eventName the name of the event to be acquired
      * @return the user with a matching email, null if no user has the given email 
      */
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Event event(@RequestParam String id) {
         try {
             return IOUtil.loadEventMatchingId(id, null);
@@ -48,7 +48,8 @@ public class EventController {
      * 
      * @return a collection of events 
      */
-    @GetMapping("/all")
+    @GetMapping(path = "/all",
+    produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Event> all() {
         try {
             return IOUtil.loadAllEvents(null);
@@ -65,8 +66,7 @@ public class EventController {
      * @return a boolean of whether the event got updated
      */
     @PutMapping(path = "/update",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean add(@RequestBody Event event) {
         try {
             IOUtil.updateEvent(event, null);
