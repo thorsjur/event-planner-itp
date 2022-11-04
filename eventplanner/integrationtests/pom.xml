@@ -8,14 +8,20 @@
         <artifactId>eventplanner</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <packaging>war</packaging>
 
-    <artifactId>rest</artifactId>
+    <artifactId>integrationtests</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>gr2225.eventplanner</groupId>
             <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gr2225.eventplanner</groupId>
+            <artifactId>rest</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -57,17 +63,16 @@
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>5.3.23</version>
-        </dependency>
-
-
     </dependencies>
 
     <reporting>
-		<plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
@@ -80,17 +85,41 @@
     <build>
 		<plugins>
 			<plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <profiles>
+                        <profile>integration-test</profile>
+                    </profiles>
+                    <skip>true</skip>
+                    <jmxPort>8080</jmxPort>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>pre-integration-test</id>
                         <goals>
-                            <goal>repackage</goal>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>--server.port="8080"</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <goals>
+                            <goal>stop</goal>
                         </goals>
                     </execution>
                 </executions>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <useModulePath>false</useModulePath>
+                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                 </configuration>
             </plugin>
 		</plugins>
