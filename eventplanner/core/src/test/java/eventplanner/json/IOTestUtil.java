@@ -27,12 +27,26 @@ public class IOTestUtil {
                     RANDOM.nextInt(1, 60));
             LocalDateTime endDateTime = startDateTime.plusMinutes(RANDOM.nextLong(100, 10000));
             String location = "location" + String.valueOf(RANDOM.nextInt(10000));
-            List<User> users = getPseudoRandomUsers(RANDOM.nextInt(10));
+            List<User> users = getPseudoRandomUsers(RANDOM.nextInt(1,10));
 
             Event event = new Event(null, type, name, startDateTime, endDateTime, location, users, null, null);
             events.add(event);
         }
         return events;
+    }
+
+    public static Event getUniqueEvent() { 
+        EventType type = EventType.CONCERT;
+        String name = "myName" + System.currentTimeMillis();
+        LocalDateTime startDateTime = LocalDateTime.of(2001,10,10,10,10);
+        LocalDateTime endDateTime = startDateTime.plusMinutes(100);
+        String location = "myLocation";
+        
+        return new Event(null, type, name, startDateTime, endDateTime, location);
+    }
+
+    public static User getUniqueUser() {
+        return new User("example" + System.currentTimeMillis() + "@example.com", "12345", false);
     }
 
     public static List<User> getPseudoRandomUsers(int n) {

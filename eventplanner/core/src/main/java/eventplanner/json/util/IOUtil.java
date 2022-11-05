@@ -34,7 +34,7 @@ public class IOUtil {
     public static void appendEventsToFile(final Collection<Event> events, final File file)
             throws IOException {
 
-        Consumer<Collection<Event>> consumer = (eventCollection) -> eventCollection.addAll(events);
+        Consumer<Collection<Event>> consumer = eventCollection -> eventCollection.addAll(events);
         alterEvents(consumer, file);
     }
 
@@ -245,7 +245,7 @@ public class IOUtil {
     public static void removeUserFromEvents(final Collection<Event> events, final User user, final File file)
             throws IOException {
 
-        Consumer<Collection<Event>> consumer = (eventCollection) -> {
+        Consumer<Collection<Event>> consumer = eventCollection -> {
             eventCollection.stream()
                     .filter(event -> events.contains(event))
                     .forEach(event -> event.removeUser(user));
@@ -371,7 +371,9 @@ public class IOUtil {
     public static Path getPathRelativeToProjectRoot(String... segments) {
         Path path = getProjectRoot();
         for (String segment : segments) {
-            path = path.resolve(segment);
+            if (path != null) {
+                path = path.resolve(segment);
+            }
         }
         return path;
     }
