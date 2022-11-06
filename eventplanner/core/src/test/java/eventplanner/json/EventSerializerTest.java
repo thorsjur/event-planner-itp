@@ -27,7 +27,7 @@ class EventSerializerTest {
         // replaced in the expected string.
         String expectedString = getExpectedTestEventJsonRepresentation().replaceAll("\n", "\r\n");
 
-        String actualString = OBJECT_MAPPER.writeValueAsString(event);
+        String actualString = OBJECT_MAPPER.writeValueAsString(event).replaceAll("\n", "\r\n");
         assertEquals(expectedString, actualString);
 
     }

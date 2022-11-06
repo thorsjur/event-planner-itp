@@ -46,7 +46,8 @@
     </dependencies>
 
     <build>
-        <plugins>  
+        <plugins>
+            <!-- JaCoCo - codecoverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
