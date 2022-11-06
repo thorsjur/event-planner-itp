@@ -96,7 +96,8 @@
                     <propertyName>jaCoCoArgLine</propertyName>
                     <excludes>
                         <exclude>**/App.class</exclude>
-                        <exclude>**/RemoteDataAccess.class</exclude>
+                        <exclude>**/RemoteDataAccess.*</exclude>
+                        <exclude>**/DataAccess.class</exclude>
                     </excludes>
                  </configuration>
             </plugin>
