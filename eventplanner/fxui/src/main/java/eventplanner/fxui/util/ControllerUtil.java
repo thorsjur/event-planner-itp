@@ -6,14 +6,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.App;
 import eventplanner.fxui.DataAccess;
-import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.LoginController;
 import eventplanner.fxui.NewEventController;
@@ -36,6 +36,10 @@ import javafx.util.Callback;
  */
 public class ControllerUtil {
 
+    private ControllerUtil() {
+        throw new IllegalStateException("You cannot instantiate an utility class!");
+    }
+    
     /**
      * Takes a FXMLLoader and a child of the current scene
      * and sets a new root based on the given loader.
@@ -48,13 +52,12 @@ public class ControllerUtil {
             loader.load();
             child.getScene().setRoot(loader.getRoot());
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException occurred while loading scene.");
+            System.err.println("IOException occurred while loading scene.");
         }
     }
 
     /**
-     * Returns a FXMLLoader from the provided fxml file name
+     * Returns a FXMLLoader from the provided fxml file name.
      * 
      * @param fxmlFilename the filename of the fxml file in the resources directory
      * @return a FXMLLoader from the given fxml filename
@@ -75,7 +78,9 @@ public class ControllerUtil {
      * @param user         the user to be passed to the controller
      * @return a FXMLLoader with an associated controller factory
      */
-    public static <T> FXMLLoader getFXMLLoaderWithFactory(String fxmlFilename, Class<T> cls, User user, DataAccess dataAccess) {
+    public static <T> FXMLLoader getFXMLLoaderWithFactory(String fxmlFilename, Class<T> cls, User user,
+            DataAccess dataAccess) {
+
         FXMLLoader loader = getFXMLLoader(fxmlFilename);
         loader.setControllerFactory(getControllerFactory(cls, user, dataAccess));
         return loader;
@@ -94,7 +99,8 @@ public class ControllerUtil {
         return loader;
     }
 
-    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event, DataAccess dataAccess) {
+    private static Callback<Class<?>, Object> getEventPageControllerFactory(User user, Event event,
+            DataAccess dataAccess) {
         return param -> new EventPageController(user, event, dataAccess);
     }
 
@@ -131,14 +137,12 @@ public class ControllerUtil {
      * @param actionIfInvalid action of invalid supplier return
      * @return ChangeListener for change in object focus
      */
-    public static ChangeListener<Boolean> getValidationFocusListener(
-            Supplier<Boolean> validation,
-            Runnable actionIfValid,
+    public static ChangeListener<Boolean> getValidationFocusListener(BooleanSupplier validation, Runnable actionIfValid,
             Runnable actionIfInvalid) {
 
         return (arg0, oldValue, newValue) -> {
             if (!newValue) {
-                if (validation.get()) {
+                if (validation.getAsBoolean()) {
                     actionIfValid.run();
                 } else {
                     actionIfInvalid.run();
@@ -167,15 +171,14 @@ public class ControllerUtil {
         return Collections.reverseOrder(getDateComparator());
     }
 
-   /**
-    * Takes events, and filters out the ones
-    * that don't match with the value in the searchbar. 
-    * Returns a sortedList of the matching events.
-    *
-    * @param eventCollection    Collection of events
-    * @param searchBar          TextField with input that gets observed
-    * @return SortedList of matching events
-    */
+    /**
+     * Takes events, and filters out the ones that don't match with the value in the
+     * searchbar. Returns a sortedList of the matching events.
+     *
+     * @param eventCollection Collection of events
+     * @param searchBar       TextField with input that gets observed
+     * @return SortedList of matching events
+     */
     public static FilteredList<Event> searchFiltrator(Collection<Event> eventCollection, TextField searchBar) {
         
         ObservableList<Event> observableEventList = FXCollections.observableArrayList(eventCollection);
@@ -185,7 +188,7 @@ public class ControllerUtil {
             filteredEvents.setPredicate(event -> {
 
                 // If no search value is entered then all events will be displayed
-                if(newValue == null || newValue.isBlank()) {
+                if (newValue == null || newValue.isBlank()) {
                     return true;
                 }
 
@@ -202,23 +205,26 @@ public class ControllerUtil {
                     return true;
                 }
 
-                // Found location match
-                if (matchPredicate.test(event.getLocation())) {
-                    return true;
-                }
-
-                return false;
+                // Returns true if there is a match in location field
+                return matchPredicate.test(event.getLocation());
             });
         });
 
         return filteredEvents;
     }
 
+    /**
+     * Adds a listener to the specified control, that changes the outline of the
+     * control to red or green to indicate validity upon lost focus.
+     * 
+     * @param control a javafx control (text field, date picker or combo box)
+     * @param type    the type of input
+     */
     public static void addValidationFocusListener(Control control, InputType type) {
         control.focusedProperty().addListener(getValidationListener(control, type));
     }
 
-    public static String SERVER_ERROR = "Server error. Please try again.";
+    public static final String SERVER_ERROR = "Server error. Please try again.";
 
     private static final String COLOUR_VALID = "#228C22";
     private static final String COLOUR_INVALID = "#B33333";
@@ -239,13 +245,6 @@ public class ControllerUtil {
         }
     }
 
-    /**
-     * Getter for ValidationListener
-     * 
-     * @param control input control
-     * @param type    specified type of input
-     * @return ChangeListener that signals validity of input
-     */
     private static ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
         validateArguments(control, type);
 
@@ -260,24 +259,18 @@ public class ControllerUtil {
         }
     }
 
-    private static ChangeListener<Boolean> getTextFieldValidationListener(
-            TextField field,
-            InputType type) {
+    private static ChangeListener<Boolean> getTextFieldValidationListener(TextField field, InputType type) {
         return ControllerUtil.getValidationFocusListener(
-                () -> {
-                    return Validation.isValidTextInput(field.getText(), type);
-                },
+                () -> Validation.isValidTextInput(field.getText(), type),
                 () -> handleInputField(field, true),
                 () -> handleInputField(field, false));
     }
 
     private static ChangeListener<Boolean> getDatePickerValidationListener(DatePicker dp, InputType type) {
-                return ControllerUtil.getValidationFocusListener(
-                        () -> {
-                            return Validation.isValidDateInput(dp.getValue(), type);
-                        },
-                        () -> handleInputField(dp, true),
-                        () -> handleInputField(dp, false));
+        return ControllerUtil.getValidationFocusListener(
+                () -> Validation.isValidDateInput(dp.getValue(), type),
+                () -> handleInputField(dp, true),
+                () -> handleInputField(dp, false));
     }
 
     /**

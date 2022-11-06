@@ -15,7 +15,7 @@ import java.io.IOException;
  * 
  * @see <a href=
  *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/JsonSerializer.html">JsonSerializer
- *      docs</a>
+ *      documentation</a>
  */
 public class UserSerializer extends JsonSerializer<User> {
 

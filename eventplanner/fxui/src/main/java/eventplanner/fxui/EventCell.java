@@ -14,28 +14,31 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * Class for display of events in gui.
+ * Class for displaying custom cells in a listview.
  */
 public class EventCell extends ListCell<Event> {
 
     private Text date;
     private Text name;
     private HBox content;
-    private Button eventPageBtn;
+    private Button eventPageButton;
     private DataAccess dataAccess;
 
     /**
-     * Constructor.
+     * Constructor for creating a new instance of EventCell.
+     * 
+     * @param dataAccess the data access object to be used for registering or
+     *                   deregistering to the event in the cell.
      */
     public EventCell(DataAccess dataAccess) {
         super();
         date = new Text();
         name = new Text();
         this.dataAccess = dataAccess;
-        eventPageBtn = new Button("Read more");
-        
+        eventPageButton = new Button("Read more");
+
         VBox leftContent = new VBox(name, date);
-        VBox rightContent = new VBox(eventPageBtn);
+        VBox rightContent = new VBox(eventPageButton);
         rightContent.setAlignment(Pos.CENTER_RIGHT);
 
         content = new HBox(leftContent, rightContent);
@@ -47,20 +50,22 @@ public class EventCell extends ListCell<Event> {
     @Override
     protected void updateItem(Event event, boolean empty) {
         super.updateItem(event, empty);
+
+        HBox graphic = null;
         if (event != null && !empty) {
             date.setText(event.getStartDate().toString().replace("T", " "));
             name.setText(event.getName());
 
             ListView<Event> parentListView = this.getListView();
             User user = (User) parentListView.getUserData();
-            eventPageBtn.setOnMouseClicked((e) -> {
+            eventPageButton.setOnMouseClicked(e -> {
                 FXMLLoader loader = ControllerUtil.getFXMLLoaderWithEventPageFactory(user, event, dataAccess);
                 ControllerUtil.setSceneFromChild(loader, parentListView);
             });
 
-            setGraphic(content);
-        } else {
-            setGraphic(null);
+            graphic = content;
         }
+
+        setGraphic(graphic);
     }
 }

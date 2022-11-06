@@ -17,9 +17,9 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import eventplanner.core.User;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class UserCollectionJsonWriterTest {
+class UserCollectionJsonWriterTest {
 
-    public static final String FILE_PATH = "src/test/java/resources/data/user.json";
+    static final String FILE_PATH = "src/test/java/resources/data/user.json";
     private static final File FILE = new File(FILE_PATH);
 
     private Collection<User> actualUsers;
@@ -29,26 +29,26 @@ public class UserCollectionJsonWriterTest {
     private final Collection<User> expectedUsers = new ArrayList<>();
 
     @BeforeAll
-    public void setup() throws IOException {
+    void setup() throws IOException {
         UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
         expectedUsers.addAll(IOTestUtil.getPseudoRandomUsers(15));
         writer.save(expectedUsers, FILE);
     }
 
     @AfterAll
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
         writer.save(new ArrayList<User>(), FILE);
     }
 
     @BeforeEach
-    public void beforeEach() throws IOException {
+    void beforeEach() throws IOException {
         UserCollectionJsonReader reader = new UserCollectionJsonReader();
         actualUsers = reader.load(FILE);
     }
 
     @Test
-    public void testSave_retainsUserData() {
+    void testSave_retainsUserData() {
         assertTrue(actualUsers.size() == expectedUsers.size());
         assertTrue(
                 expectedUsers.stream()

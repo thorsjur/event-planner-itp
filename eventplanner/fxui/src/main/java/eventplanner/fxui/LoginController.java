@@ -40,11 +40,12 @@ public class LoginController {
         User user = findUser(emailField.getText(), passwordField.getText());
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, dataAccess);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user,
+                    dataAccess);
             ControllerUtil.setSceneFromChild(loader, loginButton);
         } else if (dataAccess.isRemote()) {
             try {
-                RemoteDataAccess.checkConnection();
+                RemoteDataAccess.assertConnection();
                 errorOutput.setText("Wrong username or password. (" + Integer.toString(++counter) + ")");
             } catch (Exception e) {
                 errorOutput.setText(ControllerUtil.SERVER_ERROR);
@@ -75,7 +76,8 @@ public class LoginController {
     @FXML
     private void handleRegisterUserButtonClicked() {
         String fxmlFileName = "RegisterScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, RegisterController.class, null, dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, RegisterController.class, null,
+                dataAccess);
         ControllerUtil.setSceneFromChild(loader, registerUserButton);
     }
 

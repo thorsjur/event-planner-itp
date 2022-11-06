@@ -17,7 +17,7 @@ import eventplanner.json.util.CryptoUtil;
  * 
  * @see <a href=
  *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/JsonDeserializer.html">JsonDeserializer
- *      docs</a>
+ *      documentation</a>
  */
 public class UserDeserializer extends JsonDeserializer<User> {
 
