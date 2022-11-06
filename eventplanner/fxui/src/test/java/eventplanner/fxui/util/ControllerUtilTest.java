@@ -52,6 +52,12 @@ public class ControllerUtilTest {
     }
 
     @Test
+    public void testSetSceneFromChild_throwsExceptionOnInvalidInput() {
+        assertThrows(NullPointerException.class, () -> ControllerUtil.setSceneFromChild(null, null));
+        assertThrows(Exception.class, () -> ControllerUtil.setSceneFromChild(new FXMLLoader(), null));
+    }
+
+    @Test
     public void testGetFXMLLoaderWithFactory_throwsExceptionOnUnknownClass() {
         assertThrows(IllegalArgumentException.class, () -> ControllerUtil.getFXMLLoaderWithFactory(null, null, null, dataAccess));
         assertThrows(IllegalArgumentException.class, () -> ControllerUtil.getFXMLLoaderWithFactory(path, App.class, user, dataAccess));

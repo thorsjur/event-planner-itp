@@ -3,6 +3,7 @@ package eventplanner.core.util;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -44,6 +45,18 @@ public class ValidationTest {
     @MethodSource("provideInvalidPasswords")
     public void testIsValidPassword_returnsFalseOnInvalidInput(String password) {
         assertFalse(Validation.isValidPassword(password));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideValidDates")
+    public void testIsValidDate_returnsTrueOnValidInput(LocalDate date) {
+        assertTrue(Validation.isValidDate(date));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidDates")
+    public void testIsValidDate_returnsFalseOnInvalidInput(LocalDate date) {
+        assertFalse(Validation.isValidDate(date));
     }
 
     private static Stream<String> provideValidEmails() {
@@ -95,6 +108,20 @@ public class ValidationTest {
         Stream<String> underMinLengthStream = getLorumIpsumStream(0, MIN_PASSWORD_LENGTH, 10);
 
         return Stream.concat(overMaxLengthStream, underMinLengthStream);
+    }
+
+    private static Stream<LocalDate> provideValidDates() {
+        return Arrays.stream(new LocalDate[] {
+            LocalDate.of(1, 1, 1),
+            LocalDate.now().minusDays(1)
+        });
+    }
+
+    private static Stream<LocalDate> provideInvalidDates() {
+        return Arrays.stream(new LocalDate[] {
+            LocalDate.now(),
+            LocalDate.now().plusDays(1)
+        });
     }
 
     private static Stream<String> getLorumIpsumStream(int minLength, int maxLength, int streamLimit) {

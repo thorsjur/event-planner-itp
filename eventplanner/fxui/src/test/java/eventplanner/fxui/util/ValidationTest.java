@@ -124,6 +124,19 @@ public class ValidationTest {
         String startTime2 = "12:24";
         String endTime2 = "13:59";
         assertTrue(Validation.isStartBeforeEnd(start2, startTime2, end2, endTime2));
+        
+        LocalDate start3 = LocalDate.of(2023, 10, 17);
+        LocalDate end3 = LocalDate.of(2023, 10, 17);
+        String startTime3 = "12:24";
+        String endTime3 = "13:59";
+        assertTrue(Validation.isStartBeforeEnd(null, startTime3, end3, endTime3));
+        assertTrue(Validation.isStartBeforeEnd(start3, startTime3, null, endTime3));
+        end3 = Validation.EARLIEST_VALID_DATE.minusDays(1);
+        assertTrue(Validation.isStartBeforeEnd(start3, startTime3, end3, endTime3));
+        end3 = Validation.LATEST_VALID_DATE.plusDays(1);
+        assertTrue(Validation.isStartBeforeEnd(start3, startTime3, end3, endTime3));
+
+
     }
 
     @Test
