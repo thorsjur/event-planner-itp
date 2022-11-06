@@ -1,7 +1,7 @@
 # Navigation:
 
 - modules
-    - [eventplanner](../README.md)
+    - [eventplanner - root](../README.md)
     - [fxui](../eventplanner/fxui/README.md)
     - [core](../eventplanner/core/README.md)
     - [rest](../eventplanner/rest/README.md)
