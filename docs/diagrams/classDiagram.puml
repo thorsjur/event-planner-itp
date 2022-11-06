@@ -107,14 +107,35 @@ package "core module" <<Rectangle>>{
             save(final User user, File file): void
             save(final User user): void 
         }
+
+        class IOUtil{
+            **Static utility methods**
+        }
     }
 }
 
 
-Event "1"--|>"n" record_User
-Event "1"--"1" enum_EventType
+Event -- record_User
+Event -- enum_EventType
 record_User -- Validation
 record_User -- UserUtil
-
+Event -- IOUtil
+record_User -- IOUtil
+EventCollectionJsonReader -- Event
+EventCollectionJsonReader -up- IOUtil
+EventCollectionJsonWriter -- Event
+EventCollectionJsonWriter -up- IOUtil
+EventDeserializer -- record_User
+EventDeserializer -- Event
+EventDeserializer -- enum_EventType
+EventSerializer -left- Event
+EventSerializer -left- record_User
+UserCollectionJsonReader -- record_User
+UserCollectionJsonReader -left- IOUtil
+UserCollectionJsonWriter -down- record_User
+UserCollectionJsonWriter -down- IOUtil
+UserDeserializer -- record_User
+UserDeserializer -right- UserUtil
+UserSerializer -- record_User
 
 @enduml
