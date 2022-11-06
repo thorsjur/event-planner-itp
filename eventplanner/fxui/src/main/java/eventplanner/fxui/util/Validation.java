@@ -24,6 +24,10 @@ public class Validation {
     public static final int MIN_PASSWORD_LENGTH = eventplanner.core.util.Validation.MIN_PASSWORD_LENGTH;
     public static final int MAX_PASSWORD_LENGTH = eventplanner.core.util.Validation.MAX_PASSWORD_LENGTH;
 
+    private Validation() {
+        throw new IllegalStateException("You cannot instantiate an utility class!");
+    }
+
     /**
      * Error types based on invalid inputs, with their respective error messages
      * saved in the public field err_message.
@@ -81,8 +85,8 @@ public class Validation {
     /**
      * Uses local requirements to validate the input date.
      * 
-     * @param date to be validated
-     * @return boolean value indicating validity of the date
+     * @param date  to be validated
+     * @return      boolean value indicating validity of the date
      */
     public static boolean isValidDateInput(LocalDate date, InputType dateType) {
         if (!(dateType == InputType.DATE || dateType == InputType.BIRTH_DATE)) {
@@ -125,7 +129,7 @@ public class Validation {
     }
 
     /**
-     * Check if start date is before end-date.
+     * Check if start date is before end date.
      * 
      * @param startDate start date
      * @param startTime start time
@@ -154,7 +158,7 @@ public class Validation {
     }
 
     private static boolean isValidTimeString(String timeString) {
-        if (timeString == null || !timeString.matches("^[0-9]{2}:[0-9]{2}$")) {
+        if (timeString == null || !timeString.matches("^\\d{2}:\\d{2}$")) {
             return false;
         }
 
@@ -189,6 +193,7 @@ public class Validation {
         String[] split = timeString.split(":");
         int hour = Integer.parseInt(split[0]);
         int minute = Integer.parseInt(split[1]);
+        
         return new int[] { hour, minute };
     }
 }

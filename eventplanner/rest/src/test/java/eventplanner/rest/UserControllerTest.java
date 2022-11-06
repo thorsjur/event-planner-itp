@@ -27,7 +27,7 @@ import eventplanner.json.CustomObjectMapper;
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { UserController.class, RestServiceApplication.class })
 @WebMvcTest
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,14 +38,14 @@ public class UserControllerTest {
     private List<String> tempUserEmails = new ArrayList<>();
 
     @BeforeEach
-    public void beforeEach() throws Exception {
+    void beforeEach() throws Exception {
         User user = getTestUser("TEST@EXAMPLE.TEST", "TEST_PASSWORD");
         addTestUser(user);
         tempUserEmails.add(user.email());
     }
 
     @AfterEach
-    public void afterEach() throws Exception {
+    void afterEach() throws Exception {
         for (String email : tempUserEmails) {
             removeTestUser(email);
         }
@@ -53,7 +53,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUser_retrievesUserAsExpected() throws Exception {
+    void testUser_retrievesUserAsExpected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(SERVICE_PATH + "user/get?email=" + tempUserEmails.get(0))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -61,7 +61,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    void testCreate() throws Exception {
         User user = getTestUser("TEST_NAME@EXAMPLE.test", "PASSWORD");
         tempUserEmails.add(user.email());
 
@@ -75,7 +75,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         User user = getTestUser("TEST_NAME@EXAMPLE.test", "PASSWORD");
         addTestUser(user);
 
@@ -113,7 +113,7 @@ public class UserControllerTest {
         return getUser(response);
     }
 
-    private User getUser(String content) throws Exception{
+    private User getUser(String content) throws Exception {
         return MAPPER.readValue(content, User.class);
     }
 }

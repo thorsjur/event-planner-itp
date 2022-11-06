@@ -4,25 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.json.util.IOUtil;
 
-public class LocalDataAccess implements DataAccess{
+/**
+ * Implementation of {@link DataAccess} to be used for local data access and
+ * testing purposes.
+ */
+public class LocalDataAccess implements DataAccess {
 
-    private final boolean isRemote = false;
-
-    private final File eventFile = new File("src/main/resources/eventplanner/fxui/data/event.json");
-    private final File userFile = new File("src/main/resources/eventplanner/fxui/data/user.json");
+    public static final String RESOURCE_BASE_DIR = "src/main/resources/eventplanner/fxui/data/";
+    private final File eventFile = new File(RESOURCE_BASE_DIR + "event.json");
+    private final File userFile = new File(RESOURCE_BASE_DIR + "user.json");
 
     @Override
     public User getUser(String email) {
         try {
             return IOUtil.loadUserMatchingEmail(email, this.userFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            printIOError(e);
             return null;
         }
     }
@@ -31,23 +33,21 @@ public class LocalDataAccess implements DataAccess{
     public boolean createUser(User user) {
         try {
             IOUtil.appendUserToFile(user, userFile);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            printIOError(e);
             return false;
         }
+        return true;
     }
 
     @Override
     public Collection<Event> getAllEvents() {
-
         try {
             return syncEvents(IOUtil.loadAllEvents(eventFile));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            printIOError(e);
             return null;
         }
-
     }
 
     @Override
@@ -55,21 +55,18 @@ public class LocalDataAccess implements DataAccess{
         try {
             IOUtil.updateEvent(event, eventFile);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            printIOError(e);
             return false;
         }
     }
 
     @Override
     public boolean updateEvents(Collection<Event> events) {
-        boolean flag = true;
-        for (Event event : events) {
-            if (!updateEvent(event)) {
-                flag = false;   
-            }
-        }
-        return flag;
+
+        // Short circuits on IOException thrown from updateEvent method, to ensure no
+        // more damage than necessary is done.
+        return events.stream().anyMatch(event -> !updateEvent(event));
     }
 
     @Override
@@ -77,8 +74,8 @@ public class LocalDataAccess implements DataAccess{
         try {
             IOUtil.appendEventToFile(event, eventFile);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            printIOError(e);
             return false;
         }
     }
@@ -88,14 +85,60 @@ public class LocalDataAccess implements DataAccess{
         try {
             IOUtil.deleteEventFromFile(event, eventFile);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            printIOError(e);
             return false;
         }
     }
 
+    @Override
     public boolean isRemote() {
-        return this.isRemote;
+        return false;
+    }
+
+    /**
+     * Method to load all users from file.
+     * 
+     * @return a collection of users
+     */
+    public Collection<User> loadUsers() {
+        try {
+            return IOUtil.loadAllUsers(userFile);
+        } catch (IOException e) {
+            System.err.println("Could not load events");
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Deletes a user from the default LocalDataAccess file.
+     * 
+     * @param user the user you want to delete 
+     */
+    public void deleteUser(User user) {
+        try {
+            IOUtil.deleteUserFromFile(user.email(), userFile);
+        } catch (IOException e) {
+            printIOError(e);
+        }
+    }
+
+    /**
+     * Method for retrieving all saved users.
+     * 
+     * @return a collection of all saved users
+     */
+    public Collection<User> getAllUsers() {
+        try {
+            return IOUtil.loadAllUsers(userFile);
+        } catch (IOException e) {
+            printIOError(e);
+            return new ArrayList<>();
+        }
+    }
+
+    private void printIOError(Exception e) {
+        System.err.println("An IO error has occurred: " + e.getMessage());
     }
 
     private Collection<Event> syncEvents(Collection<Event> events) {
@@ -114,35 +157,5 @@ public class LocalDataAccess implements DataAccess{
         });
         return events;
     }
-
-    public Collection<User> loadUsers() {
-        
-        try {
-            return IOUtil.loadAllUsers(eventFile);
-        } catch (IOException e) {
-            System.out.println("Could not load events");
-            return new ArrayList<>();
-        }
-    }
-
-    public void overwriteUsers(List<User> users) {
-        
-        try {
-            IOUtil.overwriteUsers(users, userFile);
-        } catch (Exception e) {
-            System.out.println("Could not overwrite users");
-        }
-
-    }
-
-    public void overwriteEvents(List<Event> events) {
-
-        try {
-            IOUtil.overwriteEvents(events, eventFile);
-        } catch (Exception e) {
-            System.out.println("Could not overwrite events.");
-        }
-    }
-
 
 }

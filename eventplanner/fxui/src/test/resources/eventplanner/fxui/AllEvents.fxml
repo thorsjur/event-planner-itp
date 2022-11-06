@@ -23,7 +23,7 @@
                   <Font size="30.0" />
                </font>
             </Text>
-            <ListView fx:id="allEventsList" layoutX="26.0" layoutY="85.0" prefHeight="252.0" prefWidth="426.0" />
+            <ListView fx:id="eventsListView" layoutX="26.0" layoutY="85.0" prefHeight="252.0" prefWidth="426.0" />
             <Button fx:id="saveEventButton" layoutX="510.0" layoutY="227.0" mnemonicParsing="false" onAction="#handleSaveEventButtonClicked" text="Register" />
             <Label fx:id="saveEventLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="463.0" layoutY="253.0" prefHeight="83.0" prefWidth="171.0" />
             <TextField fx:id="searchBar" layoutX="463.0" layoutY="125.0" prefHeight="26.0" prefWidth="171.0" promptText="type here ..." />

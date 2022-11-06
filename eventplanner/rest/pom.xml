@@ -62,8 +62,6 @@
             <artifactId>spring-core</artifactId>
             <version>5.3.23</version>
         </dependency>
-
-
     </dependencies>
 
     <reporting>
@@ -73,7 +71,6 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.2.0</version>
             </plugin>
-
         </plugins>
     </reporting>
 
@@ -93,7 +90,14 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>eventplanner.rest.RestServiceApplication</mainClass>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
-
 </project>

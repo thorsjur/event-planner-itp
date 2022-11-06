@@ -16,33 +16,33 @@ import org.junit.jupiter.api.TestInstance;
 import eventplanner.core.Event;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class EventCollectionJsonReaderTest {
+class EventCollectionJsonReaderTest {
 
     private static final File FILE = new File(EventCollectionJsonWriterTest.FILE_PATH);
     private Collection<Event> expectedEvents = new ArrayList<>();
     private Collection<Event> actualEvents = new ArrayList<>();
 
     @BeforeAll
-    public void setup() throws IOException {
+    void setup() throws IOException {
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
         expectedEvents.addAll(IOTestUtil.getPseudoRandomEvents(15));
         writer.save(expectedEvents, FILE);
     }
 
     @AfterAll
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
         writer.save(new ArrayList<Event>(), FILE);
     }
 
     @BeforeEach
-    public void beforeEach() throws IOException {
+    void beforeEach() throws IOException {
         EventCollectionJsonReader reader = new EventCollectionJsonReader();
         actualEvents = reader.load(FILE);
     }
 
     @Test
-    public void testLoad_dataIsUnchangedFromSave() {
+    void testLoad_dataIsUnchangedFromSave() {
         assertTrue(
                 expectedEvents.stream()
                         .allMatch(expected -> {
