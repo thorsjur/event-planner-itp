@@ -12,4 +12,4 @@
 
  5. With the help of the external development tools *Spotbugs* and *Checkstyle*, the code base is analyzed to help improve code quality and identify potential vulnerabilities along with design flaws.
 
- 6. Public methods and classes has been documented with JavaDoc, and the generated JavaDoc pages can be found at [docs/](../../../docs/). Some methods has inline comments if the method could be difficult to understand.
+ 6. Public methods and classes has been documented with JavaDoc, and the generated JavaDoc pages can be found at [docs/](../../../docs/). We have decided to not write javadoc for getters because our get methods dont have any side effect, nor do they require some sort of precondition outside of initialization. Some methods have inline comments if the method could be difficult to understand.
