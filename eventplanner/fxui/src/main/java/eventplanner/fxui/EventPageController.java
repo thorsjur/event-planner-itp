@@ -16,6 +16,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 
+/**
+ * Controller for displaying information about one event.
+ */
 public class EventPageController {
 
     @FXML
@@ -35,11 +38,18 @@ public class EventPageController {
     private boolean isRegistered;
     private DataAccess dataAccess;
 
+    /**
+     * Constructor for passing around information between controllers.
+     * 
+     * @param user       the user that is logged in
+     * @param event      the event that is being displayed
+     * @param dataAccess the type of data access
+     */
     public EventPageController(User user, Event event, DataAccess dataAccess) {
         this.user = user;
-        this.event = event;
+        this.event = copyEvent(event);
         this.isRegistered = event.getUsers().contains(user);
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML
@@ -53,25 +63,22 @@ public class EventPageController {
 
     @FXML
     private void handleReturnBtnClicked() {
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AllEventsController.class, user, dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory("AllEvents.fxml", AllEventsController.class, user,
+                dataAccess);
         ControllerUtil.setSceneFromChild(loader, returnButton);
     }
 
     @FXML
     private void handleDeleteEventButtonClicked() {
         ButtonType deleteType = new ButtonType("Delete Event", ButtonData.OK_DONE);
-        Alert alert = new Alert(
-            AlertType.CONFIRMATION,
-            "Are you sure you want to delete this event?",
-            deleteType,
-            ButtonType.CANCEL
-        );
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to delete this event?", deleteType,
+                ButtonType.CANCEL);
         alert.setGraphic(null);
         alert.setHeaderText(null);
         alert.showAndWait();
 
         if (alert.getResult().getButtonData() == ButtonData.OK_DONE) {
-            if(dataAccess.deleteEvent(event)) {
+            if (dataAccess.deleteEvent(event)) {
                 handleReturnBtnClicked();
             } else {
                 outputText.setText(ControllerUtil.SERVER_ERROR);
@@ -88,12 +95,12 @@ public class EventPageController {
     private void updateRegisterButton() {
         EventHandler<MouseEvent> handler;
         if (!isRegistered) {
-            handler = (e) -> {
+            handler = e -> {
                 handleRegisterEventBtnClicked();
                 registerButton.setText("Deregister");
             };
         } else {
-            handler = (e) -> {
+            handler = e -> {
                 handleDeregisterEventBtnClicked();
                 registerButton.setText("Register");
             };
@@ -103,19 +110,19 @@ public class EventPageController {
 
     private void handleRegisterEventBtnClicked() {
         event.addUser(user);
-        if(dataAccess.updateEvent(event)) {
+        if (dataAccess.updateEvent(event)) {
             outputText.setText("You have successfully registered to " + event.getName());
             incrementRegisteredUsers();
             isRegistered = true;
             updateRegisterButton();
         } else {
             outputText.setText(ControllerUtil.SERVER_ERROR);
-        };        
+        }
     }
 
     private void handleDeregisterEventBtnClicked() {
         event.removeUser(user);
-        if(dataAccess.updateEvent(event)) {
+        if (dataAccess.updateEvent(event)) {
             outputText.setText("You have successfully deregistered from " + event.getName());
             decrementRegisteredUsers();
             isRegistered = false;
@@ -127,10 +134,10 @@ public class EventPageController {
     }
 
     private void initializeDeleteEventButton() {
-        if (!user.email().equals(event.getAuthorEmail())) { // TODO: should compare to author/owner of event
+        if (!user.email().equals(event.getAuthorEmail())) {
             deleteEventButton.setDisable(true);
             deleteEventButton.setVisible(false);
-        };
+        }
     }
 
     private void initializeDescription() {
@@ -139,9 +146,8 @@ public class EventPageController {
     }
 
     private void initializeTextLabels() {
-        // nameLabel, authorLabel, startTimeLabel, endTimeLabel, locationLabel, regUsersLabel;
         nameLabel.setText(event.getName());
-        authorLabel.setText(event.getAuthorEmail()); 
+        authorLabel.setText(event.getAuthorEmail());
         startTimeLabel.setText(event.getStartDate().toString().replace("T", " "));
         endTimeLabel.setText(event.getEndDate().toString().replace("T", " "));
         locationLabel.setText(event.getLocation());
@@ -165,5 +171,9 @@ public class EventPageController {
     private void initializeOutputText() {
         outputText.setText("");
     }
-    
+
+    private static Event copyEvent(Event event) {
+        return new Event(event.getId(), event.getType(), event.getName(), event.getStartDate(), event.getEndDate(), event.getLocation(), event.getUsers(), event.getAuthorEmail(), event.getDescription());
+    }
+
 }

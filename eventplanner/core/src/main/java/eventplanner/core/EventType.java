@@ -1,12 +1,9 @@
 package eventplanner.core;
 
 /**
- * An enum representing a type of event
- * eg. a concert, a quiz or a party.
+ * An enumeration representing a type of event, eg. a concert, a quiz or a
+ * party.
  */
 public enum EventType {
-    CONCERT,
-    QUIZ,
-    COURSE,
-    PARTY
+    CONCERT, QUIZ, COURSE, PARTY
 }

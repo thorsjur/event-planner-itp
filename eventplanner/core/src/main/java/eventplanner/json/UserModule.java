@@ -13,7 +13,7 @@ import eventplanner.core.User;
  * 
  * @see <a href=
  *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/module/SimpleModule.html">SimpleModule
- *      docs</a>
+ *      documentation</a>
  */
 public class UserModule extends SimpleModule {
 

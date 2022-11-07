@@ -44,11 +44,12 @@ public class RegisterController {
     private DataAccess dataAccess;
 
     public RegisterController(DataAccess dataAccess) {
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML
-    public void initialize() {
+    private void initialize() {
+
         // Adds listeners to all input fields that signals input-validity to the user.
         ControllerUtil.addValidationFocusListener(emailField, InputType.EMAIL);
         ControllerUtil.addValidationFocusListener(passwordField, InputType.PASSWORD);
@@ -57,16 +58,19 @@ public class RegisterController {
 
     @FXML
     private void handleCreateUser() {
-        try {
-            validateUserInputs();
-        } catch (IllegalArgumentException e) {
+        List<ErrorType> errors = validateUserInputs();
+        if (errors.size() > 0) {
+            displayErrorMessages(errors);
+            incrementErrorCounter();
             return;
         }
 
-        User user = createUser(emailField.getText(), passwordField.getText(), isOlderThan18(birthDatePicker.getValue()));
+        User user = createUser(emailField.getText(), passwordField.getText(),
+                isOlderThan18(birthDatePicker.getValue()));
         if (user != null) {
             String fxmlFileName = "AllEvents.fxml";
-            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, this.dataAccess);
+            FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user,
+                    this.dataAccess);
             ControllerUtil.setSceneFromChild(loader, createUserButton);
         } else {
             errorOutput.setText("User already exists!");
@@ -78,9 +82,9 @@ public class RegisterController {
         User user;
         if (dataAccess.getUser(email) == null) {
             user = new User(email, password, isAbove18);
-            boolean created = dataAccess.createUser(user);
+            boolean wasCreated = dataAccess.createUser(user);
 
-            if (!created) {
+            if (!wasCreated) {
                 errorOutput.setText(ControllerUtil.SERVER_ERROR);
                 return null;
             }
@@ -94,7 +98,8 @@ public class RegisterController {
     @FXML
     private void handleGoToLoginPageButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, this.dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null,
+                this.dataAccess);
         ControllerUtil.setSceneFromChild(loader, goToLoginButton);
     }
 
@@ -103,7 +108,7 @@ public class RegisterController {
         Platform.exit();
     }
 
-    private void validateUserInputs() {
+    private List<ErrorType> validateUserInputs() {
         List<ErrorType> errors = new ArrayList<>();
 
         if (!Validation.isValidTextInput(emailField.getText(), InputType.EMAIL)) {
@@ -118,11 +123,7 @@ public class RegisterController {
             errors.add(Validation.ErrorType.INVALID_BIRTH_DATE);
         }
 
-        if (errors.size() > 0) {
-            displayErrorMessages(errors);
-            incrementErrorCounter();
-            throw new IllegalArgumentException("Invalid input(s)!");
-        }
+        return errors;
     }
 
     private void incrementErrorCounter() {
@@ -131,9 +132,7 @@ public class RegisterController {
 
     private void displayErrorMessages(List<ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
-        for (ErrorType error : errors) {
-            sb.append(error.errMessage + "\n");
-        }
+        errors.forEach(error -> sb.append(error.errMessage + "\n"));
         errorOutput.setText(sb.toString());
     }
 

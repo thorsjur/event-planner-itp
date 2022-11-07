@@ -1,5 +1,6 @@
 package eventplanner.integrationtests;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,7 +53,7 @@ class IntegrationTests {
     private List<String> tempUserEmails = new ArrayList<>();
 
     @BeforeEach
-    public void beforeEach() throws Exception {
+    void beforeEach() throws Exception {
         Event event = getTestEvent("TEST_NAME", "TEST_LOCATION");
         Event event2 = getTestEvent("TEST_NAME2", "TEST_LOCATION2");
         addTestEvent(event, true);
@@ -62,7 +63,7 @@ class IntegrationTests {
     }
 
     @AfterEach
-    public void afterEach() throws Exception {
+    void afterEach() throws Exception {
         for (UUID uuid : tempEventUuids) {
             removeTestEvent(uuid);
         }
@@ -75,16 +76,15 @@ class IntegrationTests {
     }
 
     @Test
-    public void testCreateEvent() throws JsonProcessingException {
+    void testCreateEvent() throws JsonProcessingException {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Event expectedEvent = getTestEvent("TEST_NAME3", "TEST_LOCATION3");
 
         HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(expectedEvent), headers);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event/create"),
-                HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/event/create"), HttpMethod.POST, entity,
+                String.class);
 
         if ((response.getStatusCode() == HttpStatus.OK) && response.getBody().equals("true")) {
             tempEventUuids.add(expectedEvent.getId());
@@ -97,25 +97,22 @@ class IntegrationTests {
     }
 
     @Test
-    public void testGetsAllEvents() throws JsonProcessingException {
+    void testGetsAllEvents() throws JsonProcessingException {
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event/all"),
-                HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/event/all"), HttpMethod.GET, entity,
+                String.class);
 
-        Collection<Event> events = mapper.readValue(response.getBody(), new TypeReference<Collection<Event>>() {
-        });
+        Collection<Event> events = mapper.readValue(response.getBody(), new TypeReference<Collection<Event>>() {});
+
         assertTrue(events.size() >= 2);
-        assertTrue(events.stream()
-                .anyMatch(event -> event.getId().equals(tempEventUuids.get(0))));
-        assertTrue(events.stream()
-                .anyMatch(event -> event.getId().equals(tempEventUuids.get(1))));
+        assertTrue(events.stream().anyMatch(event -> event.getId().equals(tempEventUuids.get(0))));
+        assertTrue(events.stream().anyMatch(event -> event.getId().equals(tempEventUuids.get(1))));
     }
 
     @Test
-    public void testGetEvent() throws JsonProcessingException {
+    void testGetEvent() throws JsonProcessingException {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
@@ -125,17 +122,16 @@ class IntegrationTests {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event?id=" + expectedEvent.getId().toString()),
-                HttpMethod.GET, entity, String.class);
+                getURL("/event?id=" + expectedEvent.getId().toString()), HttpMethod.GET, entity, String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertSame(HttpStatus.OK, response.getStatusCode());
 
         Event actualEvent = readEvent(response.getBody());
         assertEquals(expectedEvent, actualEvent);
     }
 
     @Test
-    public void testDeleteEvent() throws JsonProcessingException {
+    void testDeleteEvent() throws JsonProcessingException {
         Event eventToBeDeleted = getTestEvent("TEST_NAME3", "TEST_LOCATION3");
         addTestEvent(eventToBeDeleted, false);
 
@@ -144,15 +140,14 @@ class IntegrationTests {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event/" + eventToBeDeleted.getId().toString()),
-                HttpMethod.DELETE, entity, String.class);
+                getURL("/event/" + eventToBeDeleted.getId().toString()), HttpMethod.DELETE, entity, String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertSame(HttpStatus.OK, response.getStatusCode());
         assertThrows(Exception.class, () -> loadEvent(eventToBeDeleted.getId()));
     }
 
     @Test
-    public void testUpdateEvent() throws JsonProcessingException {
+    void testUpdateEvent() throws JsonProcessingException {
         UUID uuid = tempEventUuids.get(0);
         Event expectedEvent = loadEvent(uuid);
         User expectedUser = new User("test@user.com", "passw", true);
@@ -165,31 +160,28 @@ class IntegrationTests {
         assertFalse(loadEvent(uuid).getUsers().stream().anyMatch(user -> user.email().equals(expectedUser.email())));
 
         HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(expectedEvent), headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event/update"),
-                HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/event/update"), HttpMethod.PUT, entity,
+                String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
+        assertSame(HttpStatus.OK, response.getStatusCode());
         assertTrue(loadEvent(uuid).getUsers().stream().anyMatch(user -> user.email().equals(expectedUser.email())));
     }
 
     @Test
-    public void testGetUser() throws JsonProcessingException {
+    void testGetUser() throws JsonProcessingException {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         String email = tempUserEmails.get(0);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/user/get?email=" + email),
-                HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/user/get?email=" + email), HttpMethod.GET,
+                entity, String.class);
 
-        assertTrue(HttpStatus.OK == response.getStatusCode());
-        assertTrue(email.equals(readUser(response.getBody()).email()));
+        assertSame(HttpStatus.OK, response.getStatusCode());
+        assertEquals(email, readUser(response.getBody()).email());
     }
 
     @Test
-    public void testCreateUser() throws JsonProcessingException {
+    void testCreateUser() throws JsonProcessingException {
         User expectedUser = new User("TEST2@EXAMPLE.com", "PASSWORD", true);
         tempUserEmails.add(expectedUser.email());
 
@@ -197,18 +189,17 @@ class IntegrationTests {
 
         HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(expectedUser), headers);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/user/create"),
-                HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/user/create"), HttpMethod.POST, entity,
+                String.class);
 
-        assertTrue(HttpStatus.OK == response.getStatusCode());
+        assertSame(HttpStatus.OK, response.getStatusCode());
 
         User actualUser = loadUser(expectedUser.email());
         assertEquals(expectedUser, actualUser);
     }
 
     @Test
-    public void testDeleteUser() throws JsonProcessingException {
+    void testDeleteUser() throws JsonProcessingException {
         User user = new User("TEST2@EXAMPLE.com", "PASSWORD", true);
         addTestUser(user, false);
 
@@ -218,11 +209,11 @@ class IntegrationTests {
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/user/" + user.email()),
-                HttpMethod.DELETE, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/user/" + user.email()), HttpMethod.DELETE,
+                entity, String.class);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertSame(HttpStatus.OK, response.getStatusCode());
+
         // Should throw exception if no user found -> the user was deleted
         assertThrows(Exception.class, () -> loadUser(user.email()));
     }
@@ -232,12 +223,8 @@ class IntegrationTests {
     }
 
     private Event getTestEvent(String name, String location) {
-        return new Event(null,
-                EventType.QUIZ,
-                name,
-                LocalDateTime.now(),
-                LocalDateTime.now().plus(10, ChronoUnit.HOURS),
-                location);
+        return new Event(null, EventType.QUIZ, name, LocalDateTime.now(),
+                LocalDateTime.now().plus(10, ChronoUnit.HOURS), location);
     }
 
     private void addTestEvent(Event event, boolean autoDelete) throws JsonProcessingException {
@@ -248,17 +235,13 @@ class IntegrationTests {
 
         HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(event), headers);
 
-        testRestTemplate.exchange(
-                getURL("/event/create"),
-                HttpMethod.POST, entity, String.class);
+        testRestTemplate.exchange(getURL("/event/create"), HttpMethod.POST, entity, String.class);
     }
 
     private void removeTestEvent(UUID uuid) throws Exception {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        testRestTemplate.exchange(
-                getURL("/event/" + uuid.toString()),
-                HttpMethod.DELETE, entity, String.class);
+        testRestTemplate.exchange(getURL("/event/" + uuid.toString()), HttpMethod.DELETE, entity, String.class);
     }
 
     private Event loadEvent(UUID uuid) throws JsonProcessingException {
@@ -267,8 +250,7 @@ class IntegrationTests {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/event?id=" + uuid.toString()),
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/event?id=" + uuid.toString()),
                 HttpMethod.GET, entity, String.class);
         return readEvent(response.getBody());
     }
@@ -290,26 +272,21 @@ class IntegrationTests {
 
         HttpEntity<String> entity = new HttpEntity<>(mapper.writeValueAsString(user), headers);
 
-        testRestTemplate.exchange(
-                getURL("/user/create"),
-                HttpMethod.POST, entity, String.class);
+        testRestTemplate.exchange(getURL("/user/create"), HttpMethod.POST, entity, String.class);
     }
 
     private void removeTestUser(String email) throws Exception {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        testRestTemplate.exchange(
-                getURL("/user/" + email),
-                HttpMethod.DELETE, entity, String.class);
+        testRestTemplate.exchange(getURL("/user/" + email), HttpMethod.DELETE, entity, String.class);
     }
 
     private User loadUser(String email) throws JsonProcessingException {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = testRestTemplate.exchange(
-                getURL("/user/get?email=" + email),
-                HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(getURL("/user/get?email=" + email), HttpMethod.GET,
+                entity, String.class);
 
         return readUser(response.getBody());
     }

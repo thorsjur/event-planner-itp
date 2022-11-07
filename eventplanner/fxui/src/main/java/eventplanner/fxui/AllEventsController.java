@@ -1,6 +1,5 @@
 package eventplanner.fxui;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.function.Predicate;
 
@@ -32,7 +31,7 @@ public class AllEventsController {
     private Label saveEventLabel;
 
     @FXML
-    private ListView<Event> allEventsList;
+    private ListView<Event> eventsListView;
 
     @FXML
     private TextField searchBar;
@@ -40,25 +39,23 @@ public class AllEventsController {
     @FXML
     private CheckBox myEventsCheckBox;
 
-    private ObservableList<Event> observableList;
     private boolean checkBoxIsChecked = false;
-    private User user;
     private DataAccess dataAccess;
+    private User user;
 
     public AllEventsController(User user, DataAccess dataAccess) {
         this.user = user;
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     /**
-     * Reads events from file and displays events in
-     * view, sorted after date and time.
-     * Also initializes the filtration search field.
+     * Reads events from file and displays events in view, sorted after date and
+     * time. Also initializes the filtration search field.
      */
     @FXML
     private void initialize() {
 
-        observableList = loadEvents();
+        ObservableList<Event> observableList = loadEvents();
 
         // Using a series of transformations to filter using the search field, then
         // sorting using a comparator. The final FilteredList is used to filter by
@@ -67,30 +64,28 @@ public class AllEventsController {
         SortedList<Event> sortedList = filteredList.sorted(ControllerUtil.getDateComparator());
         FilteredList<Event> myEventsList = sortedList.filtered(e -> true);
 
-        allEventsList.setItems(myEventsList);
+        eventsListView.setItems(myEventsList);
 
         // Makes it possible to choose multiple items in list view
         // by holding ctrl+cmd while selecting items
-        allEventsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        eventsListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Sets the CellFactory for the listview to produce EventCells (custom cells)
-        allEventsList.setCellFactory((param) -> new EventCell(dataAccess));
+        eventsListView.setCellFactory(param -> new EventCell(dataAccess));
 
-        allEventsList.setUserData(user);
+        // Supplies the user to the listview, so the event cells have access to the user
+        // object.
+        eventsListView.setUserData(user);
     }
 
     /**
-     * Adds user to selected events' lists of
-     * users and writes changes to file.
+     * Adds user to selected events' lists of users and writes changes to file.
      */
     @FXML
     private void handleSaveEventButtonClicked() {
-        if (allEventsList.getSelectionModel().getSelectedItem() != null) {
-            ObservableList<Event> selectedEvents = allEventsList
-                    .getSelectionModel()
-                    .getSelectedItems();
-
-            handleRegistrationOrDeregistration(selectedEvents, null);
+        if (eventsListView.getSelectionModel().getSelectedItem() != null) {
+            ObservableList<Event> selectedEvents = eventsListView.getSelectionModel().getSelectedItems();
+            handleRegistrationOrDeregistration(selectedEvents);
 
         } else {
             saveEventLabel.setText("No events chosen");
@@ -101,20 +96,21 @@ public class AllEventsController {
     private void handleMyEventsCheckBox() {
         toggleIsChecked();
         myEventsCheckBox.setSelected(isChecked());
+
         updateRegistrationLabel();
         updateListViewPredicate();
     }
 
-    private void handleRegistrationOrDeregistration(ObservableList<Event> selectedEvents, File file) {
+    private void handleRegistrationOrDeregistration(ObservableList<Event> selectedEvents) {
         if (checkBoxIsChecked) {
-            deregisterSelectedUser(selectedEvents, file);
+            deregisterSelectedUser(selectedEvents);
         } else {
-            registerSelectedUser(selectedEvents, file);
+            registerSelectedUser(selectedEvents);
         }
         updateListViewPredicate();
     }
 
-    private void deregisterSelectedUser(ObservableList<Event> selectedEvents, File file) {
+    private void deregisterSelectedUser(ObservableList<Event> selectedEvents) {
         selectedEvents.forEach(event -> event.removeUser(user));
         if (dataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Deregistration successful");
@@ -123,7 +119,7 @@ public class AllEventsController {
         }
     }
 
-    private void registerSelectedUser(ObservableList<Event> selectedEvents, File file) {
+    private void registerSelectedUser(ObservableList<Event> selectedEvents) {
         selectedEvents.forEach(event -> event.addUser(user));
         if (dataAccess.updateEvents(selectedEvents)) {
             saveEventLabel.setText("Registration successful");
@@ -135,16 +131,14 @@ public class AllEventsController {
     private void updateListViewPredicate() {
         Predicate<Event> pred;
         if (checkBoxIsChecked) {
-            pred = event -> {
-                return event.getUsers().stream()
-                        .anyMatch(user -> user.email().equals(this.user.email()));
-            };
+            pred = event -> event.getUsers().stream().anyMatch(u -> u.email().equals(user.email()));
         } else {
+
             // shows all events
             pred = event -> true;
         }
 
-        FilteredList<Event> underlyingFilteredList = (FilteredList<Event>) allEventsList.getItems();
+        FilteredList<Event> underlyingFilteredList = (FilteredList<Event>) eventsListView.getItems();
         underlyingFilteredList.setPredicate(pred);
     }
 
@@ -162,25 +156,27 @@ public class AllEventsController {
 
     private ObservableList<Event> loadEvents() {
         Collection<Event> eventCollection = dataAccess.getAllEvents();
-        if (eventCollection.isEmpty() || eventCollection == null) {
+        if (eventCollection == null) {
             saveEventLabel.setText(ControllerUtil.SERVER_ERROR);
             return null;
-        } else {
-            return FXCollections.observableArrayList(eventCollection);
         }
+        
+        return FXCollections.observableArrayList(eventCollection);
     }
 
     @FXML
     private void handleCreateEventButtonClicked() {
         String fxmlFileName = "CreateEvent.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user, dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, NewEventController.class, user,
+                dataAccess);
         ControllerUtil.setSceneFromChild(loader, createEventButton);
     }
 
     @FXML
     private void handleLogOutButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, dataAccess);
-        ControllerUtil.setSceneFromChild(loader, logOutButton);   
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null,
+                dataAccess);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);
     }
 }

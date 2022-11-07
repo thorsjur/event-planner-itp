@@ -7,10 +7,17 @@ package eventplanner.json.util;
  */
 public class CryptoUtil {
 
+    private CryptoUtil() {
+        throw new IllegalStateException("You cannot instantiate an utility class!");
+    }
+
     /**
      * 100 char offset key, varying offset depending on the index of the character.
      */
-    private static final String OFFSET_KEY = "8122020840947072013953077486987086269062381859747021124026950462366431950675993573294179658112592316";
+    private static final String OFFSET_KEY = "8122020840947072013953077" 
+            + "4869870862690623818597470"
+            + "2112402695046236643195067"
+            + "5993573294179658112592316";
 
     /**
      * Encrypts the given password string using a modified Vignère cipher, also known

@@ -12,7 +12,7 @@ import eventplanner.core.Event;
 import eventplanner.json.util.IOUtil;
 
 /**
- * Reads data from a JSON file using the {@link CustomObjectMapper}.
+ * Reads data from a JSON file using {@link CustomObjectMapper}.
  */
 public class EventCollectionJsonReader {
 
@@ -26,16 +26,16 @@ public class EventCollectionJsonReader {
     }
 
     /**
-     * Method to load a collection of events from a JSON file.
-     * If no file is specified for the method, the reader reads from the default
-     * JSON file specified in {@link EventCollectionJsonWriter}
+     * Method to load a collection of events from a JSON file. If no file is
+     * specified for the method, the reader reads from the default JSON file
+     * specified in {@link EventCollectionJsonWriter}
      * 
      * @param file the json file to load events from.
      * @return a collection of events
      * @throws IOException on low level I/O errors
      */
     public Collection<Event> load(File file) throws IOException {
-        
+
         if (file == null) {
             file = this.file;
         }
@@ -58,6 +58,5 @@ public class EventCollectionJsonReader {
     public Collection<Event> load() throws IOException {
         return load(null);
     }
-
     
 }

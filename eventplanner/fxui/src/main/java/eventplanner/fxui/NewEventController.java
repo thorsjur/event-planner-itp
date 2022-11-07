@@ -1,24 +1,20 @@
 package eventplanner.fxui;
 
-import eventplanner.core.User;
-import eventplanner.core.Event;
-import eventplanner.core.EventType;
-import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.fxui.util.InputType;
-import eventplanner.fxui.util.Validation;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.stream.Stream;
 
-import javafx.beans.value.ChangeListener;
+import eventplanner.core.Event;
+import eventplanner.core.EventType;
+import eventplanner.core.User;
+import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.fxui.util.InputType;
+import eventplanner.fxui.util.Validation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -48,11 +44,13 @@ public class NewEventController {
 
     public NewEventController(User user, DataAccess dataAccess) {
         this.user = user;
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML
     private void initialize() {
+
+        // Adds all the event types to the combo box
         Stream.of(EventType.values())
                 .map(eventType -> eventType.toString())
                 .forEach(typeComboBox.getItems()::add);
@@ -111,7 +109,6 @@ public class NewEventController {
         }
 
         String description = descField.getText();
-
         String authorEmail = user.email();
 
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
@@ -138,9 +135,7 @@ public class NewEventController {
 
     private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
-        errors.forEach(e -> {
-            sb.append(e.errMessage + "\n");
-        });
+        errors.forEach(e -> sb.append(e.errMessage + "\n"));
         outputMessage.setText(sb.toString());
     }
 
@@ -173,14 +168,16 @@ public class NewEventController {
     @FXML
     private void handleEventsButtonClicked() {
         String fxmlFileName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user,
+                dataAccess);
         ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 
     @FXML
     private void handleLogOutButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, dataAccess);
-        ControllerUtil.setSceneFromChild(loader, logOutButton);   
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null,
+                dataAccess);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);
     }
 }

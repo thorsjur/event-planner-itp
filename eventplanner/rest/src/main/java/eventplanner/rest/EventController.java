@@ -19,22 +19,22 @@ import eventplanner.core.Event;
 import eventplanner.json.util.IOUtil;
 
 /**
- * API requests containing "/event" get 
- * sent to this class. Which has methods for requests expanding
- * on "/event", with functionality that controls event manipulation
+ * RestController for handling all requests concerning events.
+ * Uses {@code /event} as base path.
  */
 @RestController
 @RequestMapping("/event")
 public class EventController {
 
     /**
-     * Method to get an event.
+     * Handler method for handling GET requests from a given event id.
+     * Request syntax: {@code SERVICE_PATH + /event?id= + EVENT_UUID}
      * 
-     * @param eventName the name of the event to be acquired
-     * @return the user with a matching email, null if no user has the given email 
+     * @param id the id of the event to be acquired
+     * @return the event in json format with a matching id, null if no event has the given id 
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Event event(@RequestParam String id) {
+    public Event get(@RequestParam String id) {
         try {
             return IOUtil.loadEventMatchingId(id, null);
         } catch (Exception e) {
@@ -44,30 +44,32 @@ public class EventController {
     }
 
     /**
-     * Method to get all events that are saved.
+     * Handler method for handling GET requests returning all events saved.
+     * Request syntax: {@code SERVICE_PATH + /event/all}
      * 
-     * @return a collection of events 
+     * @return a collection of all events in json format
      */
     @GetMapping(path = "/all",
-    produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Event> all() {
         try {
             return IOUtil.loadAllEvents(null);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<Event>();
+            return new ArrayList<>();
         }
     }
 
     /**
-     * Method to update an already existing event.
+     * Handler method for handling PUT requests that updates a specific event.
+     * Request syntax: {@code SERVICE_PATH + /event/update}
      * 
-     * @param event the event of be updated
-     * @return a boolean of whether the event got updated
+     * @param event the event in json format to be updated
+     * @return a boolean value indicating whether the handler was successful
      */
     @PutMapping(path = "/update",
-    consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean add(@RequestBody Event event) {
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean update(@RequestBody Event event) {
         try {
             IOUtil.updateEvent(event, null);
             return true;
@@ -78,10 +80,11 @@ public class EventController {
     }
 
     /**
-     * Method to create an event.
+     * Handler method for handling POST requests that creates a new event.
+     * Request syntax: {@code SERVICE_PATH + /event/create}
      * 
-     * @param event the event to be created
-     * @return a boolean of whether the event got created or not 
+     * @param event the event in json format to be created
+     * @return a boolean value indicating whether the handler was successful
      */
     @PostMapping(path = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -96,10 +99,11 @@ public class EventController {
     }
 
     /**
-     * Method to delete an event.
+     * Handler method for handling DELETE requests from a given event id.
+     * Request syntax: {@code SERVICE_PATH + /event/ + EVENT_UUID}
      * 
      * @param id the id of the event to be deleted
-     * @return a boolean of whether the event got deleted or not 
+     * @return a boolean value indicating whether the handler was successful
      */
     @DeleteMapping("/{id}")
     public boolean delete(@PathVariable String id) {
