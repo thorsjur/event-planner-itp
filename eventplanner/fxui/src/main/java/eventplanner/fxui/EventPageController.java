@@ -173,7 +173,15 @@ public class EventPageController {
     }
 
     private static Event copyEvent(Event event) {
-        return new Event(event.getId(), event.getType(), event.getName(), event.getStartDate(), event.getEndDate(), event.getLocation(), event.getUsers(), event.getAuthorEmail(), event.getDescription());
+        return new Event(event.getId(), 
+                event.getType(), 
+                event.getName(), 
+                event.getStartDate(), 
+                event.getEndDate(), 
+                event.getLocation(), 
+                event.getUsers(), 
+                event.getAuthorEmail(), 
+                event.getDescription());
     }
 
 }

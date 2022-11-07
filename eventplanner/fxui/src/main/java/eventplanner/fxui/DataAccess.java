@@ -11,8 +11,10 @@ import eventplanner.core.User;
  */
 public interface DataAccess {
 
-    /**
-     * @return
+    /** Method for retrieving a copy of dataaccess-object.
+     * 
+     * 
+     * @return  Returns copy of dataaccess-object
      */
     public DataAccess copy();
 
