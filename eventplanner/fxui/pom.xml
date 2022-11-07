@@ -75,7 +75,12 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <propertyName>jaCoCoArgLine</propertyName>
-                </configuration>
+                    <excludes>
+                        <exclude>**/App.class</exclude>
+                        <exclude>**/RemoteDataAccess.*</exclude>
+                        <exclude>**/DataAccess.class</exclude>
+                    </excludes>
+                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
