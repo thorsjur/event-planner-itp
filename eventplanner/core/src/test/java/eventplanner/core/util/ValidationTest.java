@@ -47,18 +47,6 @@ class ValidationTest {
         assertFalse(Validation.isValidPassword(password));
     }
 
-    @ParameterizedTest
-    @MethodSource("provideValidDates")
-    public void testIsValidDate_returnsTrueOnValidInput(LocalDate date) {
-        assertTrue(Validation.isValidDate(date));
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideInvalidDates")
-    public void testIsValidDate_returnsFalseOnInvalidInput(LocalDate date) {
-        assertFalse(Validation.isValidDate(date));
-    }
-
     private static Stream<String> provideValidEmails() {
         return Arrays.stream(new String[] {
             "test@example.com",
@@ -108,20 +96,6 @@ class ValidationTest {
         Stream<String> underMinLengthStream = getLorumIpsumStream(0, MIN_PASSWORD_LENGTH, 10);
 
         return Stream.concat(overMaxLengthStream, underMinLengthStream);
-    }
-
-    private static Stream<LocalDate> provideValidDates() {
-        return Arrays.stream(new LocalDate[] {
-            LocalDate.of(1, 1, 1),
-            LocalDate.now().minusDays(1)
-        });
-    }
-
-    private static Stream<LocalDate> provideInvalidDates() {
-        return Arrays.stream(new LocalDate[] {
-            LocalDate.now(),
-            LocalDate.now().plusDays(1)
-        });
     }
 
     private static Stream<String> getLorumIpsumStream(int minLength, int maxLength, int streamLimit) {

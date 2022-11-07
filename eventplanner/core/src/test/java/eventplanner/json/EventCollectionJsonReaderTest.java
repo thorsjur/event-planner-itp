@@ -35,12 +35,6 @@ class EventCollectionJsonReaderTest {
         WRITER.save(expectedEvents, FILE);
     }
 
-    @AfterAll
-    void tearDown() throws IOException {
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        writer.save(new ArrayList<Event>(), FILE);
-    }
-
     @BeforeEach
     public void beforeEach() throws IOException {
         actualEvents = READER.load(FILE);

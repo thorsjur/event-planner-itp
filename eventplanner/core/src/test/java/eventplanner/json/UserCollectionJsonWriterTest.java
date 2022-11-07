@@ -42,12 +42,6 @@ class UserCollectionJsonWriterTest {
         WRITER.save(expectedUsers, FILE);
     }
 
-    @AfterAll
-    void tearDown() throws IOException {
-        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
-        writer.save(new ArrayList<User>(), FILE);
-    }
-
     @BeforeEach
     public void beforeEach() throws IOException {
         actualUsers = READER.load(FILE);
