@@ -4,9 +4,9 @@
 
 ## Enhancements
 
-Since the last release we have extended functionality, impolemented rest-api, improved codequality and updated documentation;
+Since the last release we have extended functionality, implemented rest-api, improved codequality and updated documentation;
 
- 1. An rest-api server has been implemented (rest module). Documentation on how to launch the server, and how it works can be found [here](../../eventplanner/rest/README.md). 
+ 1. A rest-api server has been implemented (rest module). Documentation on how to launch the server, and how it works can be found [here](../../eventplanner/rest/README.md). 
 
  2. We have further expanded our serialization and deserialization to handle new data for users and events. We decided to add password and age fields for users and an id, author and description field for events. 
 
@@ -24,10 +24,10 @@ Since the last release we have extended functionality, impolemented rest-api, im
 
  ## Improvement potential
 
- The project is now a functional application. But there have been made some decicions that should probably be improved before an possible release to the public.
+ The project is now a functional application. But there have been made some decicions that should probably be improved before a possible release to the public.
 
  1. The server is now ran locally. In a real production, the rest-server would be hosted remotely so that users would react with the same server. This is explained holistically in the [rest-module-documentation](../../eventplanner/rest/README.md).
 
- 2. Userdata security. Data, like passwords and emails, would benefit from a complex encryption so that the data would not be retrievable under an hypothetical attack. We currently hash passwords, but the hashingmethod used is very simple and could probably be reversed. Hashing functions like SHA-256 would be a better solution.
+ 2. Userdata security. Data, like passwords and emails, would benefit from a complex encryption so that the data would not be retrievable under a hypothetical attack. We currently hash passwords, but the hashingmethod used is very simple and could probably be reversed. Hashing functions like SHA-256 would be a better solution.
 
  3. Api-server security. Remote api-servers ofter use an api-key to ensure wether the api-requests are accepted. This has been explained further in the [rest-module-documentation](../../eventplanner/rest/README.md)

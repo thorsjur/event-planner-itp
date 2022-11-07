@@ -30,7 +30,7 @@ mvn exec:java
 
 It should be noted that all api-requests are ran locally even though a rest-server is used. This is the consequence of running the server on localhost. ideally the server would be hosted on a remote server, where it could be accesed by anyone with an internet connection. 
 
-In this project, a local api-rest server is sufficient to prove that this application also would work with an remote hosted api-rest server. 
+In this project, a local api-rest server is sufficient to prove that this application also would work with a remote hosted api-rest server. 
 
 <br>
 
@@ -78,7 +78,7 @@ As of now, the api-server is accesible by anyone. This is generally a bad practi
 
 Ideally we would add functionality for sending request with an api-key. The key would then be verified at the api-server. The response would depend on whether the given key is associated with access to the requested data.
 
-We will not implement api-keys, but if the server were to run on an remote server, this is a functionality we would implement.
+We will not implement api-keys, but if the server were to run on a remote server, this is a functionality we would implement.
 
 <br>
 
@@ -253,7 +253,7 @@ Returns a boolean value indicating whether the event was successfully deleted.
 
 ### **GET user/get?email={email}**
 
-Retrieves an user given an email.
+Retrieves a user given an email.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -299,7 +299,7 @@ Returns a boolean value indicating whether the user was successfully created.
 
 ### **DELETE user/{email}**
 
-Deletes an user provided its email.
+Deletes a user provided its email.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
