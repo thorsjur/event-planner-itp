@@ -32,7 +32,7 @@ public class LoginController {
     private DataAccess dataAccess;
 
     public LoginController(DataAccess dataAccess) {
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML

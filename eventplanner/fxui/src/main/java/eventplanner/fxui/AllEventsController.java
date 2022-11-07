@@ -45,7 +45,7 @@ public class AllEventsController {
 
     public AllEventsController(User user, DataAccess dataAccess) {
         this.user = user;
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     /**

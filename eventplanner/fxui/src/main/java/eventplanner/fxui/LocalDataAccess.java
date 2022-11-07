@@ -20,6 +20,11 @@ public class LocalDataAccess implements DataAccess {
     private final File userFile = new File(RESOURCE_BASE_DIR + "user.json");
 
     @Override
+    public DataAccess copy() {
+        return new LocalDataAccess();
+    }
+
+    @Override
     public User getUser(String email) {
         try {
             return IOUtil.loadUserMatchingEmail(email, this.userFile);

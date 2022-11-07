@@ -31,6 +31,11 @@ public class RemoteDataAccess implements DataAccess {
     private static final String JSON_MEDIA_TYPE = "application/json";
 
     @Override
+    public DataAccess copy() {
+        return new RemoteDataAccess();
+    }
+
+    @Override
     public User getUser(String email) {
         try {
             final URI requestUri = new URI(SERVICE_PATH + "user/get?email=" + email);

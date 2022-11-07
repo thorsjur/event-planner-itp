@@ -12,6 +12,11 @@ import eventplanner.core.User;
 public interface DataAccess {
 
     /**
+     * @return
+     */
+    public DataAccess copy();
+
+    /**
      * Method for retrieving a user based on the specified email address.
      * 
      * @param email the email of the user you want to get

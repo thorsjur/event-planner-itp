@@ -44,7 +44,7 @@ public class RegisterController {
     private DataAccess dataAccess;
 
     public RegisterController(DataAccess dataAccess) {
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML

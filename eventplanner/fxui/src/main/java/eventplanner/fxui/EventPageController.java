@@ -47,9 +47,9 @@ public class EventPageController {
      */
     public EventPageController(User user, Event event, DataAccess dataAccess) {
         this.user = user;
-        this.event = event;
+        this.event = copyEvent(event);
         this.isRegistered = event.getUsers().contains(user);
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML
@@ -170,6 +170,10 @@ public class EventPageController {
 
     private void initializeOutputText() {
         outputText.setText("");
+    }
+
+    private static Event copyEvent(Event event) {
+        return new Event(event.getId(), event.getType(), event.getName(), event.getStartDate(), event.getEndDate(), event.getLocation(), event.getUsers(), event.getAuthorEmail(), event.getDescription());
     }
 
 }

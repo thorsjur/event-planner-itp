@@ -50,11 +50,6 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-    public Scene getScene() {
-        return this.scene;
-    }
-
     public static void main(String[] args) {
         launch();
     }
