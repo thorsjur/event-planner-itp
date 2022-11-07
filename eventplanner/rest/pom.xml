@@ -19,32 +19,6 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-      <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Spring dependencies-->
         <dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,8 +36,6 @@
             <artifactId>spring-core</artifactId>
             <version>5.3.23</version>
         </dependency>
-
-
     </dependencies>
 
     <reporting>
@@ -73,7 +45,6 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.2.0</version>
             </plugin>
-
         </plugins>
     </reporting>
 
@@ -93,7 +64,14 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>eventplanner.rest.RestServiceApplication</mainClass>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
-
 </project>

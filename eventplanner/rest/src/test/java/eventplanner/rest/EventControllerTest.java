@@ -35,7 +35,7 @@ import eventplanner.json.CustomObjectMapper;
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = { EventController.class, RestServiceApplication.class })
 @WebMvcTest
-public class EventControllerTest {
+class EventControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -46,7 +46,7 @@ public class EventControllerTest {
     private List<UUID> tempEventUuids = new ArrayList<>();
 
     @BeforeEach
-    public void beforeEach() throws Exception {
+    void beforeEach() throws Exception {
         Event event = getTestEvent("TEST_NAME", "TEST_LOCATION");
         Event event2 = getTestEvent("TEST_NAME2", "TEST_LOCATION2");
         addTestEvent(event);
@@ -56,7 +56,7 @@ public class EventControllerTest {
     }
 
     @AfterEach
-    public void afterEach() throws Exception {
+    void afterEach() throws Exception {
         for (UUID uuid : tempEventUuids) {
             removeTestEvent(uuid);
         }
@@ -64,7 +64,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testAll_retrievesEventsAsExpected() throws Exception {
+    void testAll_retrievesEventsAsExpected() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(SERVICE_PATH + "event/all")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -80,7 +80,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testEvent_retrievesEventAsExpected() throws Exception {
+    void testEvent_retrievesEventAsExpected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(SERVICE_PATH + "event?id=" + tempEventUuids.get(0).toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -88,7 +88,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    void testUpdate() throws Exception {
         UUID uuid = tempEventUuids.get(0);
         Event expectedEvent = loadEvent(uuid);
         User expectedUser = new User("test@user.com", "passw", true);
@@ -103,7 +103,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    void testCreate() throws Exception {
         Event event = getTestEvent("TEST_NAME3", "TEST_LOCATION3");
         tempEventUuids.add(event.getId());
 
@@ -117,7 +117,7 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    void testDelete() throws Exception {
         Event event = getTestEvent("TEST_NAME3", "TEST_LOCATION3");
         addTestEvent(event);
 
@@ -160,7 +160,7 @@ public class EventControllerTest {
         return getEvent(response);
     }
 
-    private Event getEvent(String content) throws Exception{
+    private Event getEvent(String content) throws Exception {
         return MAPPER.readValue(content, Event.class);
     }
 }

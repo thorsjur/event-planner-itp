@@ -23,9 +23,9 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class UserCollectionJsonWriterTest {
+class UserCollectionJsonWriterTest {
 
-    public static final String FILE_PATH = "src/test/java/resources/data/user.json";
+    static final String FILE_PATH = "src/test/java/resources/data/user.json";
     private static final File FILE = new File(FILE_PATH);
     private static final UserCollectionJsonWriter WRITER = new UserCollectionJsonWriter();
     private static final UserCollectionJsonReader READER = new UserCollectionJsonReader();
@@ -42,6 +42,12 @@ public class UserCollectionJsonWriterTest {
         WRITER.save(expectedUsers, FILE);
     }
 
+    @AfterAll
+    void tearDown() throws IOException {
+        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
+        writer.save(new ArrayList<User>(), FILE);
+    }
+
     @BeforeEach
     public void beforeEach() throws IOException {
         actualUsers = READER.load(FILE);
@@ -54,7 +60,7 @@ public class UserCollectionJsonWriterTest {
 
 
     @Test
-    public void testSave_retainsUserData() {
+    void testSave_retainsUserData() {
         assertTrue(actualUsers.size() == expectedUsers.size());
         assertTrue(
                 expectedUsers.stream()

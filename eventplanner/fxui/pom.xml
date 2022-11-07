@@ -19,23 +19,6 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.9</version>
-       </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -59,11 +42,8 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-        </dependency>
 
+        <!-- ui testing with testfx -->
         <dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>
@@ -89,6 +69,7 @@
                     <mainClass>eventplanner.fxui/eventplanner.fxui.App</mainClass>
                 </configuration>
             </plugin>
+            <!-- JaCoCo - codecoverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -119,7 +100,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.2.0</version>
             </plugin>
         </plugins>
     </build>
@@ -127,11 +107,13 @@
     <reporting>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.2.0</version>
             </plugin>
-
         </plugins>
     </reporting>
     

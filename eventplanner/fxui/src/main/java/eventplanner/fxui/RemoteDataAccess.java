@@ -1,8 +1,10 @@
 package eventplanner.fxui;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -10,7 +12,6 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -18,17 +19,27 @@ import eventplanner.core.Event;
 import eventplanner.core.User;
 import eventplanner.json.CustomObjectMapper;
 
-public class RemoteDataAccess implements DataAccess{
+/**
+ * Implementation of {@link DataAccess} to be used for remote data access.
+ */
+public class RemoteDataAccess implements DataAccess {
 
-    private final boolean isRemote = true;
+    private static final CustomObjectMapper mapper = new CustomObjectMapper();
+    private static final String SERVICE_PATH = "http://localhost:8080/";
 
-    private final CustomObjectMapper mapper = new CustomObjectMapper();
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String JSON_MEDIA_TYPE = "application/json";
+
+    @Override
+    public DataAccess copy() {
+        return new RemoteDataAccess();
+    }
 
     @Override
     public User getUser(String email) {
         try {
-            DataAccess.connection();
-            final URI requestUri = new URI("http://localhost:8080/user/get?email=" + email);
+            final URI requestUri = new URI(SERVICE_PATH + "user/get?email=" + email);
+
             final HttpRequest request = HttpRequest.newBuilder(requestUri)
                     .GET()
                     .build();
@@ -36,31 +47,41 @@ public class RemoteDataAccess implements DataAccess{
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofString());
             final String responseString = response.body();
+
             if (responseString.isEmpty()) {
                 return null;
             }
-            final User readValue = mapper.readValue(responseString, User.class);
-            return readValue;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return mapper.readValue(responseString, User.class);
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
 
     @Override
-    public void createUser(User user) {
+    public boolean createUser(User user) {
         try {
-            DataAccess.connection();
-            final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/user/create"))
-                    .header("Content-Type", "application/json")
+            assertConnection();
+
+            final URI requestUri = new URI(SERVICE_PATH + "user/create");
+            final HttpRequest request = HttpRequest.newBuilder(requestUri)
+                    .header(CONTENT_TYPE, JSON_MEDIA_TYPE)
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(user)))
                     .build();
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
+            return response.statusCode() == 200;
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
+        return false;
     }
 
     @Override
@@ -68,18 +89,23 @@ public class RemoteDataAccess implements DataAccess{
 
         Collection<Event> events = new ArrayList<>();
         try {
-            DataAccess.connection();
-            final URI requestUri = new URI("http://localhost:8080/event/all");
-            final HttpRequest request = HttpRequest.newBuilder(requestUri).GET().build();
-            final HttpResponse<String> response = HttpClient.newBuilder().build().send(request,
-                    HttpResponse.BodyHandlers.ofString());
+            assertConnection();
+
+            final URI requestUri = new URI(SERVICE_PATH + "event/all");
+            final HttpRequest request = HttpRequest.newBuilder(requestUri)
+                    .GET()
+                    .build();
+            final HttpResponse<String> response = HttpClient.newBuilder()
+                    .build()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
             final String responseString = response.body();
-            events = mapper.readValue(responseString, new TypeReference<Collection<Event>>() {
-            });
+            events = mapper.readValue(responseString, new TypeReference<Collection<Event>>() {});
             syncEvents(events);
-            return events;
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
 
         return events;
@@ -89,46 +115,52 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean updateEvent(Event event) {
         try {
-            DataAccess.connection();
-            final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/update"))
-                    .header("Content-Type", "application/json")
-                    .PUT(BodyPublishers.ofString(mapper.writeValueAsString(event)))
-                    .build();
+            assertConnection();
+
+            final URI requestURI = new URI(SERVICE_PATH + "event/update");
+            final HttpRequest request = HttpRequest.newBuilder(requestURI)
+                    .header(CONTENT_TYPE, JSON_MEDIA_TYPE)
+                    .PUT(BodyPublishers.ofString(mapper.writeValueAsString(event))).build();
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             return response.statusCode() == 200;
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
         return false;
     }
 
     @Override
     public boolean updateEvents(Collection<Event> events) {
-        boolean flag = true;
-        for (Event event : events) {
-            if (!updateEvent(event)) {
-                flag = false;   
-            }
-        }
-        return flag;
+
+        // The method short circuits if any event fails to update
+        return events.stream()
+                .anyMatch(event -> !updateEvent(event));
     }
 
     @Override
     public boolean createEvent(Event event) {
         try {
-            DataAccess.connection();
-            final HttpRequest request = HttpRequest.newBuilder(new URI("http://localhost:8080/event/create"))
-                    .header("Content-Type", "application/json")
+            assertConnection();
+
+            final URI requestURI = new URI(SERVICE_PATH + "event/create");
+            final HttpRequest request = HttpRequest.newBuilder(requestURI)
+                    .header(CONTENT_TYPE, JSON_MEDIA_TYPE)
                     .POST(BodyPublishers.ofString(mapper.writeValueAsString(event)))
                     .build();
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             return response.statusCode() == 200;
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
         return false;
     }
@@ -136,19 +168,28 @@ public class RemoteDataAccess implements DataAccess{
     @Override
     public boolean deleteEvent(Event event) {
         try {
-            DataAccess.connection();
-            final HttpRequest request = HttpRequest
-                    .newBuilder(new URI("http://localhost:8080/event/" + encode(event.getId().toString())))
+            assertConnection();
+
+            final URI requestURI = new URI(SERVICE_PATH + "event/" + encode(event.getId().toString()));
+            final HttpRequest request = HttpRequest.newBuilder(requestURI)
                     .DELETE()
                     .build();
             final HttpResponse<InputStream> response = HttpClient.newBuilder()
                     .build()
                     .send(request, HttpResponse.BodyHandlers.ofInputStream());
             return response.statusCode() == 200;
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (URISyntaxException | IOException e) {
+            System.err.println(e.getMessage());
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
         return false;
+    }
+
+    @Override
+    public boolean isRemote() {
+        return true;
     }
 
     private void syncEvents(Collection<Event> events) {
@@ -175,41 +216,13 @@ public class RemoteDataAccess implements DataAccess{
         }
     }
 
-    public boolean isRemote() {
-        return this.isRemote;
-    }
-
-    public static void checkConnection() throws Exception {
-        final HttpRequest request = HttpRequest
-            .newBuilder(new URI("http://localhost:8080/user"))
-            .GET()
-            .build();
-        final HttpResponse<InputStream> response = HttpClient.newBuilder()
-            .build()
-            .send(request, HttpResponse.BodyHandlers.ofInputStream());
-    }
-
-    /* Not valid method for remote dataAccess.
+    /**
+     * Checks the connection by sending a dummy GET request to the server, which
+     * throws an exception if the connection is faulty.
      */
-    @Override
-    public Collection<User> loadUsers() {
-        return null;
+    public static void assertConnection() throws URISyntaxException, IOException, InterruptedException {
+        final HttpRequest request = HttpRequest.newBuilder(new URI(SERVICE_PATH + "user")).GET().build();
+        HttpClient.newBuilder().build().send(request, HttpResponse.BodyHandlers.ofInputStream());
     }
 
-    /* Not valid method for remote dataAccess.
-     */
-    @Override
-    public void overwriteUsers(List<User> users) {
-        return;
-        
-    }
-
-    /* Not valid method for remote dataAccess.
-     */
-    @Override
-    public void overwriteEvents(List<Event> events) {
-        return;        
-    }
-
-    
 }

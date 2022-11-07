@@ -14,90 +14,89 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class ValidationTest {
+class ValidationTest {
 
     private static final int MIN_NAME_LENGTH = Validation.MIN_NAME_LENGTH;
-    private static final int MIN_DESCRIPTION_LENGTH = Validation.MIN_DESCRIPTION_LENGTH;
     private static final int MIN_LOCATION_LENGTH = Validation.MIN_LOCATION_LENGTH;
 
     private static final int NUMBER_OF_STRINGS = 20;
     
     @Test
-    public void testErrorType_hasErrMessage() {
+    void testErrorType_hasErrMessage() {
         for (Validation.ErrorType type : Validation.ErrorType.values()) {
             assertTrue(type.errMessage.length() > 0);
         }
     }
 
     @Test
-    public void testIsValidTextInput_throwsOnInvalidInputType() {
-        final String input = "This is an input";
+    void testIsValidTextInput_throwsOnInvalidInputType() {
+        final String input = "Example input";
         assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.EVENT_TYPE));
         assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.DATE));
     }
 
     @ParameterizedTest
     @NullSource
-    public void testIsValidTextInput_throwsOnNullInput(String input) {
-        assertThrows(IllegalArgumentException.class, () -> Validation.isValidTextInput(input, InputType.NAME));
+    void testIsValidTextInput_returnsFalseOnNullInput(String input) {
+        assertFalse(Validation.isValidTextInput(input, InputType.NAME));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "", "123", "..//\n\n", "</b>" })
-    public void testIsValidTextInput_descShouldAcceptsAllStringInputs(String input) {
+    void testIsValidTextInput_descShouldAcceptsAllStringInputs(String input) {
         assertTrue(Validation.isValidTextInput(input, InputType.DESCRIPION));
     }
 
     @ParameterizedTest
     @MethodSource("provideValidLocationStrings")
-    public void testIsValidTextInput_locationReturnsTrueOnStringsOverLimit(String input) {
+    void testIsValidTextInput_locationReturnsTrueOnStringsOverLimit(String input) {
         assertTrue(Validation.isValidTextInput(input, InputType.LOCATION));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidLocationStrings")
-    public void testIsValidTextInput_locationReturnsFalseOnStringsUnderLimit(String input) {
+    void testIsValidTextInput_locationReturnsFalseOnStringsUnderLimit(String input) {
         assertFalse(Validation.isValidTextInput(input, InputType.LOCATION));
     }
 
     @ParameterizedTest
     @MethodSource("provideValidNameStrings")
-    public void testIsValidTextInput_nameReturnsTrueOnStringsOverLimit(String input) {
+    void testIsValidTextInput_nameReturnsTrueOnStringsOverLimit(String input) {
         assertTrue(Validation.isValidTextInput(input, InputType.NAME));
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidNameStrings")
-    public void testIsValidTextInput_nameReturnsFalseOnStringsUnderLimit(String input) {
+    void testIsValidTextInput_nameReturnsFalseOnStringsUnderLimit(String input) {
         assertFalse(Validation.isValidTextInput(input, InputType.NAME));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "23:59", "00:00", "12:34", "17:19", "18:18", "01:02" })
-    public void testIsValidTextInput_returnsTrueOnValidTimeStrings(String input) {
+    void testIsValidTextInput_returnsTrueOnValidTimeStrings(String input) {
         assertTrue(Validation.isValidTextInput(input, InputType.TIME));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "12:60", "00;00", "24:00", "31:00", "-01:-2", ":", "1:2", "233:2", "ac:dc" })
-    public void testIsValidTextInput_returnsFalseOnInvalidTimeStrings(String input) {
+    void testIsValidTextInput_returnsFalseOnInvalidTimeStrings(String input) {
         assertFalse(Validation.isValidTextInput(input, InputType.TIME));
     }
 
     @ParameterizedTest
     @NullSource
-    public void testIsValidEventType_falseOnNullInput(String input) {
+    void testIsValidEventType_falseOnNullInput(String input) {
         assertFalse(Validation.isValidEventType(input));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "Time", "time", "rhyme", "", "\n", " ", "1", "23" })
-    public void testIsValidEventType_returnsFalseOnInvalidType(String input) {
+    void testIsValidEventType_returnsFalseOnInvalidType(String input) {
         assertFalse(Validation.isValidEventType(input));
     }
 
     @Test
-    public void isStartBeforeEnd_shouldReturnFalse() {
+    void isStartBeforeEnd_shouldReturnFalse() {
         LocalDate start = LocalDate.of(2020, 9, 15);
         LocalDate end = LocalDate.of(2020, 9, 15);
         String startTime = "12:24";
@@ -112,7 +111,7 @@ public class ValidationTest {
     }
 
     @Test
-    public void isStartBeforeEnd_shouldReturnTrue() {
+    void isStartBeforeEnd_shouldReturnTrue() {
         LocalDate start = LocalDate.of(2020, 8, 14);
         LocalDate end = LocalDate.of(2020, 8, 15);
         String startTime = "12:24";
@@ -140,7 +139,7 @@ public class ValidationTest {
     }
 
     @Test
-    public void isStartBeforeEnd_shouldReturnTrueOnInvalidInputs() {
+    void isStartBeforeEnd_shouldReturnTrueOnInvalidInputs() {
         LocalDate start = LocalDate.of(2020, 8, 14);
         LocalDate end = LocalDate.of(2010, 8, 15);
         String startTime = "12:243";
