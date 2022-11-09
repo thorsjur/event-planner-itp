@@ -1,60 +1,65 @@
 [nav](../../docs/nav.md)
 
-# Group 25 - Core module
+# Core module
 
-## Module content
+## Module Content
 
-Core module contains core layer and persistence layer.
+The core module contains a core layer and a persistence layer.
 
 - The persistence layer can be found at [/src/main/java/eventplanner/json](./src/main/java/eventplanner/json/)
 - The core layer can be found at [/src/main/java/eventplanner/core](./src/main/java/eventplanner/core/)
 
-We found it practical to create a common module for both the persistance and core -logic. The reason for this is that the persistence layer is very dependent on the core logic. And the core logic is mainly used in the persistence layer.
+We found it practical to create a common module for both the persistance and core logic. The reason being that the persistence layer has high coupling to the core layer. The core layer is not dependent of the persistence layer, however the logic in core is limited, and for a project of this size it's practical to keep the layers together.
 
-### Persistence layer
+<br>
+
+### **Persistence layer**
 
 The persistence layer can be found [here](./src/main/java/eventplanner/json/).
 
 To improve the applications usability, we wish to limit the user’s explicit knowledge of the data persistence, thus we choose to not use the desktop metaphor. User data will be displayed upon the user entering a unique username. Where and how the data is saved will not be disclosed to the user. When a user clicks on the “create new event”-button, “add event”-button or “remove event”-button, the saving should be implicitly done by the program.
 
-[This](../fxui/src/main/resources/data/event.json) is where data about users and events are stored. Events will be stored in a json file. Each event will be stored as its own object with properties; id, type, name, start-time, end-time, location, author, description and users. 
-    
-    {
-        "id" : "123e4567-e89b-12d3-a456-356642440000",
-        "type" : "Example",
-        "name" : "Examplename",
-        "start-time" : "2003-08-17T19:09",
-        "end-time" : "2003-08-18T14:09",
-        "location" : "Examplelocation",
-        "author" : "example@example.example",
-        "description" : "exampledesc", 
-        "users" : 
-            [
-                "ExampleName1",
-                "ExampleName2"
-            ]
-    }
+[This](../fxui/src/main/resources/data/event.json) is where data about users and events are stored. Events will be stored in a json file. Each event will be stored as its own object with the following properties: Id, type, name, start-time, end-time, location, author, description and users. 
 
-The names saved in "users" will refer to the attendants at the event.
+```json
+{
+    "id" : "123e4567-e89b-12d3-a456-356642440000",
+    "type" : "EXAMPLE TYPE",
+    "name" : "EXAMPLE NAME",
+    "start-time" : "2003-08-17T19:09",
+    "end-time" : "2003-08-18T14:09",
+    "location" : "EXAMPLE LOCATION",
+    "author" : "author@example.com",
+    "description" : "EXAMPLE DESCRPIPTION", 
+    "users" : [ "example@email.one", "example@email.two"]
+}
+```
 
-The users will be stored in its own json file (the filepath depends on wether local or remote data access is beeing used, [read more](../rest/README.md)). User object will be stored with properties: email, password and above18. Where the password will be stored as its hashed version. Above18 property represents wether the user is above 18 years.
+The emails saved in "users" refer to the attendees at the event, where each user has a unique email address.
 
-    {
-        "email" : "example@example.example",
-        "password" : "hashedpassword",
-        "above18" : false
-    }
+The users will be stored in its own json file (the filepath depends on whether local or remote data access is currently used, [read more](../rest/README.md)). The User object will be stored with properties: Email, password and above18. Where the password will be stored as its hashed version. The above18 property represents whether the user is above 18 years. The serialization of an example user is provided below:
 
+```json
+{
+    "email" : "example@email.one",
+    "password" : "encryptedpassword",
+    "above18" : false
+}
+```
+#### **Password encryption:**
+The current implementation of password encryption is only meant to serve as an example. We chose to use a variation of the classic Vignère cipher to provide basic encryption of the users' passwords. The password is encrypted at the serialization phase, and later decrypted at the deserialization phase. 
 
+The reasoning for choosing an relatively unsecure cipher is that proper implementation of password encryption using public and private keys is unecessary for a project of this scale. In addition we do not have the knowledge or experience to properly implement the security needed. If this project was meant to be used by a user base, we would be required to implement better security protocols.
 
+<br>
 
-### Core layer
+### **Core layer**
 
 The core layer can be found [here](./src/main/java/eventplanner/core/).
 
-This layer contains classes that represent the core logic of the project. The Event class can be used to initiate an object with the properties described above in the persistence layer. It also contains an list of all the users connected to the event.
+This layer contains classes that represent the core logic of the project. The Event class can be used to instantiate an object with the properties described above. It also contains an list of all the users connected to the event.
 
-The user-class can be used to initiate an user object. This object will have the property name, password and above18.
+<br>
 
 ## Module Architecture
 ![Architecture diagram](../../docs/diagrams/core_architecture.png)
@@ -63,24 +68,22 @@ The user-class can be used to initiate an user object. This object will have the
  - A red, dotted line from *A* to *B* depicts that *B* is a dependency of *A*.
     - Arrows from a module indicate that all layers in the module has the dependency
  - The "box" named *eventplanner* represents the collection of local modules.
- - The components with a symbol in the top-right corner represents modules, such as *javafx* and *core*.
+ - The components with a symbol in the top-right corner represents modules, such as *jackson* and *core*.
  - The folders represent the current packages or layers of the modules.
+
+<br>
 
 ## Reports
 
-Jacoco code-coverage:
+The JaCoCo code coverage report will be generated on
 
  ```
 mvn test
 ```
-Spotbugs and checkstyle:
+and Spotbugs and Checkstyle reports are generated on the command
 
  ```
 mvn site
 ```
 
-All reports can be found at each respectable modules `target/site` folder.
-
-jacoco.html;
-spotbugs.html;
-checksstyle.html;
+All reports can be found at the module's `target/site` folder. The SpotBugs report and Checkstyle report is found at site, while the JaCoCo report can be found at `target/site/jacoco`. By opening the file named `index.html` in your browser you can display the coverage report.

@@ -1,11 +1,14 @@
 [nav](../../docs/nav.md)
 
-# Group 25 - REST module
+# REST module
 
 ## Rest module content
 
 - [ServerApplication](./src/main/java/eventplanner/rest/RestServiceApplication.java)
 - [Controllers](./src/main/java/eventplanner/rest/)
+- [Controller tests](./src/test/java/eventplanner/rest/)
+
+<br>
 
 ## README content
 - [Usage](#usage)
@@ -17,68 +20,70 @@
 <br>
 
 ## Usage
-### Serverapplication
+### **Serverapplication**
 
-The serverapplication can be found [here](/eventplanner/rest/src/main/java/eventplanner/rest/RestServiceApplication.java), and launches the server locally on path localhost, port 8080.
+The serverapplication can be found [here](/eventplanner/rest/src/main/java/eventplanner/rest/RestServiceApplication.java), and launches the server locally using localhost on port 8080.
 
-The server needs to run in order for the fxui-application to connect with RemoteDataAccess. If the server is not running, the fxui-application will run using LocalDataAccess. Note the server has to be started before the application, to ensure the proper DataAccess is used.
+The server needs to run in order for the fxui-application to connect with RemoteDataAccess. If the server is not running, the fxui-application will run offline using LocalDataAccess. Note the server has to be started before the application, to ensure the proper DataAccess derivative is used.
 
 You can start the server from the `eventplanner/rest/` directory with the command:
  ```
 mvn exec:java
 ```
 
-It should be noted that all api-requests are ran locally even though a rest-server is used. This is the consequence of running the server on localhost. ideally the server would be hosted on a remote server, where it could be accesed by anyone with an internet connection. 
+It should be noted that all API requests are made locally, even though a REST server is being used. This is the consequence of running the server on localhost. ideally the server would be hosted on a remote server, where it could be accesed by anyone with an internet connection and proper authentication. 
 
-In this project, a local api-rest server is sufficient to prove that this application also would work with a remote hosted api-rest server. 
+In this project, a local REST server hosted on localhost is sufficient to demonstrate that this application works with a remote hosted REST server. 
 
 <br>
 
-### User and Event Controllers
+### **User and Event Controllers**
 
-The controllers can be found [here](./src/main/java/eventplanner/rest/), and contains handler methods for mapping a HTTP request to a given handler.
+The controllers  can be found [here](./src/main/java/eventplanner/rest/), and contains handler methods for mapping a HTTP request to a given handler.
 
-A rest-api can be accessed by sending http-request to the server. In this project we mainly rely on the local service path `http//:localhost:8080`
+A REST API can generally be accessed by sending a HTTP request to the server. In this project we mainly rely on the local service path `http//:localhost:8080`
 
-The server will then get this request, and send back information depending on the controllers. Every request has a path, and every request with path starting with:
- ```
-http//:localhost:8080/user
-```
-Will be sent to the corresponding controller. In this case, the UserController.
-
-#### EventController
-The Eventcontroller class can be found [here](./src/main/java/eventplanner/rest/EventController.java).
-
-This controller handles all requests with base:
+The server will then recieve the request, and send back a response depending on the handler method in the respective controller. By resolving a URI (Uniform Resource Identifier) with the service path you can request a resource. For example, by resolving the URI `/event` to the service path you get the base URI for the Event controller. Now we have the path to
  ```
 http//:localhost:8080/event
 ```
-This class implements methods for:
-- Creating events
-- Retrieve all events
-- Updating events
-- Deleting events
+and by resolving the URI with the URI `/all`, you can send a GET request and recieve a JSON representation of all events. The API documentation describing all supported REST requests can be found at the bottom of this readme.
 
-#### Usercontroller
-The Usercontroller class can be found [here](./src/main/java/eventplanner/rest/UserControllerjava), and handles all requests starting with:
+<br>
+
+#### **EventController**
+The controller handling all requests dealing with events can be found [here](./src/main/java/eventplanner/rest/EventController.java).
+
+The controller has the URI base:
+ ```
+http//:localhost:8080/event
+```
+The Event controller implements handler methods to:
+- Create events
+- Retrieve all events
+- Update events
+- Delete events
+
+#### **Usercontroller**
+The controller handling all requests dealing with users is to be found [here](./src/main/java/eventplanner/rest/UserControllerjava), and handles all requests with the URI base:
  ```
 http//:localhost:8080/user
 ```
-This class implements methods for:
+The class implements methods for handling:
 - Creating users
 - Retrieving users
 - Deleting users
 
-Note it is not possible to update a user through the REST API.
+*Note it is not possible to update a user through the REST API.*
 
 <br>
 
 ## Enhancement - API-key
-As of now, the api-server is accesible by anyone. This is generally a bad practice for api-servers.
+As of now, the REST API is accessible by anyone. This is generally a bad practice for handling requests to a server. To circumvent this, additional authentication would have to be implemented.
 
-Ideally we would add functionality for sending request with an api-key. The key would then be verified at the api-server. The response would depend on whether the given key is associated with access to the requested data.
+Ideally we would add functionality for sending requests containing an API key. The key would then be verified at the server. The response would depend on whether the given key is a valid access token, and if the key proves sufficient clearance for the requested operation. E.g. a delete operation might require admin rights for a given REST API.
 
-We will not implement api-keys, but if the server were to run on a remote server, this is a functionality we would implement.
+We will not implement API keys for this project, however if the server was to run on a remote server, this is a functionality we would have to implement to prevent potentially harmful requests.
 
 <br>
 
@@ -96,19 +101,36 @@ We will not implement api-keys, but if the server were to run on a remote server
 
 ## Generating reports
 
-Spotbugs and checkstyle reports are generated on
+Spotbugs and checkstyle reports will be generated by running the command
 
  ```
 mvn site
 ```
 
-All reports can be found at each respective modules `target/site` folder.
-
-spotbugs.html;
-checkstyle.html;  
+Both reports can be located at the module's `target/site` folder, aptly named `spotbugs.html` and `checkstyle.html`.
+ 
 <br>
 
 ## API Documentation
+The API documentation serves to provide information about accessing the REST API, such as providing the URI for requesting a specific resource, provide a description of the request, response and provide an example.
+
+**NOTE: by clicking the arrow next to an example request, you will display an example response for the given request.**
+
+#### **Request URIs:**
+ - [GET event?id={id}](#get-eventidid)
+ - [GET event/all](#get-eventall)
+ - [PUT event/update](#put-eventupdate)
+ - [POST event/create](#post-eventcreate)
+ - [DELETE event/{id}](#delete-eventid)
+ - [GET user/get?email={email}](#get-usergetemailemail)
+ - [POST user/create](#post-usercreate)
+ - [DELETE user/{email}](#delete-useremail)
+
+
+<br>
+
+<br>
+
 ### **GET event?id={id}**
 Retrieves an event by the event id.
 

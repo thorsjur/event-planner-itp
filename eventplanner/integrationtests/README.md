@@ -1,19 +1,19 @@
 [nav](../../docs/nav.md)
 
-# Group 25 - Integrationtests module
+# Integrationtests module
 
-## Integrationtests module content
+## Content
 
-- [Integrationtests-file](./src/test/java/eventplanner/integrationtests/IntegrationTests.java)
+- [Integrationtests.java](./src/test/java/eventplanner/integrationtests/IntegrationTests.java)
 
-### The tests
+### **Testing**
 
-This module only contain one test-file intending to test the the application from front to back.
+This module only contain one test file, intending to test the application from front to back.
 Where the meaning of "front to back" is testing that data moves through the application as intended.
 
-Therefore, the test mainly consits of testing api-request and responses sent from client-side.
+Therefore, the integration tests mainly consist of testing api-requests and responses sent from client-side.
 
 
 ## Reports
 
-No reports generated in this module.
+No reports are generated in this module.
