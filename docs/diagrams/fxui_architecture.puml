@@ -23,8 +23,8 @@ component [core] {
 }
 
 component [fxui] {
+    package eventplanner.dataaccess
     package eventplanner.fxui
-
 }
 
 
@@ -32,8 +32,8 @@ component [java.net] {
     component [http] as net
 }
 
-eventplanner.fxui ..> fx
+eventplanner.dataaccess ..> fx
 fxui ..> core
-eventplanner.fxui ..> net
+eventplanner.dataaccess ..> net
 
 @enduml

@@ -17,6 +17,8 @@
 - Release documentation can be found at [docs/.](docs/)
 - Project documentation can be found at [eventplanner/README.md](eventplanner/README.md)
 
+<br>
+
 ## EventPlanner Architecture
 ![Architecture diagram](docs/diagrams/architecture.png)
 
@@ -27,6 +29,7 @@
  - The components with a symbol in the top-right corner represents modules, such as *javafx* and *core*.
  - The folders represent the current packages or layers of the modules.
 
+<br>
 
 ## Building
  ```
@@ -41,36 +44,34 @@ A flag can be passed to the build to skip tests:
 mvn install -DskipTests
 ```
 
+<br>
+
 ## Usage
-In order to user remote data access (rest-api) the server needs to be booted (in separate terminal) before the application is launched.
+In order to use the remote data access (RESTful API), the server needs to be booted **before** the application is launched.
  ```
 cd eventplanner/rest/
 mvn exec:java
 ```
-To run the program: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
+To run the application: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
  ```
 cd eventplanner/fxui/
 mvn javafx:run
 ```
-If the application is launched without the rest-server booted. An alternative local data access will be used. The applications title will tell wether you are connected to the server.
+If the application is launched without the server offline. The alternative local data access will be used. The applications title will tell whether you are connected to the server.
+
+<br>
 
 ## Reports
 
-Jacoco code-coverage:
+A code coverage report by JaCoCo is generated on running the tests using
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn test
 ```
-Spotbugs and checkstyle:
+SpotBugs and Checkstyle reports for linting the code base for potential issues and for reporting styling mistakes is generated upon running
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn site
 ```
-
-All reports can be found at each respectable modules `target/site` folder.
-
-jacoco.html;
-spotbugs.html;
-checksstyle.html;
+In addition, JavaDoc pages are generated on running `mvn site`.
+All reports can be found at each respective modules `target/site` folder, where JaCoCo and JavaDoc has their respective directories.
