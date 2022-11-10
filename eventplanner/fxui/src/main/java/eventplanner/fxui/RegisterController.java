@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.LocalDataAccess;
 
 /**
  * Utility methods to be used for testing the fx ui.

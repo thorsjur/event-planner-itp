@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

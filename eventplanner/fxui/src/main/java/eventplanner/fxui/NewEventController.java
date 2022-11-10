@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import eventplanner.fxui.util.InputType;
 import eventplanner.fxui.util.Validation;

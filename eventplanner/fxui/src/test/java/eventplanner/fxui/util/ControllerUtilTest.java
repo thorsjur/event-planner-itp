@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Test;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
+import eventplanner.dataaccess.LocalDataAccess;
 import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.App;
-import eventplanner.fxui.DataAccess;
 import eventplanner.fxui.EventCell;
-import eventplanner.fxui.LocalDataAccess;
 import eventplanner.fxui.NewEventController;
 import javafx.fxml.FXMLLoader;
 

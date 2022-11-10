@@ -18,6 +18,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.LocalDataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
