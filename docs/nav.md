@@ -9,7 +9,8 @@
 - ### **Other documentation**
     - [application description and user stories](../eventplanner/README.md)
     - [Prerequisites](prerequisites.md)
-    - [Work habits](release2/work-habits.md)
+    - [Work-habits (release 2)](release2/work-habits.md)
+    - [Work-habits (release 3)](release3/updated%20work-habits.md)
     - [release 1](release1/release1.md)
     - [release 2](release2/release2.md)
     - [release 3](release3/release3.md)

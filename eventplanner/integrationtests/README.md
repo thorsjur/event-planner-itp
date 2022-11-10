@@ -8,10 +8,9 @@
 
 ### **Testing**
 
-This module only contain one test file, intending to test the application from front to back.
-Where the meaning of "front to back" is testing that data moves through the application as intended.
+This module only contain one test-file intending to test the the application from client-side to backend. This is done by testing that data moves from the client-side to the backend, and opposite, as intended.
 
-Therefore, the integration tests mainly consist of testing api-requests and responses sent from client-side.
+Therefore, the test mainly consits of testing api-request and responses sent from client-side, and checking that the retrieved data is as expected.
 
 
 ## Reports
