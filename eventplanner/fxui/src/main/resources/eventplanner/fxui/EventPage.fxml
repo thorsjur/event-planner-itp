@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -7,27 +8,28 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="400.0" maxWidth="640.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.EventPageController">
+<VBox maxHeight="400.0" maxWidth="640.0" prefHeight="400.0" prefWidth="640.0" stylesheets="@EventPlanner.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.EventPageController">
   <children>
     <AnchorPane maxHeight="400.0" maxWidth="640.0" VBox.vgrow="ALWAYS">
       <children>
             <HBox alignment="CENTER" prefHeight="400.0" prefWidth="640.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="400.0" prefWidth="388.0">
                      <children>
-                        <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="400.0" style="-fx-background-color: #a44231;">
+                        <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="383.0" styleClass="bar">
                            <children>
-                              <Label fx:id="nameLabel" alignment="BOTTOM_CENTER" layoutX="3.0" layoutY="3.0" prefHeight="68.0" prefWidth="400.0" snapToPixel="false" text="[MISSING EVENT NAME]" textFill="WHITE">
+                              <Label fx:id="nameLabel" alignment="BOTTOM_CENTER" layoutX="-3.0" layoutY="4.0" prefHeight="61.0" prefWidth="394.0" snapToPixel="false" styleClass="header-text" text="[MISSING EVENT NAME]" textAlignment="CENTER" textFill="WHITE">
                                  <padding>
                                     <Insets bottom="5.0" />
                                  </padding>
                                  <font>
-                                    <Font name="System Bold" size="20.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                            </children>
@@ -35,7 +37,7 @@
                               <Insets bottom="10.0" />
                            </padding>
                         </Pane>
-                        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" prefHeight="332.0" prefWidth="398.0" VBox.vgrow="ALWAYS">
+                        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" prefHeight="332.0" prefWidth="405.0" VBox.vgrow="ALWAYS">
                            <content>
                               <Text fx:id="descText" boundsType="LOGICAL_VERTICAL_CENTER" lineSpacing="1.25" strokeType="OUTSIDE" strokeWidth="0.0" text="[MISSING DESCRIPTION]">
                                  <font>
@@ -49,20 +51,33 @@
                         </ScrollPane>
                      </children>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="255.0" style="-fx-background-color: #E2E2E2;">
+                  <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="253.0" style="-fx-background-color: #E2E2E2;">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" VBox.vgrow="ALWAYS">
                            <children>
                               <StackPane alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="179.0">
                                  <children>
                                     <Button fx:id="deleteEventButton" mnemonicParsing="false" onMouseClicked="#handleDeleteEventButtonClicked" text="DELETE EVENT" />
                                  </children>
                               </StackPane>
-                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="247.0">
                                  <children>
-                                    <StackPane alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="126.0">
+                                    <StackPane prefHeight="20.0" prefWidth="0.0" styleClass="icon-container">
                                        <children>
-                                          <Label text="Author:">
+                                          <Region prefHeight="200.0" prefWidth="200.0">
+                                             <styleClass>
+                                                <String fx:value="icon" />
+                                                <String fx:value="author-icon" />
+                                             </styleClass>
+                                          </Region>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </StackPane>
+                                    <StackPane alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="137.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="68.0" text="Author:">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -80,9 +95,22 @@
                                     </StackPane>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0">
                                  <children>
-                                    <StackPane prefHeight="20.0" prefWidth="141.0">
+                                    <StackPane minWidth="0.0" prefHeight="20.0" prefWidth="0.0" styleClass="icon-container">
+                                       <children>
+                                          <Region prefHeight="200.0" prefWidth="200.0">
+                                             <styleClass>
+                                                <String fx:value="icon" />
+                                                <String fx:value="time-icon" />
+                                             </styleClass>
+                                          </Region>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </StackPane>
+                                    <StackPane prefHeight="20.0" prefWidth="151.0">
                                        <children>
                                           <Label prefHeight="20.0" prefWidth="132.0" text="Start time:">
                                              <font>
@@ -102,11 +130,24 @@
                                     </StackPane>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0">
                                  <children>
-                                    <StackPane prefHeight="20.0" prefWidth="144.0">
+                                    <StackPane minWidth="0.0" prefHeight="20.0" prefWidth="0.0" styleClass="icon-container">
                                        <children>
-                                          <Label text="End time:">
+                                          <Region prefHeight="200.0" prefWidth="200.0">
+                                             <styleClass>
+                                                <String fx:value="icon" />
+                                                <String fx:value="time-icon" />
+                                             </styleClass>
+                                          </Region>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </StackPane>
+                                    <StackPane prefHeight="20.0" prefWidth="160.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="75.0" text="End time:">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -124,11 +165,24 @@
                                     </StackPane>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="20.0" prefWidth="132.0">
                                  <children>
-                                    <StackPane prefHeight="20.0" prefWidth="139.0">
+                                    <StackPane prefHeight="20.0" prefWidth="0.0" styleClass="icon-container">
                                        <children>
-                                          <Label text="Location:">
+                                          <Region maxHeight="25.0" prefHeight="25.0" prefWidth="13.0">
+                                             <styleClass>
+                                                <String fx:value="icon" />
+                                                <String fx:value="location-icon" />
+                                             </styleClass>
+                                          </Region>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </StackPane>
+                                    <StackPane prefHeight="20.0" prefWidth="137.0">
+                                       <children>
+                                          <Label prefHeight="20.0" prefWidth="62.0" text="Location:">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -146,11 +200,24 @@
                                     </StackPane>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="44.0" prefWidth="210.0" spacing="10.0">
+                              <HBox alignment="CENTER_RIGHT" fillHeight="false" prefHeight="44.0" prefWidth="210.0">
                                  <children>
-                                    <StackPane prefHeight="76.0" prefWidth="152.0">
+                                    <StackPane prefHeight="44.0" prefWidth="0.0" styleClass="icon-container">
                                        <children>
-                                          <Label prefHeight="44.0" prefWidth="84.0" text="Registered users:" wrapText="true">
+                                          <Region prefHeight="200.0" prefWidth="200.0">
+                                             <styleClass>
+                                                <String fx:value="icon" />
+                                                <String fx:value="users-icon" />
+                                             </styleClass>
+                                          </Region>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </StackPane>
+                                    <StackPane prefHeight="44.0" prefWidth="148.0">
+                                       <children>
+                                          <Label prefHeight="44.0" prefWidth="91.0" text="Registered users:" wrapText="true">
                                              <font>
                                                 <Font name="System Bold" size="14.0" />
                                              </font>
@@ -176,7 +243,7 @@
                         </VBox>
                         <HBox alignment="BOTTOM_CENTER" prefHeight="46.0" prefWidth="240.0" spacing="20.0">
                            <children>
-                              <Button fx:id="returnButton" mnemonicParsing="false" onMouseClicked="#handleReturnBtnClicked" text="Return" />
+                              <Button fx:id="returnButton" mnemonicParsing="false" onMouseClicked="#handleReturnBtnClicked" prefHeight="25.0" prefWidth="79.0" text="Return" />
                               <Button fx:id="registerButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="129.0" text="Register to event" />
                            </children>
                         </HBox>

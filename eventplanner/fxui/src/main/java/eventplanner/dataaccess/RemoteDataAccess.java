@@ -139,7 +139,7 @@ public class RemoteDataAccess implements DataAccess {
 
         // The method short circuits if any event fails to update
         return events.stream()
-                .anyMatch(event -> !updateEvent(event));
+                .allMatch(event -> updateEvent(event));
     }
 
     @Override

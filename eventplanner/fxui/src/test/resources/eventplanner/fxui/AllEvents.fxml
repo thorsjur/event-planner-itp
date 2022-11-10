@@ -11,14 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.AllEventsController">
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@EventPlanner.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.AllEventsController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="AnchorPane" VBox.vgrow="ALWAYS">
       <children>
             <Button disable="true" layoutX="390.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" text="Events" />
             <Button fx:id="createEventButton" layoutX="265.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreateEventButtonClicked" prefHeight="26.0" prefWidth="110.0" text="Create Event" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a44231" height="68.0" stroke="#a44231" strokeType="INSIDE" width="642.0" />
-            <Text fill="WHITE" layoutX="2.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Events" textAlignment="CENTER" wrappingWidth="640.0">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="68.0" strokeType="INSIDE" styleClass="bar" width="642.0" />
+            <Text fill="WHITE" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header-text" text="Events" textAlignment="CENTER" wrappingWidth="640.0">
                <font>
                   <Font size="30.0" />
                </font>
@@ -27,7 +27,10 @@
             <Button fx:id="saveEventButton" layoutX="510.0" layoutY="227.0" mnemonicParsing="false" onAction="#handleSaveEventButtonClicked" text="Register" />
             <Label fx:id="saveEventLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="463.0" layoutY="253.0" prefHeight="83.0" prefWidth="171.0" />
             <TextField fx:id="searchBar" layoutX="463.0" layoutY="125.0" prefHeight="26.0" prefWidth="171.0" promptText="type here ..." />
-            <Label layoutX="463.0" layoutY="92.0" prefHeight="35.0" prefWidth="124.0" text="Search:" />
+            <Label layoutX="463.0" layoutY="100.0" prefHeight="25.0" prefWidth="124.0" text="Search:">
+               <font>
+                  <Font size="13.0" />
+               </font></Label>
             <CheckBox fx:id="myEventsCheckBox" layoutX="460.0" layoutY="191.0" mnemonicParsing="false" onAction="#handleMyEventsCheckBox" text="Show only registered events" />
             <Button fx:id="logOutButton" layoutX="573.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLogOutButtonClicked" text="Log Out" />
       </children>
