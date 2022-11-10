@@ -23,8 +23,8 @@ class EventSerializerTest {
     void testEventSerialization() throws JsonProcessingException {
         Event event = getTestEvent();
 
-        // The json writer uses \r\n instead of \n for line breaks, and so must be
-        // replaced in the expected string.
+        // The json serializer seems to differ in the use of \r\n vs \n for different
+        // operating systems, so we 'normalize' both string before comparing.
         String expectedString = getExpectedTestEventJsonRepresentation().replaceAll("[\r\n]", "");
 
         String actualString = OBJECT_MAPPER.writeValueAsString(event).replaceAll("[\r\n]", "");

@@ -35,8 +35,11 @@ public class EventCell extends ListCell<Event> {
         super();
         date = new Text();
         name = new Text();
+        name.getStyleClass().add("event-name-text");
+
         this.dataAccess = dataAccess.copy();
         eventPageButton = new Button("Read more");
+        eventPageButton.getStyleClass().add("read-more-button");
 
         VBox leftContent = new VBox(name, date);
         VBox rightContent = new VBox(eventPageButton);

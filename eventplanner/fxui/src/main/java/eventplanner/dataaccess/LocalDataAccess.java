@@ -71,7 +71,7 @@ public class LocalDataAccess implements DataAccess {
 
         // Short circuits on IOException thrown from updateEvent method, to ensure no
         // more damage than necessary is done.
-        return events.stream().anyMatch(event -> !updateEvent(event));
+        return events.stream().allMatch(event -> updateEvent(event));
     }
 
     @Override
