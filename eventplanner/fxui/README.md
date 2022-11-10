@@ -6,7 +6,7 @@
 
 - [Controllers, App and EventCell](./src/main/java/eventplanner/fxui/)
 - [Data access classes](./src/main/java/eventplanner/fxui/)
-- [FXML files and CSS stylesheet](./src/main/resources/eventplanner/fxui/)
+- [FXML files and CSS stylesheet](./src/main/resources/eventplanner/dataaccess/)
 
 <br>
 
@@ -39,7 +39,9 @@ The class [EventCell.java](./src/main/java/eventplanner/fxui/EventCell.java) is 
 
 ### **Data access**
 
-The application needs functionality for creating, retrieving, updating and deleting data. The [DataAccess interface](./src/main/java/eventplanner/fxui/DataAccess.java) represents data handling for the application, and serves as an interface between the persistence mechanism and the client.
+The application needs functionality for creating, retrieving, updating and deleting data. The [DataAccess interface](./src/main/java/eventplanner/dataaccess/DataAccess.java) represents data handling for the application, and serves as an interface between the persistence mechanism and the client.
+
+The dataaccess classes are separated from the controller classes. This creates a more organized module, and separates the fxui classes from json interactions. The dataaccess layer works as a bridge between data handling and the fxui.
 
 There are implemented two ways for accessing and altering data, a [remote data access](#remote-data-access) point and a [local data access](#local-data-access) point.
 
@@ -48,14 +50,14 @@ At startup, the application will try to connect to the server via the static met
 
     RemoteDataAccess.connection()
 
-The static method attempts to send a dummy request to the server, and an exception is thrown if the request fails. If the connection did not throw an exception, indicating the server is functional, the application will be use  the [remote data access](./src/main/java/eventplanner/fxui/RemoteDataAccess.java) point.
+The static method attempts to send a dummy request to the server, and an exception is thrown if the request fails. If the connection did not throw an exception, indicating the server is functional, the application will be use  the [remote data access](./src/main/java/eventplanner/dataaccess/RemoteDataAccess.java) point.
 
 In practice, this means that data can be accessed and altered by sending API requests to the local server.
 
 
 #### **Local data access**
 
-However, if the connection can not be established. The application will use the [LocalDataAccess class](./src/main/java/eventplanner/fxui/LocalDataAccess.java) to access and alter data.
+However, if the connection can not be established. The application will use the [LocalDataAccess class](./src/main/java/eventplanner/dataaccess/LocalDataAccess.java) to access and alter data.
 
 #### **Distinction**
 The distinction between local and remote data access might seem irrelevant considering the data is stored locally either way. But this functionality would be crucial if the server was hosted remote.
