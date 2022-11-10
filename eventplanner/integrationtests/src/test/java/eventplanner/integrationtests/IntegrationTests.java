@@ -87,7 +87,9 @@ class IntegrationTests {
                 getURL("/event/create"),
                 HttpMethod.POST, entity, String.class);
 
-        if ((response.getStatusCode() == HttpStatus.OK) && response.getBody().equals("true")) {
+        String responseString = response.getBody();
+
+        if ((response.getStatusCode() == HttpStatus.OK) && responseString != null && responseString.equals("true")) {
             tempEventUuids.add(expectedEvent.getId());
         } else {
             fail("Event not created as expected: " + response.getStatusCode());

@@ -19,7 +19,6 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 
-import eventplanner.core.Event;
 import eventplanner.core.User;
 
 @TestInstance(Lifecycle.PER_CLASS)
