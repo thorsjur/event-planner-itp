@@ -73,6 +73,22 @@ This layer contains classes that represent the core logic of the project. The Ev
 
 <br>
 
+## Core module Class Diagram
+![Core Module Class Diagram - Core](../../docs/diagrams/core_class_diagram.png)
+![Core Module Class Diagram - JSON](../../docs/diagrams/json_class_diagram.png)
+
+**Legend:**
+Here we have divided the core module into its two consisting folders for simplicity. 
+ - Lines from *A* to *B* depicts an association between *A* and *B*. 
+    - An arrow from *A* to *B* means that *A* has access to *B* but *B* does not have acces to *A*
+    - A line between *A* and *B* represents a relationship between *A* and *B*
+    - The multiplicity arrows represent 1-to-1, 1-to-n or n-to-n relations between classes 
+ - The icons to the left of fields and methods represent visibility:
+ ![Visibility icons description](../../docs/diagrams/visibility_icons.png)
+ - The "folder" named *eventplanner.core* is the core module, while the "frame" named *eventplanner.core.util* represent a folder in the core module.
+
+<br>
+
 ## Reports
 
 The JaCoCo code coverage report will be generated on

@@ -14,6 +14,7 @@
 - [Usage](#usage)
 - [Enhancement](#enhancement---api-key)
 - [Rest module architecture](#rest-module-architecture)
+- [Rest module Class Diagram](#rest-module-class-diagram)
 - [Generating reports](#generating-reports)
 - [API Documentation](#api-documentation)
 
@@ -96,6 +97,19 @@ We will not implement API keys for this project, however if the server was to ru
  - The "box" named *eventplanner* represents the collection of local modules.
  - The components with a symbol in the top-right corner represents modules, such as *jackson* and *core*.
  - The folders represent the current packages or layers of the modules.
+
+<br>
+
+## Rest module Class Diagram
+![Rest Module Class Diagram](../../docs/diagrams/rest_class_diagram.png)
+
+**Legend:**
+ - Lines from *A* to *B* depicts an association between *A* and *B*. 
+    - An arrow from *A* to *B* means that *A* has access to *B* but *B* does not have acces to *A*
+    - A line between *A* and *B* represents a relationship between *A* and *B*
+ - The icons to the left of fields and methods represent visibility:
+ ![Visibility icons description](../../docs/diagrams/visibility_icons.png)
+ - The "folders" named *eventplanner.rest*, *eventplanner.core* and *eventplanner.json* represent relevant modules in the project.
 
 <br>
 

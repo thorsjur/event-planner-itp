@@ -70,6 +70,19 @@ Figure 10: The new event added to the main event page.
 
 <br>
 
+## Sequence Diagram
+
+This sequence diagram illustrates the flow of logic in the application throught time. Here you can see how the REST API layer interacts with our model base.
+
+A user starts by registering a new account and registers for an event. Then the user creates a new event and proceedes to delete the event that was created. 
+
+We have used *alt* boxes to represent an alternative flow of logic. Descriptive notes can be found in the diagram that explain parts of the diagram that can be unclear.
+
+![Sequence Diagram](../docs/diagrams/sequence_diagram.png)
+
+
+<br>
+
 ## User story 1
 
 As an engaged student in Trondheim, Ole would like to have an overview of what events take place at *Studentersamfundet*. He wants a solution where he can find events that *Samfundet* offers and filter the events that he is interested in attending from the rest. He would also like to have the opportunity to add his own events for his extra curricular activity group.

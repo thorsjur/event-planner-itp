@@ -78,6 +78,20 @@ This feature also gives the user possibility for running the application offline
 
 <br>
 
+## FXUI module Class Diagram
+![FXUI Module Class Diagram](../../docs/diagrams/fxui_class_diagram.png)
+
+**Legend:**
+ - Lines from *A* to *B* depicts an association between *A* and *B*. 
+    - An arrow from *A* to *B* means that *A* has access to *B* but *B* does not have acces to *A*
+    - A line between *A* and *B* represents a relationship between *A* and *B*
+    - A dotted arrow from *A* to *B* means that *A* implements methods or other logic from *B*
+ - The icons to the left of fields and methods represent visibility:
+ ![Visibility icons description](../../docs/diagrams/visibility_icons.png)
+ - The "folder" named *eventplanner.fxui* is the fxui module, while the "frames" named *eventplanner.dataaccess* and *eventplanner.fxui.util* represent folders in the fxui module.
+
+<br>
+
 ## Reports
 
 A JaCoCo code coverage report is generated upon running the command
