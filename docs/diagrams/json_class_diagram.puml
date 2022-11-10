@@ -1,0 +1,79 @@
+@startuml json
+
+package eventplanner.json <<Folder>> {
+    class EventSerializer{
+        +serialize(Event event, JsonGenerator jsonGen, 
+        SerializerProvider serializerProvider): void 
+    }
+    class EventDeserializer{
+        +deserialize(JsonParser jsonParser, 
+        DeserializationContext context): Event
+    }
+    class UserDeserializer{
+        +deserialize(JsonParser jsonParser, 
+        DeserializationContext context): User
+    }
+    class UserSerializer{
+        +serialize(User user, JsonGenerator jsonGen, 
+        SerializerProvider serializerProvider): void
+    }
+    class EventCollectionJsonReader{
+        -CustomObjectMapper OBJECT_MAPPER
+        -File file
+        +<<constructor>> EventCollectionJsonReader()
+        +load(File file): Collection<Event>
+        +load(): Collection<Event> 
+    }
+    class EventCollectionJsonWriter{
+        +String FILE_EXTENSION
+        -CustomObjectMapper OBJECT_MAPPER
+        -File file
+        +<<constructor>> EventCollectionJsonWriter()
+        +save(final Collection<Event> collection, File file): void
+        +save(final Collection<Event> collection): void 
+        +save(final Event event, File file): void 
+        +save(final Event event): void
+    }
+    class UserCollectionJsonReader{
+        +CustomObjectMapper USER_MAPPER
+        +File file
+        +<<constructor>> UserCollectionJsonReader()
+        +load(File file): Collection<User> 
+        +load(): Collection<User> 
+    }
+    class UserCollectionJsonWriter{
+        +String FILE_EXTENSION
+        -CustomObjectMapper OBJECT_MAPPER
+        -File file
+        +<<constructor>> UserCollectionJsonWriter()
+        +save(final Collection<User> collection, File file): void
+        +save(final Collection<User> collection): void 
+        +save(final User user, File file): void
+        +save(final User user): void 
+    }
+    
+    package eventplanner.json.util <<Frame>> {
+        class IOUtil{
+        -EventCollectionJsonWriter EVENT_WRITER
+        -EventCollectionJsonReader EVENT_READER
+        -UserCollectionJsonWriter USER_WRITER
+        -UserCollectionJsonReader USER_READER
+        {method} **Static utility methods**
+        }
+        class CryptoUtil{
+            -String OFFSET_KEY
+            +encrypt(String password): String 
+            +decrypt(String password): String 
+            +validatePassword(String password): void 
+        }
+    }
+
+    UserSerializer --> CryptoUtil
+    UserDeserializer -up-> CryptoUtil
+    UserCollectionJsonReader -down- IOUtil
+    UserCollectionJsonWriter -up- IOUtil
+    EventCollectionJsonReader -up- IOUtil
+    EventCollectionJsonWriter -down- IOUtil
+}
+
+@enduml

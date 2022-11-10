@@ -1,0 +1,55 @@
+@startuml rest 
+
+package eventplanner.rest <<Folder>>{
+    class EventController{
+        +get(@RequestParam String id): Event
+        +all(): Collection<Event>
+        +update(@RequestBody Event event): boolean
+        +create(@RequestBody Event event): boolean
+        +delete(@PathVariable String id): boolean 
+    }
+    class RestServiceApplication{
+        +objectMapper(): ObjectMapper
+        +main(String[] args): void
+    }
+    class UserController{
+        +connect(): void 
+        +user(@RequestParam String email): User 
+        +create(@RequestBody User user): boolean 
+        +delete(@PathVariable String email): boolean 
+    }
+}
+
+package eventplanner.core <<Folder>>{
+    class User{
+        Closer examined
+        in core module
+        class diagram
+    }
+    class Event{
+        Closer examined
+        in core module
+        class diagram
+    }
+}
+
+package eventplanner.json <<Folder>>{
+    class IOUtil{
+        Closer examined
+        in json module
+        class diagram
+    }
+    class CustomObjectMapper{
+        Closer examined
+        in json module
+        class diagram
+    }
+}
+
+EventController --> Event
+EventController -- IOUtil
+RestServiceApplication -- CustomObjectMapper
+UserController --> User
+UserController -- IOUtil
+
+@enduml
