@@ -4,14 +4,71 @@
 
 Event Planner is a cloud-based application that helps you keep track of various events. With the help of this app, you can sign up for events and later find the events that you have signed up for. You can also create your own events and use the application as an event calendar.
 
-The application initializes a login screen where the user has the choice of either loging in with an existing user or register a new user. While registering for the first time the user is asked to enter an email, a password and a birthdate, with this data a new user is created. Otherwise a user who already has an existing user in the system can enter their email and password in order to retrieve user history from the cloud. See screenshot of register page and log in page. ![](screenshots/LoginPage.png) ![](screenshots/RegisterUserPage.png)
+The application initializes a login screen where the user has the choice of either logging in with an existing user or to register a new user. While registering for the first time the user is asked to enter an email, a password and a birthdate, with this data a new user is created, as long as no user with the corresponding email exists. A user who already has an existing user can enter their email and password in order to log in. See screenshot of register page (Figure 2) and log in page (Figure 1). 
 
-The user then enters the main event page where various events are displayed. The user can browse through these and select an event that they want to sign up for/save to their events. This can be achieved by selecting the event and clicking the button "Add event". The user can add as many events as they want, however, an event cannot be added to My Events multiple times. It is also possible to register through every event's information page. Users can search for events and filter all events from events that the user has registered to their own events. See screenshot of events page (1) with search for "Party" (2) and filtered events (3). ![](screenshots/AllEventsPage1.png) ![](screenshots/AllEventsPage2.png) ![](screenshots/AllEventsPage3.png)
+<br>
 
-Additionally, every event has their own info page with a short event description and additional information about time, location, author or creator of the event and how many registered users there are for this particular event. The user has the possibility to register for an event through this page or return to the main page. Additionally, a user that has created an event can delete their own events. However, it is not possible for users to delete events that the user has not created. See screenshot of the info page for default event (1) and for an event that the user has created (2), last screenshot is of a confirmation popup window the user will se if he or she wants to delete an event (3). ![](screenshots/EventInfoPage1.png) ![](screenshots/EventInfoPage1.png) ![](screenshots/ConfirmationWindow.png)
+![](../docs/screenshots/LoginPage.png)
+Figure 1: The view allowing the user to log in to an existing user.
 
-Finally, users can create their own events! This is done by navigating to the Create Event-page in the bottom menu. The user then sees a screen with a couple of text fields for input information for the new event such as name of event, time duration, location, description of the event and an event type. After filling out the information that is required and clicking the "Create Event"-button, a new event will be created and added to the main Event page. See screenshot of create event page when creating a new event (1) and the event on the main page (2). ![](screenshots/CreateEvent1.png) ![](screenshots/CreateEvent2.png)  
+<br>
 
+![](../docs/screenshots/RegisterUserPage.png)
+Figure 2: The view for registering new users.
+
+<br>
+
+The user then enters the main event page where various events are displayed. The user can browse through these and select an event they want to sign up for / save to their events. This can be achieved by selecting the event and clicking the button "Add event". The user can add as many events as they want, however, an event cannot be added to My Events multiple times. It is also possible to register through each event's information page. Users can search for events and filter all events from events that the user has registered to their own events. See screenshot of events page (Figure 3), user filtering by registered events (Figure 4) and event filtering by search (Figure 5).
+
+<br>
+
+![](../docs/screenshots/AllEventsPage1.png)
+Figure 3: Page displaying all available events.
+
+<br>
+
+![](../docs/screenshots/AllEventsPage2.png)
+Figure 4: Page displaying all events the user is registered to.
+
+<br>
+
+![](../docs/screenshots/AllEventsPage3.png)
+Figure 5: Page displaying the filtering possibility using the search bar.
+
+<br>
+
+Additionally, every event has their own info page with a short event description and additional information about time, location, author or creator of the event and how many registered users there are for this particular event. The user has the possibility to register for an event through this page or return to the main page. Additionally, a user that has created an event can delete their own events. However, it is not possible for users to delete events that the user has not created. See screenshot of the info page for default event (Figure 6) and for an event that the user has created (Figure 7), last screenshot is of a confirmation popup window the user will see if he or she wants to delete an event (Figure 8).
+
+<br>
+
+![](../docs/screenshots/EventInfoPage1.png)
+Figure 6: Event information page.
+
+<br>
+
+![](../docs/screenshots/EventInfoPage2.png)
+Figure 7: Event information page where the user is the author of the event.
+
+<br>
+
+![](../docs/screenshots/ConfirmationWindow.png)
+Figure 8: The confirmation dialog appearing on deletion of event.
+
+<br>
+
+Finally, users can create their own events! This is done by navigating to the Create Event-page in the bottom menu. The user then sees a screen with a couple of text fields for input information for the new event such as name of event, time duration, location, description of the event and an event type. After filling out the information that is required and clicking the "Create Event"-button, a new event will be created and added to the main Event page. See screenshot of create event page when creating a new event (Figure 9) and the event on the main page (Figure 10).
+
+<br>
+
+![](../docs/screenshots/CreateEvent1.png)
+Figure 9: The view for creating a new event
+
+<br>
+
+![](../docs/screenshots/CreateEvent2.png)
+Figure 10: The new event added to the main event page.
+
+<br>
 
 ## User story 1
 
