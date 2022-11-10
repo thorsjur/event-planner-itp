@@ -35,8 +35,8 @@ node "eventplanner" as ep {
     }
 
     component [fxui] {
+        package eventplanner.dataaccess
         package eventplanner.fxui
-
     }
 
     component [rest] {
@@ -52,9 +52,9 @@ component [java.net] {
 
 component [jackson] as jack
 
-eventplanner.fxui ..> fx
+eventplanner.dataaccess ..> fx
 fxui ..> core
-eventplanner.fxui .right.> net
+eventplanner.dataaccess .right.> net
 eventplanner.json .left.> jack
 rest .left.> jack
 rest .left.> spring
