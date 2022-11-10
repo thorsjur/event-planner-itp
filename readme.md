@@ -66,14 +66,12 @@ If the application is launched without the server offline. The alternative local
 A code coverage report by JaCoCo is generated on running the tests using
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn test
 ```
 SpotBugs and Checkstyle reports for linting the code base for potential issues and for reporting styling mistakes is generated upon running
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn site
 ```
 In addition, JavaDoc pages are generated on running `mvn site`.
-All reports can be found at each respectable modules `target/site` folder, where JaCoCo and JavaDoc has their respective directories.
+All reports can be found at each respective modules `target/site` folder, where JaCoCo and JavaDoc has their respective directories.

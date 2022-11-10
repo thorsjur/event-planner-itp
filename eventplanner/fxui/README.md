@@ -89,4 +89,4 @@ and Spotbugs and checkstyle reports for identifying potential issues is generate
 mvn site
 ```
 
-All reports can be found at the module's `target/site` folder.
+All reports can be found at the module's `target/site` folder. The SpotBugs report and Checkstyle report is found at site, while the JaCoCo report can be found at `target/site/jacoco`. By opening the file named `index.html` in your browser you can display the coverage report.
