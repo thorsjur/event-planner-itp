@@ -1,0 +1,28 @@
+
+@startuml core_architecture
+title core dependency diagram
+skinparam useBetaStyle true
+
+<style>
+    .package {
+        BackgroundColor Khaki
+    }
+</style>
+
+skinparam component {
+  ArrowColor #FF6655
+}
+
+
+component [core] {
+        package eventplanner.core
+        package eventplanner.json
+    }
+
+component [jackson] {
+    component [databind] as db
+}
+
+eventplanner.json ..> db
+
+@enduml

@@ -1,0 +1,56 @@
+@startuml core
+
+package eventplanner.core <<Folder>>{
+    
+    package eventplanner.core.util <<Frame>> {
+        class Validation{
+            +String EMAIL_REGEX
+            +int MIN_PASSWORD_LENGTH
+            +int MAX_PASSWORD_LENGTH
+            +isValidEmail(String email): boolean
+            +isValidPassword(String password): boolean
+        }
+    }
+
+    class User{
+        +String email 
+        +String password
+        +boolean above18 
+        +<<constructor>> User(String email, 
+        String password, boolean above18)
+    }
+    class Event{
+        -UUID id
+        -EventType type
+        -String name
+        -LocalDateTime startDate
+        -LocalDateTime endDate
+        -String location
+        -List<User> users
+        -String authorEmail
+        -String description
+        +<<constructor>> Event(UUID id, EventType type, String name, LocalDateTime startDateTime, LocalDateTime endDateTime,
+        String location, List<User> users, String authorEmail, String description)
+        +<<constructor>> Event(UUID id, EventType type, String name, LocalDateTime startDateTime, LocalDateTime endDateTime,
+        String location)
+        +addUser(User user): void
+        +removeUser(User user): void
+        -validateEventInput(EventType type, String name, LocalDateTime localDateTime,
+        LocalDateTime localDateTime2, String location): void
+        -validateUser(User user): void
+        +equals(Object o): boolean 
+        +hashCode(): int 
+    }
+    enum EventType{
+        CONCERT
+        QUIZ
+        COURSE
+        PARTY
+    }
+}
+
+Event "1"-->"n" User
+Event "1"-->"1" EventType
+User -right- Validation
+
+@enduml

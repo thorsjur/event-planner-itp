@@ -1,0 +1,87 @@
+@startuml Sequence Diagram - Register user and register events
+title Sequence Diagram 
+
+skinparam SequenceMessageAlignment center
+participant "Frontend App" order 1
+participant "REST API" order 2
+participant "Server/Model" order 3
+
+"Frontend App" -> "REST API" : User fills in required fields\nand clicks "Register user" 
+
+"REST API" -> "Server/Model" : sends POST request to create user
+"Server/Model" -> "Server/Model" : validation
+
+note right 
+    Validation of all
+    passed parameters
+    in **Validation.java**
+    class in core module 
+    to create user
+end note
+
+alt Success
+"REST API" <-- "Server/Model" : Success:\n- new user object instantiated
+"Frontend App" <-- "REST API" : Success:\n- a new user was successfully created
+else Error
+"REST API" <-- "Server/Model" : Error\n- Email is invalid\n-Password is invalid\n-Date is not set\n-User already exists or invalid input
+"Frontend App" <-- "REST API" : Error\n- Date is not set\n-User already exists or invalid input
+end
+
+"REST API" -> "Server/Model" : sends GET request for all events 
+"REST API" <-- "Server/Model" : json representation of events
+"Frontend App" <-- "REST API" : Success: user views all\nevents on AllEventsPage
+
+note left 
+    After user is created
+    default events are 
+    instantiated in order
+    to be displayed on 
+    main page **AllEvents**
+end note
+
+"Frontend App" -> "REST API" : User clicks "Read more" on EventCell
+"REST API" -> "Server/Model" : sends GET request\nfor new page 
+"REST API" <-- "Server/Model" : Success
+"Frontend App" <-- "REST API" : Success: user views EventPage
+"Frontend App" -> "REST API" : User clicks on "Register"
+"REST API" -> "Server/Model" : sends PUT request to register\nuser and update event user list
+
+alt Success
+"REST API" <-- "Server/Model" : Success\n- user was successfully\nregistered to event
+"Frontend App" <-- "REST API" : Success\n- user was successfully\nregistered to event
+else Error
+"REST API" <-- "Server/Model" : Error\n- An error occured while\ntrying to register user
+"Frontend App" <-- "REST API" : Error\n- An error occured while\ntrying to register user
+end
+
+"Frontend App" -> "REST API" : User fills in required fields\nand clicks "Create new event"
+"REST API" -> "Server/Model" : sends POST request to\ncreate new event
+"Server/Model" -> "Server/Model" : validation
+
+note right 
+    Validation of all
+    passed parameters
+    in **Validation.java**
+    class in fxui module
+    to create event 
+end note
+
+alt Success
+"REST API" <-- "Server/Model" : Success:\n- new event object\ninstantiated
+"Frontend App" <-- "REST API" : Success:\n- user has successfully\ncreated a new event
+else Error
+"REST API" <-- "Server/Model" : Error\n- Something went wrong while saving\nCan't add event to file
+"Frontend App" <-- "REST API" : Error\n- Something went wrong while saving\nCan't add event to file
+end
+
+"Frontend App" -> "REST API" : User clicks on "Delete event"
+"REST API" -> "Server/Model" : sends DELETE request to\ndelete event 
+
+alt Success
+"REST API" <-- "Server/Model" : Success:\n- event was deleted\nfrom json file 
+"Frontend App" <-- "REST API" : Success:\n- user has successfully\ndeleted the event
+else Error
+"REST API" <-- "Server/Model" : Error\n- Server error
+"Frontend App" <-- "REST API" : Error\n- Server error. Please try again.
+end
+@enduml

@@ -10,10 +10,14 @@
         - The persistence layer can be found at [eventplanner/core/src/main/java/eventplanner/json](eventplanner/core/src/main/java/eventplanner/json/)
         - The core layer can be found at [eventplanner/core/src/main/java/eventplanner/core](eventplanner/core/src/main/java/eventplanner/core/)
     - [eventplanner/fxui](eventplanner/fxui/) contains the module for the user interface
+    - [eventplanner/rest](eventplanner/rest/) contains the module for the rest server
+    - [eventplanner/integrationtest](eventplanner/integrationtests/) contains the integration tests
     - Each of the modules have their respective test folders located at `eventplanner/[MODULE_NAME]/src/test/java/eventplanner/`
     - The respective resource directories are located at `eventplanner/[MODULE_NAME]/src/main/resources/`
 - Release documentation can be found at [docs/.](docs/)
 - Project documentation can be found at [eventplanner/README.md](eventplanner/README.md)
+
+<br>
 
 ## EventPlanner Architecture
 ![Architecture diagram](docs/diagrams/architecture.png)
@@ -25,6 +29,7 @@
  - The components with a symbol in the top-right corner represents modules, such as *javafx* and *core*.
  - The folders represent the current packages or layers of the modules.
 
+<br>
 
 ## Building
  ```
@@ -34,32 +39,39 @@ mvn install
 
 Running mavens install command will validate, compile, test, package and verify the code. After it is done it will install the package to the local repository. Make sure you are in the correct directory (`gr2225/eventplanner/`)
 
-## Usage
+A flag can be passed to the build to skip tests:
+ ```
+mvn install -DskipTests
+```
 
+<br>
+
+## Usage
+In order to use the remote data access (RESTful API), the server needs to be booted **before** the application is launched.
+ ```
+cd eventplanner/rest/
+mvn exec:java
+```
+To run the application: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
  ```
 cd eventplanner/fxui/
 mvn javafx:run
 ```
+If the application is launched without the server offline. The alternative local data access will be used. The applications title will tell whether you are connected to the server.
 
-To run the program: change directory to `eventplanner/fxui/` and run the application with `mvn javafx:run`.
+<br>
 
 ## Reports
 
-Jacoco code-coverage:
+A code coverage report by JaCoCo is generated on running the tests using
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn test
 ```
-Spotbugs and checkstyle:
+SpotBugs and Checkstyle reports for linting the code base for potential issues and for reporting styling mistakes is generated upon running
 
  ```
-cd eventplanner/fxui or cd eventplanner/core
 mvn site
 ```
-
-All reports can be found at each respectable modules `target/site` folder.
-
-jacoco.html;
-spotbugs.html;
-checksstyle.html;
+In addition, JavaDoc pages are generated on running `mvn site`.
+All reports can be found at each respective modules `target/site` folder, where JaCoCo and JavaDoc has their respective directories.
