@@ -18,6 +18,7 @@ import org.testfx.service.query.EmptyNodeQueryException;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.LocalDataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

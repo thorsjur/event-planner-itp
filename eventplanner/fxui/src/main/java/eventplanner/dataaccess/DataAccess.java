@@ -1,4 +1,4 @@
-package eventplanner.fxui;
+package eventplanner.dataaccess;
 
 import java.util.Collection;
 

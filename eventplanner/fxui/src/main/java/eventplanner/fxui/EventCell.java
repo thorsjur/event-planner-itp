@@ -2,6 +2,7 @@ package eventplanner.fxui;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;

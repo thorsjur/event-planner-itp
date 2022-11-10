@@ -15,6 +15,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
 import eventplanner.core.User;
+import eventplanner.dataaccess.LocalDataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

@@ -1,6 +1,8 @@
 package eventplanner.fxui;
 
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
+import eventplanner.dataaccess.RemoteDataAccess;
 import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

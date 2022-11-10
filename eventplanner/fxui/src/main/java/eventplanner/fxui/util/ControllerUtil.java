@@ -11,9 +11,9 @@ import java.util.function.Predicate;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
 import eventplanner.fxui.AllEventsController;
 import eventplanner.fxui.App;
-import eventplanner.fxui.DataAccess;
 import eventplanner.fxui.EventPageController;
 import eventplanner.fxui.LoginController;
 import eventplanner.fxui.NewEventController;
