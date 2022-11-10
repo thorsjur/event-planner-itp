@@ -12,7 +12,7 @@
 
 ## README content
 - [Usage](#usage)
-- [Enhancement](#enhancement---api-key)
+- [Enhancement](#enhancement)
 - [Rest module architecture](#rest-module-architecture)
 - [Rest module Class Diagram](#rest-module-class-diagram)
 - [Generating reports](#generating-reports)
@@ -40,7 +40,7 @@ In this project, a local REST server hosted on localhost is sufficient to demons
 
 ### **User and Event Controllers**
 
-The controllers  can be found [here](./src/main/java/eventplanner/rest/), and contains handler methods for mapping a HTTP request to a given handler.
+The controllers can be found [here](./src/main/java/eventplanner/rest/), and contains handler methods for mapping a HTTP request to a given handler.
 
 A REST API can generally be accessed by sending a HTTP request to the server. In this project we mainly rely on the local service path `http//:localhost:8080`
 
@@ -66,7 +66,7 @@ The Event controller implements handler methods to:
 - Delete events
 
 #### **Usercontroller**
-The controller handling all requests dealing with users is to be found [here](./src/main/java/eventplanner/rest/UserControllerjava), and handles all requests with the URI base:
+The controller handling all requests dealing with users is to be found [here](./src/main/java/eventplanner/rest/UserController.java), and handles all requests with the URI base:
  ```
 http//:localhost:8080/user
 ```
@@ -79,7 +79,7 @@ The class implements methods for handling:
 
 <br>
 
-## Enhancement - API-key
+## Enhancement
 As of now, the REST API is accessible by anyone. This is generally a bad practice for handling requests to a server. To circumvent this, additional authentication would have to be implemented.
 
 Ideally we would add functionality for sending requests containing an API key. The key would then be verified at the server. The response would depend on whether the given key is a valid access token, and if the key proves sufficient clearance for the requested operation. E.g. a delete operation might require admin rights for a given REST API.
