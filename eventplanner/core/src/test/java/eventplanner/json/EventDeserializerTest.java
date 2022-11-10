@@ -1,56 +1,76 @@
 package eventplanner.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
-import eventplanner.core.User;
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
+import eventplanner.core.User;
 
-public class EventDeserializerTest {
+class EventDeserializerTest {
     
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    private Event event;
-    // private Event event2;
-    
-    @BeforeEach
-    public void setup() {
-        LocalDateTime localDateTime = LocalDateTime.of(2022, 8, 20, 16, 20);
-        List<User> users = new ArrayList<>();
-        users.add(new User("christian@test.test", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("palina@test.test", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("david@test.test", "password", true)); //TODO - pass på følgefeil
-        users.add(new User("thor@test.test", "password", true)); //TODO - pass på følgefeil
-        event = new Event(null, EventType.PARTY, "Thors bursdag", localDateTime, localDateTime.plus(3, ChronoUnit.HOURS), "Norway", users, null, null);
-
-        // List<User> users2 = new ArrayList<>();
-        // LocalDateTime localDateTime2 = LocalDateTime.of(2022, 8, 20, 16, 20);
-        // event2 = new Event(EventType.PARTY, "LAN", localDateTime2, localDateTime2.plus(3, ChronoUnit.HOURS), "Norway", users2);
-    }
 
     @Test
-    public void testEventDeserialization() throws JsonMappingException, JsonProcessingException {
-        Event result = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event), Event.class);
-        // Event result2 = OBJECT_MAPPER.readValue(OBJECT_MAPPER.writeValueAsString(event2), Event.class);
-        assertEquals(event.getType(), result.getType());
-        assertEquals(event.getName(), result.getName());
-        assertEquals(event.getLocation(), result.getLocation());
-        assertEquals(event.getStartDate(), result.getStartDate());
-        assertEquals(event.getEndDate(), result.getEndDate());
-        //assertEquals(event.getUsers(), result.getUsers()); TODO
-        //assertEquals(event2.getUsers(), result2.getUsers()); TODO
-        assertEquals(event.getAuthorEmail(), result.getAuthorEmail());
-        assertEquals(event.getDescription(), result.getDescription());
+    void testEventDeserialization() throws JsonProcessingException {
+        Event expectedEvent = getExpectedEvent();
+        String json = getActualTestEventJsonRepresentation();
 
+        Event actualEvent = OBJECT_MAPPER.readValue(json, Event.class);
+        assertEquals(expectedEvent, actualEvent);
+        assertTrue(compareUsersEmails(expectedEvent.getUsers(), actualEvent.getUsers()));
+    }
+
+    private static boolean compareUsersEmails(Collection<User> users1, Collection<User> users2) {
+        return users1.stream()
+                .anyMatch(user1 -> users2.stream()
+                        .anyMatch(user2 -> user1.email().equals(user2.email())));
+    }
+
+    private static Event getExpectedEvent() {
+        Event event = new Event(
+                UUID.fromString("4a575ea8-0211-4814-9e1d-042ecc75a557"),
+                EventType.QUIZ,
+                "Name",
+                LocalDateTime.of(2023, 7, 23, 12, 20),
+                LocalDateTime.of(2023, 7, 23, 12, 20).plusHours(10),
+                "Location"
+        );
+        getTestUsers().forEach(user -> event.addUser(user));
+
+        return event;
+    }
+
+    private static String getActualTestEventJsonRepresentation() {
+        return """
+            {
+                \"id\" : \"4a575ea8-0211-4814-9e1d-042ecc75a557\",
+                \"type\" : \"QUIZ\",
+                \"name\" : \"Name\",
+                \"start-time\" : \"2023-07-23T12:20\",
+                \"end-time\" : \"2023-07-23T22:20\",
+                \"location\" : \"Location\",
+                \"author\" : \"admin@samfundet.no\",
+                \"description\" : \"No description available\",
+                \"users\" : [ \"test1@example.com\", \"test2@example.com\", \"test3@example.com\" ]
+              }
+                """;
+    }
+
+    private static Collection<User> getTestUsers() {
+        User user1 = new User("test1@example.com", "password1", false);
+        User user2 = new User("test2@example.com", "password2", true);
+        User user3 = new User("test3@example.com", "password3", false);
+
+        return List.of(user1, user2, user3);
     }
 }

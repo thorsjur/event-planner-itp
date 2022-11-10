@@ -18,9 +18,18 @@ import eventplanner.json.UserCollectionJsonReader;
 import eventplanner.json.UserCollectionJsonWriter;
 
 /**
- * Static utility methods to be used in io classes.
+ * Static utility methods to be used for IO operations.
  */
 public class IOUtil {
+
+    private static final EventCollectionJsonWriter EVENT_WRITER = new EventCollectionJsonWriter();
+    private static final EventCollectionJsonReader EVENT_READER = new EventCollectionJsonReader();
+    private static final UserCollectionJsonWriter USER_WRITER = new UserCollectionJsonWriter();
+    private static final UserCollectionJsonReader USER_READER = new UserCollectionJsonReader();
+
+    private IOUtil() {
+        throw new IllegalStateException("You cannot instantiate an utility class!");
+    }
 
     /**
      * method that reads the current saved events, and appends the new events, then
@@ -34,7 +43,7 @@ public class IOUtil {
     public static void appendEventsToFile(final Collection<Event> events, final File file)
             throws IOException {
 
-        Consumer<Collection<Event>> consumer = (eventCollection) -> eventCollection.addAll(events);
+        Consumer<Collection<Event>> consumer = eventCollection -> eventCollection.addAll(events);
         alterEvents(consumer, file);
     }
 
@@ -49,26 +58,22 @@ public class IOUtil {
     }
 
     /**
-     * method that reads the current saved events, and appends the new events, then
-     * writes back to file.
+     * method that reads the current saved users, and appends the new users, then
+     * writes users to file.
      * 
-     * @param events the collection of events to append to file
-     * @param file   the file to append to
-     * @throws IOException on I/O error
+     * @param users         the collection of users to append to file
+     * @param file          the file to append to
+     * @throws IOException  on I/O error
      */
     public static void appendUsersToFile(final Collection<User> users, final File file)
             throws IOException {
 
-        UserCollectionJsonReader reader = new UserCollectionJsonReader();
-        Collection<User> loadUsers = reader.load(file);
-        loadUsers.addAll(users);
-
-        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
-        writer.save(loadUsers, file);
+        Consumer<Collection<User>> consumer = uc -> uc.addAll(users);
+        alterUsers(consumer, file);
     }
 
     /**
-     * Takes a single user and a specific file and appends the event to file.
+     * Takes a user and a specific file and appends the user to json file.
      * 
      * @see IOUtil#appendUsersToFile(users, file)
      */
@@ -99,8 +104,7 @@ public class IOUtil {
      * @throws IOException on I/O error
      */
     public static List<User> loadUsersMatchingEmail(final List<String> emails, final File file) throws IOException {
-        UserCollectionJsonReader reader = new UserCollectionJsonReader();
-        return reader.load(file).stream()
+        return USER_READER.load(file).stream()
                 .filter(user -> emails.contains(user.email()))
                 .collect(Collectors.toList());
     }
@@ -119,75 +123,77 @@ public class IOUtil {
         return users.isEmpty() ? null : users.get(0);
     }
 
-    /** Method for loading/returning all users in file.
+    /**
+     * Method for loading/returning all users from a file.
      * 
-     * 
-     * @param file
-     * @return
-     * @throws IOException
+     * @param file the file to read from
+     * @return collection of users
+     * @throws IOException on I/O error  
      */
-    public static Collection<User> loadAllUsers(final File file) throws IOException{
-        UserCollectionJsonReader reader = new UserCollectionJsonReader();
-        return reader.load(file);
-    }
-
-    /** Method for overwriting userfile.
-     * 
-     * 
-     * @param usersthe      users that overwrites the previous file
-     * @param file          file to overwrite
-     * @throws IOException
-     */
-    public static void overwriteUsers(List<User> users, File file) throws IOException {
-        UserCollectionJsonWriter writer = new UserCollectionJsonWriter();
-        writer.save(users, file);
-    }
-
-    /** Method for overwriting eventsfile.
-     * 
-     * 
-     * @param events        the events that overwrites the previous file
-     * @param file          file to overwrite
-     * @throws IOException
-     */
-    public static void overwriteEvents(List<Event> events, File file) throws IOException {
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        writer.save(events, file);
+    public static Collection<User> loadAllUsers(final File file) throws IOException {
+        return USER_READER.load(file);
     }
 
     /**
-     * Loads events from file, matching the provided email addresses.
-     * If file is null, the file defaults to the resources directory.
+     * Method for overwriting userfile.
      * 
-     * @param name the collection of names
-     * @param file the provided file
-     * @return list of events matching names
+     * @param users the users that overwrite the previous file
+     * @param file the file to overwrite
      * @throws IOException on I/O error
      */
-    public static List<Event> loadEventsMatchingName(final List<String> names, final File file) throws IOException {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        return reader.load(file).stream()
-                .filter(event -> names.contains(event.getName()))
+    public static void overwriteUsers(List<User> users, File file) throws IOException {
+        USER_WRITER.save(users, file);
+    }
+
+    /**
+     * Method for overwriting eventsfile.
+     * 
+     * @param events the events that overwrites the previous file
+     * @param file the file to overwrite
+     * @throws IOException on I/O error
+     */
+    public static void overwriteEvents(List<Event> events, File file) throws IOException {
+        EVENT_WRITER.save(events, file);
+    }
+
+    /**
+     * Loads events from file, matching the provided IDs.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param ids the collection of IDs
+     * @param file the provided file
+     * @return list of events matching IDs
+     * @throws IOException on I/O error
+     */
+    public static List<Event> loadEventsMatchingId(final List<String> ids, final File file) throws IOException {
+        return EVENT_READER.load(file).stream()
+                .filter(event -> ids.contains(event.getId().toString()))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Loads event from file, matching the provided name.
+     * Loads event from file, matching the provided ID.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param name the name to match
+     * @param id the id to match
      * @param file the provided file
-     * @return the event matching the event or null if no such user exists
+     * @return the event matching the id or null if no such user exists
      * @throws IOException on I/O error
      */
-    public static Event loadEventMatchingName(final String name, final File file) throws IOException {
-        List<Event> events = loadEventsMatchingName(List.of(name), file);
+    public static Event loadEventMatchingId(final String id, final File file) throws IOException {
+        List<Event> events = loadEventsMatchingId(List.of(id), file);
         return events.isEmpty() ? null : events.get(0);
     }
 
+    /**
+     * Method for loading and then returning all events from a file.
+     * 
+     * @param file  the file to read from
+     * @return      collection of events
+     * @throws IOException on I/O error  
+     */
     public static Collection<Event> loadAllEvents(final File file) throws IOException {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        return reader.load(file);
+        return EVENT_READER.load(file);
     }
 
     /**
@@ -202,7 +208,7 @@ public class IOUtil {
     public static void addUserToEvents(final Collection<Event> events, final User user, final File file)
             throws IOException {
 
-        Consumer<Collection<Event>> consumer = (eventCollection) -> {
+        Consumer<Collection<Event>> consumer = eventCollection -> {
             eventCollection.stream()
                     .filter(event -> events.contains(event))
                     .forEach(event -> event.addUser(user));
@@ -215,7 +221,7 @@ public class IOUtil {
      * Adds the specified user to a single event in the provided file.
      * If file is null, the file defaults to the resources directory.
      * 
-     * @param event the events you want to add the user to
+     * @param event the event you want to add the user to
      * @param user  the user to be added to the event
      * @param file  the provided file
      * @throws IOException on I/O error
@@ -238,7 +244,7 @@ public class IOUtil {
     public static void removeUserFromEvents(final Collection<Event> events, final User user, final File file)
             throws IOException {
 
-        Consumer<Collection<Event>> consumer = (eventCollection) -> {
+        Consumer<Collection<Event>> consumer = eventCollection -> {
             eventCollection.stream()
                     .filter(event -> events.contains(event))
                     .forEach(event -> event.removeUser(user));
@@ -248,7 +254,7 @@ public class IOUtil {
     }
 
     /**
-     * Removes the specified user from a single event in the provided file.
+     * Removes the specified user from a event in the provided file.
      * If file is null, the file defaults to the resources directory.
      * 
      * @param event the events you want to remove the user from
@@ -263,11 +269,12 @@ public class IOUtil {
     }
 
     /**
-     * Updates event users.
+     * Updates a event.
+     * Note this method only works for updating users, and not other fields.
      * 
-     * @param event
-     * @param file
-     * @throws IOException
+     * @param event the event to update
+     * @param file the provided file
+     * @throws IOException on I/O error
      */
     public static void updateEvent(Event event, File file) throws IOException {
         deleteEventFromFile(event, file);
@@ -275,10 +282,11 @@ public class IOUtil {
     }
 
     /**
-     * Removes the provided event from provided data file
+     * Removes the provided event from provided data file.
      *
      * @param event Event to be removed from file
-     * @throws IOException
+     * @param file the provided file
+     * @throws IOException on I/O error
      */
     public static void deleteEventFromFile(Event event, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> ec.remove(event);
@@ -286,19 +294,39 @@ public class IOUtil {
     }
 
     /**
-     * Removes the provided event from the provided data file
+     * Removes the event with matching id from the provided data file, if the event exists.
      *
-     * @param event name of the event to be removed
-     * @throws IOException
+     * @param id the id of the event to delete
+     * @param file the provided file
+     * @throws IOException on I/O error
+     * @throws IllegalStateException if no such event exists
      */
     public static void deleteEventFromFile(String id, File file) throws IOException {
         Consumer<Collection<Event>> consumer = ec -> {
             ec.remove(ec.stream()
                     .filter(e -> e.getId().equals(UUID.fromString(id)))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("No such event is save")));
+                    .orElseThrow(() -> new IllegalStateException("No such event is saved!")));
         };
         alterEvents(consumer, file);
+    }
+
+    /**
+     * Removes the user with provided email from file.
+     *
+     * @param email email of the user to be removed from event
+     * @param file the provided file
+     * @throws IOException on I/O error
+     * @throws IllegalStateException if no such user exists
+     */
+    public static void deleteUserFromFile(String email, File file) throws IOException {
+        Consumer<Collection<User>> consumer = uc -> {
+            uc.remove(uc.stream()
+                    .filter(u -> u.email().equals(email))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No such user is saved!")));
+        };
+        alterUsers(consumer, file);
     }
 
     /**
@@ -310,13 +338,27 @@ public class IOUtil {
      * @throws IOException on I/O error
      */
     private static void alterEvents(Consumer<Collection<Event>> consumer, final File file) throws IOException {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        Collection<Event> loadEvents = reader.load(file);
+        Collection<Event> loadEvents = EVENT_READER.load(file);
 
         consumer.accept(loadEvents);
 
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        writer.save(loadEvents, file);
+        EVENT_WRITER.save(loadEvents, file);
+    }
+
+    /**
+     * Changes the saved users on the basis of the specified consumer.
+     * If file is null, the file defaults to the resources directory.
+     * 
+     * @param consumer a consumer that alters the collection of users in some way
+     * @param file     the provided file
+     * @throws IOException on I/O error
+     */
+    private static void alterUsers(Consumer<Collection<User>> consumer, final File file) throws IOException {
+        Collection<User> loadUsers = USER_READER.load(file);
+
+        consumer.accept(loadUsers);
+
+        USER_WRITER.save(loadUsers, file);
     }
 
     /**
@@ -324,18 +366,21 @@ public class IOUtil {
      * Each segment given is resolved to root.
      * 
      * @param segments the pathing segments from project root
+     * @return the path relative to project root directory
      */
     public static Path getPathRelativeToProjectRoot(String... segments) {
         Path path = getProjectRoot();
         for (String segment : segments) {
-            path = path.resolve(segment);
+            if (path != null) {
+                path = path.resolve(segment);
+            }
         }
         return path;
     }
 
     private static Path getProjectRoot() {
         Path path = Paths.get(".").normalize().toAbsolutePath();
-        while(!path.endsWith("gr2225")) {
+        while (path != null && !path.endsWith("gr2225")) {
             path = path.getParent();
         }
         return path;

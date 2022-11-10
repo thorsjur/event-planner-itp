@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Reads data from a JSON file using the {@link CustomObjectMapper}.
+ * Reads data from a JSON file using {@link CustomObjectMapper}.
  */
 public class UserCollectionJsonReader {
 
@@ -27,9 +27,9 @@ public class UserCollectionJsonReader {
     }
 
     /**
-     * Method to load a collection of users from a JSON file.
-     * If no file is specified for the method, the reader reads from the default
-     * JSON file specified in {@link UserCollectionJsonWriter}
+     * Method to load a collection of users from a JSON file. If no file is
+     * specified for the method, the reader reads from the default JSON file
+     * specified in {@link UserCollectionJsonWriter}
      * 
      * @param file the json file to load users from.
      * @return a collection of users
@@ -45,15 +45,18 @@ public class UserCollectionJsonReader {
         if (!IOUtil.hasFileExtension(file, UserCollectionJsonWriter.FILE_EXTENSION)) {
             throw new IllegalArgumentException("File is not of type .json");
         }
+
+        // Few symbols in file indicate either a invalid or empty json file, thus a
+        // empty collection is returned.
         if (file.length() < 10) {
-            return new ArrayList<User>();
+            return new ArrayList<>();
         }
         return USER_MAPPER.readValue(file, new TypeReference<Collection<User>>() {
         });
     }
 
     /**
-     * Method to load a collection of users using the default JSON file.
+     * Method to load a collection of users using the project's default JSON file.
      * 
      * @see UserCollectionJsonReader#load(File file)
      */

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import eventplanner.core.User;
+import eventplanner.json.util.CryptoUtil;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
  * 
  * @see <a href=
  *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/JsonSerializer.html">JsonSerializer
- *      docs</a>
+ *      documentation</a>
  */
 public class UserSerializer extends JsonSerializer<User> {
 
@@ -32,7 +33,7 @@ public class UserSerializer extends JsonSerializer<User> {
 
         jsonGen.writeStartObject();
         jsonGen.writeStringField("email", user.email());
-        jsonGen.writeStringField("password", user.password());
+        jsonGen.writeStringField("password", CryptoUtil.encrypt(user.password()));
         jsonGen.writeBooleanField("above18", user.above18());
         jsonGen.writeEndObject();
     }

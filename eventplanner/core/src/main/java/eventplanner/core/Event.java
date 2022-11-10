@@ -25,52 +25,47 @@ public class Event {
      * 
      * @param type           the {@link EventType}
      * @param name           the name describing the event
-     * @param localDateTime  the time when the event starts
-     * @param localDateTime2 the time when the event ends
+     * @param startDateTime  the time when the event starts
+     * @param endDateTime the time when the event ends
      * @param location       the location of the event
      * @param users          a list of {@link User}s
      * 
      * @throws IllegalArgumentException when invalid arguments are passed
      */
-    public Event(UUID id, EventType type, String name, LocalDateTime localDateTime,
-            LocalDateTime localDateTime2, String location, List<User> users, String authorEmail, String description) {
+    public Event(UUID id, EventType type, String name, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            String location, List<User> users, String authorEmail, String description) {
 
-        validateEventInput(type, name, localDateTime, localDateTime2, location, users);
+        validateEventInput(type, name, startDateTime, endDateTime, location);
         if (users != null) {
             this.users.addAll(users);
         }
 
-        if (id == null) {
-            this.id = UUID.randomUUID();
-        } else {
-            this.id = id;
-        }
-
+        this.id = id == null ? UUID.randomUUID() : id;
         this.type = type;
         this.name = name;
-        this.startDate = localDateTime;
-        this.endDate = localDateTime2;
+        this.startDate = startDateTime;
+        this.endDate = endDateTime;
         this.location = location;
         setDescription(description);
         setAuthorEmail(authorEmail);
     }
 
     /**
-     * Event constructor which requires valid arguments.
-     * An empty list of {@link User}s is created upon creation.
+     * Event constructor which requires valid arguments. An empty list of
+     * {@link User}s is created upon creation.
      * 
      * @param type           the {@link EventType}
      * @param name           the name describing the event
-     * @param localDateTime  the time when the event starts
-     * @param localDateTime2 the time when the event ends
+     * @param startDateTime  the time when the event starts
+     * @param endDateTime the time when the event ends
      * @param location       the location of the event
      * 
      * @throws IllegalArgumentException when invalid arguments are passed
      */
-    public Event(UUID id, EventType type, String name, LocalDateTime localDateTime,
-            LocalDateTime localDateTime2, String location) {
+    public Event(UUID id, EventType type, String name, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            String location) {
 
-        this(id, type, name, localDateTime, localDateTime2, location, null, null, null);
+        this(id, type, name, startDateTime, endDateTime, location, null, null, null);
     }
 
     public List<User> getUsers() {
@@ -109,26 +104,6 @@ public class Event {
         return this.description;
     }
 
-    private void setDescription(String description){
-        if (description == null || description.isBlank()){
-            this.description = "No description available";
-        }
-        else{
-            this.description = description;
-        }
-    }
-
-    private void setAuthorEmail(String authorEmail){
-        if (authorEmail == null || authorEmail.isBlank()){
-            // Creates default user as author of default generated events
-            User author = new User("SAMFUNDET@samf.no", "Samf2022", true);
-            this.authorEmail = author.email();
-        }
-        else{
-            this.authorEmail = authorEmail;
-        }
-    }
-
     /**
      * Add a user to this event.
      * 
@@ -152,10 +127,9 @@ public class Event {
     }
 
     private void validateEventInput(EventType type, String name, LocalDateTime localDateTime,
-            LocalDateTime localDateTime2, String location, List<User> users) {
+            LocalDateTime localDateTime2, String location) {
 
-        if (type == null || name == null || localDateTime == null
-                || localDateTime2 == null || location == null) {
+        if (type == null || name == null || localDateTime == null || localDateTime2 == null || location == null) {
             throw new IllegalArgumentException("One or more parameters are null");
         }
         if (name.isBlank() || location.isBlank()) {
@@ -169,10 +143,20 @@ public class Event {
         }
     }
 
+    private void setDescription(String description) {
+        this.description = description == null ? "No description available" : description;
+    }
+
+    private void setAuthorEmail(String authorEmail) {
+
+        // Sets a default author email if no such is provided
+        this.authorEmail = authorEmail == null ? "admin@samfundet.no" : authorEmail;
+    }
+
     /**
-     * Logistically compare this event to another object.
-     * Does not compare registered users.
-     * Returns true if and only if the events are functionality equivalent.
+     * Logistically compare this event to another object. Does not compare
+     * registered users. Returns true if and only if the events are functionality
+     * equivalent, with the exception of users.
      */
     @Override
     public boolean equals(Object o) {
@@ -180,10 +164,21 @@ public class Event {
             return false;
         }
         Event event = (Event) o;
-        return endDate.isEqual(event.getEndDate())
-                && location.equals(event.getLocation())
-                && startDate.isEqual(event.getStartDate())
-                && name.equals(event.getName())
+        return endDate.isEqual(event.getEndDate()) && location.equals(event.getLocation())
+                && startDate.isEqual(event.getStartDate()) && name.equals(event.getName())
                 && type.equals(event.getType());
+    }
+
+    /**
+     * Overrides the inherited method hashCode. Equal objects must have equal
+     * hashcodes, since Events overrides equals, hashCode must be overwritten to
+     * assign a arbitrary constant.
+     * 
+     * @return an arbitrary constant
+     */
+    @Override
+    public int hashCode() {
+        assert false : "hashCode not designed";
+        return 42;
     }
 }

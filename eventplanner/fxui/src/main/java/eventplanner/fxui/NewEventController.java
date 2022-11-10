@@ -1,24 +1,21 @@
 package eventplanner.fxui;
 
-import eventplanner.core.User;
-import eventplanner.core.Event;
-import eventplanner.core.EventType;
-import eventplanner.fxui.util.ControllerUtil;
-import eventplanner.fxui.util.InputType;
-import eventplanner.fxui.util.Validation;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.stream.Stream;
 
-import javafx.beans.value.ChangeListener;
+import eventplanner.core.Event;
+import eventplanner.core.EventType;
+import eventplanner.core.User;
+import eventplanner.dataaccess.DataAccess;
+import eventplanner.fxui.util.ControllerUtil;
+import eventplanner.fxui.util.InputType;
+import eventplanner.fxui.util.Validation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -48,22 +45,24 @@ public class NewEventController {
 
     public NewEventController(User user, DataAccess dataAccess) {
         this.user = user;
-        this.dataAccess = dataAccess;
+        this.dataAccess = dataAccess.copy();
     }
 
     @FXML
     private void initialize() {
+
+        // Adds all the event types to the combo box
         Stream.of(EventType.values())
                 .map(eventType -> eventType.toString())
                 .forEach(typeComboBox.getItems()::add);
 
         // Adds listeners to all input fields that signals input-validity to the user.
-        addValidationFocusListener(startTimeField, InputType.TIME);
-        addValidationFocusListener(endTimeField, InputType.TIME);
-        addValidationFocusListener(nameField, InputType.NAME);
-        addValidationFocusListener(locationField, InputType.LOCATION);
-        addValidationFocusListener(startDatePicker, InputType.DATE);
-        addValidationFocusListener(endDatePicker, InputType.DATE);
+        ControllerUtil.addValidationFocusListener(endTimeField, InputType.TIME);
+        ControllerUtil.addValidationFocusListener(nameField, InputType.NAME);
+        ControllerUtil.addValidationFocusListener(locationField, InputType.LOCATION);
+        ControllerUtil.addValidationFocusListener(startTimeField, InputType.TIME);
+        ControllerUtil.addValidationFocusListener(startDatePicker, InputType.DATE);
+        ControllerUtil.addValidationFocusListener(endDatePicker, InputType.DATE);
     }
 
     @FXML
@@ -111,7 +110,6 @@ public class NewEventController {
         }
 
         String description = descField.getText();
-
         String authorEmail = user.email();
 
         LocalDateTime localDateTimeStart = getLocalDateTimeObject(startTime, startDate);
@@ -138,9 +136,7 @@ public class NewEventController {
 
     private void displayErrorMessages(ArrayList<Validation.ErrorType> errors) {
         StringBuilder sb = new StringBuilder();
-        errors.forEach(e -> {
-            sb.append(e.errMessage + "\n");
-        });
+        errors.forEach(e -> sb.append(e.errMessage + "\n"));
         outputMessage.setText(sb.toString());
     }
 
@@ -173,100 +169,16 @@ public class NewEventController {
     @FXML
     private void handleEventsButtonClicked() {
         String fxmlFileName = "AllEvents.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user, dataAccess);
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, AllEventsController.class, user,
+                dataAccess);
         ControllerUtil.setSceneFromChild(loader, eventsButton);
     }
 
     @FXML
     private void handleLogOutButtonClicked() {
         String fxmlFileName = "LoginScreen.fxml";
-        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null, dataAccess);
-        ControllerUtil.setSceneFromChild(loader, logOutButton);   
+        FXMLLoader loader = ControllerUtil.getFXMLLoaderWithFactory(fxmlFileName, LoginController.class, null,
+                dataAccess);
+        ControllerUtil.setSceneFromChild(loader, logOutButton);
     }
-
-    private static final String COLOUR_VALID = "#228C22";
-    private static final String COLOUR_INVALID = "#B33333";
-
-    private void handleInvalidTextField(TextField textField) {
-        textField.setStyle("-fx-text-box-border: " + COLOUR_INVALID);
-    }
-
-    private void handleInvalidDatePicker(DatePicker datePicker) {
-        datePicker.setStyle("-fx-border-color: " + COLOUR_INVALID);
-    }
-
-    private void handleValidTextField(TextField textField) {
-        textField.setStyle("-fx-text-box-border: " + COLOUR_VALID);
-    }
-
-    private void handleValidDatePicker(DatePicker datePicker) {
-        datePicker.setStyle("-fx-border-color: " + COLOUR_VALID);
-    }
-
-    /**
-     * Getter for ValidationListener
-     * 
-     * @param control input control
-     * @param type    specified type of input
-     * @return ChangeListener that signals validity of input
-     */
-    private ChangeListener<Boolean> getValidationListener(Control control, InputType type) {
-        validateArguments(control, type);
-
-        switch (type) {
-            case DATE:
-                DatePicker datePicker = (DatePicker) control;
-                return ControllerUtil.getValidationFocusListener(
-                        () -> {
-                            return Validation.isValidDateInput(datePicker.getValue());
-                        },
-                        () -> handleValidDatePicker(datePicker),
-                        () -> handleInvalidDatePicker(datePicker));
-            case EVENT_TYPE:
-                return null;
-            default: // All text inputs are handled by the default case
-                return getTextFieldValidationListener((TextField) control, type);
-        }
-    }
-
-    private ChangeListener<Boolean> getTextFieldValidationListener(
-            TextField field,
-            InputType type) {
-        return ControllerUtil.getValidationFocusListener(
-                () -> {
-                    return Validation.isValidTextInput(field.getText(), type);
-                },
-                () -> handleValidTextField(field),
-                () -> handleInvalidTextField(field));
-    }
-
-    private void addValidationFocusListener(Control control, InputType type) {
-        control.focusedProperty().addListener(getValidationListener(control, type));
-    }
-
-    /**
-     * Asserts that the given arguments are compatible.
-     * 
-     * @param control                   Input field
-     * @param type                      Input type
-     * @throws IllegalArgumentException if fields are not compatible
-     */
-    private void validateArguments(Control control, InputType type) {
-        if (control == null || type == null) {
-            throw new IllegalArgumentException("Null inputs are not permitted");
-        }
-        Set<InputType> textInputs = Set.of(
-                InputType.DESCRIPION,
-                InputType.LOCATION,
-                InputType.NAME,
-                InputType.TIME);
-        if (!(control instanceof TextField) && textInputs.contains(type)) {
-            throw new IllegalArgumentException("Only text fields support this input type.");
-        } else if (!(control instanceof DatePicker) && type == InputType.DATE) {
-            throw new IllegalArgumentException("Only date pickers support this input type.");
-        } else if (!(control instanceof ComboBox) && type == InputType.EVENT_TYPE) {
-            throw new IllegalArgumentException("Only combo boxes support this input type.");
-        }
-    }
-
 }
