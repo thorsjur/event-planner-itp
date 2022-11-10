@@ -5,7 +5,7 @@
 ## Module Content
 
 - [Controllers, App and EventCell](./src/main/java/eventplanner/fxui/)
-- [Data access classes](./src/main/java/eventplanner/fxui/)
+- [Data access classes](./src/main/java/eventplanner/dataaccess/)
 - [FXML files and CSS stylesheet](./src/main/resources/eventplanner/dataaccess/)
 
 <br>
@@ -50,7 +50,7 @@ At startup, the application will try to connect to the server via the static met
 
     RemoteDataAccess.connection()
 
-The static method attempts to send a dummy request to the server, and an exception is thrown if the request fails. If the connection did not throw an exception, indicating the server is functional, the application will be use  the [remote data access](./src/main/java/eventplanner/dataaccess/RemoteDataAccess.java) point.
+The static method attempts to send a dummy request to the server, and an exception is thrown if the request fails. If the connection did not throw an exception, indicating that the server is functional, the application will be use  the [remote data access](./src/main/java/eventplanner/dataaccess/RemoteDataAccess.java) point.
 
 In practice, this means that data can be accessed and altered by sending API requests to the local server.
 

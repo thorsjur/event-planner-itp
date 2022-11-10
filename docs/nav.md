@@ -1,7 +1,7 @@
 # Navigation:
 
 - ### **Module documentation**
-    - [project root](../README.md)
+    - [project root](/../README.md)
     - [fxui](../eventplanner/fxui/README.md)
     - [core](../eventplanner/core/README.md)
     - [rest](../eventplanner/rest/README.md)

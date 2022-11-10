@@ -4,17 +4,17 @@
 
 Event Planner is a cloud-based application that helps you keep track of various events. With the help of this app, you can sign up for events and later find the events that you have signed up for. You can also create your own events and use the application as an event calendar.
 
-The application initializes a login screen where the user has the choice of either logging in with an existing user or to register a new user. While registering for the first time the user is asked to enter an email, a password and a birthdate, with this data a new user is created, as long as no user with the corresponding email exists. A user who already has an existing user can enter their email and password in order to log in. See screenshot of register page (Figure 2) and log in page (Figure 1). 
+The application initializes a login screen where the user has the choice of either logging in with an existing account or to register a new account. If registering for the first time, the user is asked to enter an email, a password and a birthdate. With this data a new user is created, as long as no user with the corresponding email exists. A user who already has an existing account can enter their email and password in order to log in. See screenshot of register page (Figure 2) and login page (Figure 1). 
 
 <br>
 
 ![](../docs/screenshots/LoginPage.png)
-Figure 1: The view allowing the user to log in to an existing user.
+Figure 1: The view allowing the user to log in to an existing account.
 
 <br>
 
 ![](../docs/screenshots/RegisterUserPage.png)
-Figure 2: The view for registering new users.
+Figure 2: The view for registering new accounts.
 
 <br>
 
@@ -72,7 +72,7 @@ Figure 10: The new event added to the main event page.
 
 ## Sequence Diagram
 
-This sequence diagram illustrates the flow of logic in the application throught time. Here you can see how the REST API layer interacts with our model base.
+This sequence diagram illustrates the flow of logic between the client, API and server. Here you can see how the REST API layer interacts with the model.
 
 A user starts by registering a new account and registers for an event. Then the user creates a new event and proceedes to delete the event that was created. 
 
