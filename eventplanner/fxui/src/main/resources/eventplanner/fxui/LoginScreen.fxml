@@ -25,7 +25,7 @@
             <VBox alignment="CENTER" fillWidth="false" layoutY="67.0" prefHeight="333.0" prefWidth="642.0" spacing="10.0">
                <children>
                   <Label text="Don’t have an account?" />
-                  <Button fx:id="registerUserButton" mnemonicParsing="false" onAction="#handleRegisterUserButtonClicked" prefHeight="26.0" prefWidth="115.0" text="Register account" />
+                  <Button fx:id="registerUserButton" mnemonicParsing="false" onAction="#handleRegisterUserButtonClicked" prefHeight="26.0" prefWidth="130.0" text="Register account" />
                   <Label fx:id="errorOutput" prefHeight="17.0" prefWidth="424.0">
                      <VBox.margin>
                         <Insets top="40.0" />

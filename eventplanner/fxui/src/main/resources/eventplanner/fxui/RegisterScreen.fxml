@@ -62,7 +62,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="300.0" />
                   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="300.0" spacing="15.0">
                      <children>
-                        <Button fx:id="createUserButton" mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="26.0" prefWidth="110.0" text="Create account" />
+                        <Button fx:id="createUserButton" mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="26.0" prefWidth="130.0" text="Create account" />
                         <Button fx:id="exitButton" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="64.0" text="Exit" />
                      </children>
                   </HBox>
