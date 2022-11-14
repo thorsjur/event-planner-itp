@@ -87,8 +87,18 @@
                   <destination>target/dist</destination>
                   <module>eventplanner.fxui/eventplanner.fxui.App</module>
                   <runtimeImage>target/eventplannerfx</runtimeImage>
+
+                  <!-- Linux config -->
                   <linuxShortcut>true</linuxShortcut>
                   <linuxPackageName>eventplannerfx</linuxPackageName>
+
+                  <!-- MacOS config -->
+                  <macPackageName>eventplannerfx</macPackageName>
+
+                  <!-- Windows config -->
+                  <windowsPackageName>eventplannerfx</windowsPackageName>
+                  <windowsShortcut>true</windowsShortcut>
+
                   <javaOptions>
                     <option>-Dfile.encoding=UTF-8</option>
                   </javaOptions>
