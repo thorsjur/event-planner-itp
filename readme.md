@@ -59,6 +59,13 @@ mvn javafx:run
 ```
 If the application is launched without the server offline. The alternative local data access will be used. The applications title will tell whether you are connected to the server.
 
+The application can also be bundled into an execution file for windows or respectively .dmg for mac. The bundle is created with jpackage and jlink.
+ ```
+from /fxui
+mvn javafx:jlink
+mvn jpackage:jpackage -f pom.xml
+```
+
 <br>
 
 ## Reports
