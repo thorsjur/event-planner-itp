@@ -1,6 +1,11 @@
 package eventplanner.fxui;
 
 import java.io.IOException;
+
+import eventplanner.dataaccess.DataAccess;
+import eventplanner.dataaccess.LocalDataAccess;
+import eventplanner.dataaccess.RemoteDataAccess;
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,12 +13,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Sets stage and launches app.
+ * Sets stage and launches application.
  */
 public class App extends Application {
 
     private Scene scene;
 
+    /**
+     * Method to be used before gui tests, to ensure they function as expected.
+     */
     public static void supportHeadless() {
         if (Boolean.getBoolean("headless")) {
             System.setProperty("testfx.robot", "glass");
@@ -26,17 +34,26 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
+        DataAccess dataAccess;
+        try {
+            RemoteDataAccess.assertConnection();
+            dataAccess = new RemoteDataAccess();
+        } catch (Exception e) {
+            dataAccess = new LocalDataAccess();
+        }
+
+        FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("LoginScreen.fxml", LoginController.class, null,
+                dataAccess);
         Parent parent = fxmlLoader.load();
         this.scene = new Scene(parent);
+
+        stage.setResizable(false);
+        String title = dataAccess.isRemote() ? "Event Planner - Connected" : "Event Planner - Local data access.";
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
     }
-
-    public Scene getScene() {
-        return this.scene;
-    }
-
+    
     public static void main(String[] args) {
         launch();
     }

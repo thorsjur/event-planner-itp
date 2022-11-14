@@ -15,7 +15,7 @@ import java.io.IOException;
  * 
  * @see <a href=
  *      "https://fasterxml.github.io/jackson-databind/javadoc/2.13/com/fasterxml/jackson/databind/JsonSerializer.html">JsonSerializer
- *      docs</a>
+ *      documentation</a>
  */
 public class EventSerializer extends JsonSerializer<Event> {
 
@@ -32,16 +32,22 @@ public class EventSerializer extends JsonSerializer<Event> {
             throws IOException {
 
         jsonGen.writeStartObject();
+
+        jsonGen.writeStringField("id", event.getId().toString());
         jsonGen.writeStringField("type", event.getType().toString());
         jsonGen.writeStringField("name", event.getName());
         jsonGen.writeStringField("start-time", event.getStartDate().toString());
         jsonGen.writeStringField("end-time", event.getEndDate().toString());
         jsonGen.writeStringField("location", event.getLocation());
+        jsonGen.writeStringField("author", event.getAuthorEmail());
+        jsonGen.writeStringField("description", event.getDescription());
+        
         jsonGen.writeArrayFieldStart("users");
         for (User user : event.getUsers()) {
-            jsonGen.writeString(user.username());
+            jsonGen.writeString(user.email());
         }
         jsonGen.writeEndArray();
+
         jsonGen.writeEndObject();
     }
 

@@ -13,6 +13,16 @@ skinparam component {
   ArrowColor #FF6655
 }
 
+node spring {
+    component [boot] as boot {
+        package autoconfigure
+    }
+    component [context] as ctx
+    component [web] as web
+    component [beans] as beans
+    component [core] as c2
+
+}
 
 component [javafx] {
     component [fxml] as fx
@@ -25,16 +35,30 @@ node "eventplanner" as ep {
     }
 
     component [fxui] {
+        package eventplanner.dataaccess
         package eventplanner.fxui
+    }
+
+    component [rest] {
+        package eventplanner.rest
 
     }
 }
 
+
+component [java.net] {
+    component [http] as net
+}
+
 component [jackson] as jack
 
-fxui ..> fx
-fxui ..> eventplanner.core
-fxui ..> eventplanner.json
-eventplanner.json ..> jack
+eventplanner.dataaccess ..> fx
+fxui ..> core
+eventplanner.dataaccess .right.> net
+eventplanner.json .left.> jack
+rest .left.> jack
+rest .left.> spring
+rest ..> eventplanner.core
+rest ..> eventplanner.json
 
 @enduml

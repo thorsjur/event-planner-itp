@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@EventPlanner.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eventplanner.fxui.RegisterController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="AnchorPane" VBox.vgrow="ALWAYS">
+      <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="68.0" strokeType="INSIDE" styleClass="bar" width="642.0" />
+            <Text fill="WHITE" layoutX="1.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header-text" text="Create account" textAlignment="CENTER" wrappingWidth="640.0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <VBox alignment="CENTER" layoutX="444.0" layoutY="78.0" prefHeight="308.0" prefWidth="188.0" spacing="30.0">
+               <children>
+                  <Label fx:id="errorOutput" prefHeight="202.0" prefWidth="188.0" wrapText="true" />
+                  <Label fx:id="errorCounter" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" fillWidth="false" layoutY="68.0" prefHeight="331.0" prefWidth="642.0" spacing="10.0">
+               <children>
+                  <Label text="Already have an account?" />
+                  <Button fx:id="goToLoginButton" mnemonicParsing="false" onAction="#handleGoToLoginPageButtonClicked" prefHeight="26.0" prefWidth="104.0" text="Go to login" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="133.0" prefWidth="316.0">
+                     <children>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="133.0" prefWidth="86.0" spacing="23.0">
+                           <children>
+                              <Label text="Email:" />
+                              <Label text="Password:" />
+                              <Label text="Birthdate:" />
+                           </children>
+                           <padding>
+                              <Insets right="15.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="133.0" prefWidth="164.0" spacing="15.0">
+                           <children>
+                              <TextField fx:id="emailField" />
+                              <PasswordField fx:id="passwordField" />
+                              <DatePicker fx:id="birthDatePicker" prefHeight="26.0" prefWidth="171.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="300.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="300.0" spacing="20.0" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="300.0" />
+                  <HBox alignment="CENTER" prefHeight="0.0" prefWidth="300.0" spacing="15.0">
+                     <children>
+                        <Button fx:id="createUserButton" mnemonicParsing="false" onAction="#handleCreateUser" prefHeight="26.0" prefWidth="130.0" text="Create account" />
+                        <Button fx:id="exitButton" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="64.0" text="Exit" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

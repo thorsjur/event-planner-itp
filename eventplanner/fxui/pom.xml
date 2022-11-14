@@ -19,22 +19,11 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>16</version>
+            <version>19</version>
         </dependency>
 
         <!-- junit testing with jupiter -->
@@ -53,11 +42,8 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-        </dependency>
 
+        <!-- ui testing with testfx -->
         <dependency>
 			<groupId>org.testfx</groupId>
 			<artifactId>testfx-core</artifactId>
@@ -81,14 +67,55 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>eventplanner.fxui/eventplanner.fxui.App</mainClass>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>eventplannerfx</launcher>
+                    <jlinkImageName>eventplannerfx</jlinkImageName>
+                    <jlinkZipName>eventplannerfx</jlinkZipName>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                  <name>EventplannerFX</name>
+                  <appVersion>1.0.0</appVersion>
+                  <vendor>gr2225</vendor>
+                  <destination>target/dist</destination>
+                  <module>eventplanner.fxui/eventplanner.fxui.App</module>
+                  <runtimeImage>target/eventplannerfx</runtimeImage>
+
+                  <!-- Linux config -->
+                  <linuxShortcut>true</linuxShortcut>
+                  <linuxPackageName>eventplannerfx</linuxPackageName>
+
+                  <!-- MacOS config -->
+                  <macPackageName>eventplannerfx</macPackageName>
+
+                  <!-- Windows config -->
+                  <windowsPackageName>eventplannerfx</windowsPackageName>
+                  <windowsShortcut>true</windowsShortcut>
+
+                  <javaOptions>
+                    <option>-Dfile.encoding=UTF-8</option>
+                  </javaOptions>
+                </configuration>
+              </plugin>
+            <!-- JaCoCo - codecoverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <propertyName>jaCoCoArgLine</propertyName>
-                </configuration>
+                    <excludes>
+                        <exclude>**/App.class</exclude>
+                        <exclude>**/RemoteDataAccess.*</exclude>
+                        <exclude>**/DataAccess.class</exclude>
+                    </excludes>
+                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -105,7 +132,10 @@
                     </argLine>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
@@ -114,15 +144,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.2.0</version>
             </plugin>
-
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.2.0</version>
             </plugin>
-
         </plugins>
     </reporting>
     

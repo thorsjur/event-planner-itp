@@ -1,0 +1,39 @@
+
+@startuml fxui_architecture
+title fxui dependency diagram
+skinparam useBetaStyle true
+
+<style>
+    .package {
+        BackgroundColor Khaki
+    }
+</style>
+
+skinparam component {
+  ArrowColor #FF6655
+}
+
+component [javafx] {
+    component [fxml] as fx
+}
+
+component [core] {
+    package eventplanner.core
+    package eventplanner.json
+}
+
+component [fxui] {
+    package eventplanner.dataaccess
+    package eventplanner.fxui
+}
+
+
+component [java.net] {
+    component [http] as net
+}
+
+eventplanner.dataaccess ..> fx
+fxui ..> core
+eventplanner.dataaccess ..> net
+
+@enduml

@@ -1,22 +1,22 @@
 package eventplanner.fxui;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import eventplanner.core.Event;
 import eventplanner.core.EventType;
-import eventplanner.json.EventCollectionJsonReader;
-import eventplanner.json.EventCollectionJsonWriter;
+import eventplanner.core.User;
+import eventplanner.dataaccess.LocalDataAccess;
+import eventplanner.fxui.util.ControllerUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,24 +26,40 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-public class CreateEventTest extends ApplicationTest {
+class CreateEventTest extends ApplicationTest {
+
+    private static Collection<Event> eventsBackup = new ArrayList<>();
+    private static Collection<User> usersBackup = new ArrayList<>();
 
     @BeforeAll
-    public static void setupHeadless() {
+    static void setupHeadless() {
         App.supportHeadless();
+
+        eventsBackup = FxuiTestUtil.getAllEvents();
+        usersBackup = FxuiTestUtil.getAllUsers();
+    }
+
+    @AfterAll
+    static void teardown() {
+        FxuiTestUtil.restoreEvents(eventsBackup);
+        FxuiTestUtil.restoreUsers(usersBackup);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("LoginScreen.fxml"));
+        final FXMLLoader fxmlLoader = ControllerUtil.getFXMLLoaderWithFactory("RegisterScreen.fxml",
+                RegisterController.class, null, new LocalDataAccess());
+
         final Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
     }
 
     @Test
-    public void createValidEvent() {
-        clickOn("#btnConfirm");
+    void testCreateValidEvent() {
+        String email = "test@user.co.uk";
+        String password = "password";
+        registerUser(email, password);
         clickOn("#createEventButton");
 
         ComboBox<String> cb = lookup("#typeComboBox").queryComboBox();
@@ -63,44 +79,23 @@ public class CreateEventTest extends ApplicationTest {
         clickOn("#createButton");
 
         // Verify that the event is created
-        Event expectedEvent = new Event(
-            EventType.CONCERT,
-            "TestName",
-            LocalDateTime.of(2022 ,2 ,5 ,13 ,0),
-            LocalDateTime.of(2023, 2, 5, 13, 0),
-            "TestLoc"
-        );
+        Event expectedEvent = new Event(null, EventType.CONCERT, "TestName", LocalDateTime.of(2022, 2, 5, 13, 0),
+                LocalDateTime.of(2023, 2, 5, 13, 0), "TestLoc", null, email, "TestDesc");
 
         clickOn("#eventsButton");
-        ListView<Event> listView = lookup("#allEventsList").queryListView();
-        Event addedEvent = listView.getItems().stream()
-                .filter(e -> FxuiTestUtil.areEventsEqual(expectedEvent, e))
-                .findFirst()
-                .orElse(null);
+        ListView<Event> listView = lookup("#eventsListView").queryListView();
+        Event addedEvent = listView.getItems().stream().filter(e -> FxuiTestUtil.areEventsEqual(expectedEvent, e))
+                .findFirst().orElse(null);
 
         assertTrue(FxuiTestUtil.areEventsEqual(expectedEvent, addedEvent));
-
-        cleanUp();
     }
 
-    private void cleanUp() {
-        EventCollectionJsonReader reader = new EventCollectionJsonReader();
-        Collection<Event> loadEvents;
-        try {
-            loadEvents = reader.load();
-        } catch (IOException e) {
-            return;
-        }
-
-        List<Event> events = loadEvents.stream()
-            .filter(event -> !event.getName().equals("TestName"))
-            .collect(Collectors.toList());
-
-        EventCollectionJsonWriter writer = new EventCollectionJsonWriter();
-        try {
-            writer.save(events);
-        } catch (IOException e) {
-            System.out.println("Error occurred saving events ...");
-        }
+    private void registerUser(String email, String password) {
+        clickOn("#emailField").write(email);
+        clickOn("#passwordField").write(password);
+        DatePicker dp = lookup("#birthDatePicker").queryAs(DatePicker.class);
+        dp.setValue(LocalDate.of(2001, 8, 4));
+        clickOn("#createUserButton");
     }
+
 }

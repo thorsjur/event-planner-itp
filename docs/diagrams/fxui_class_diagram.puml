@@ -1,0 +1,164 @@
+@startuml fxui 
+
+package eventplanner.fxui <<Folder>> {
+    class App{
+        -Scene scene
+        +supportHeadless(): static void 
+        +start(Stage stage): void
+        +main(String[] args): static void
+    }
+    class AllEventsController{
+        -boolean checkBoxIsChecked
+        -DataAccess dataAccess
+        -User user
+        +<<constructor>> AllEventsController(User user)
+        +initialize(): void
+        +handleSaveEventButtonClicked(): void
+        +handleMyEventsCheckBox(): void
+        +handleRegistrationOrDeregistration(ObservableList<Event> selectedEvents, 
+        File file): void
+        +deregisterSelectedUser(ObservableList<Event> selectedEvents, 
+        File file): void
+        +registerSelectedUser(ObservableList<Event> selectedEvents, 
+        File file): void
+        +updateListViewPredicate(): void
+        +updateRegistrationLabel(): void
+        +isChecked(): boolean 
+        +toggleIsChecked(): void
+        +loadEvents(): ObservableList<Event> 
+        +handleCreateEventButtonClicked(): void
+        +handleLogOutButtonClicked(): void
+    }
+    class EventCell{
+        -Text date
+        -Text name
+        -HBox content
+        -Button eventPageBtn
+        -DataAccess dataAccess
+        +<<constructor>> EventCell()
+        #updateItem(Event event, 
+        boolean empty): void
+    }
+    class EventPageController{
+        -User user 
+        -Event event 
+        -boolean isRegistered 
+        -DataAccess dataAccess 
+        +<<constructor>> EventPageController(User user, Event event)
+        -initialize(): void
+        -handleReturnBtnClicked(): void
+        -handleDeleteEventButtonClicked(): void
+        -initializeRegisterButton(): void
+        -updateRegisterButton(): void
+        -handleRegisterEventBtnClicked(): void
+        -handleDeregisterEventBtnClicked(): void 
+        -initializeDeleteEventButton(): void
+        -initializeDescription(): void
+        -initializeTextLabels(): void
+        -updateRegisteredUsers(int n): void
+        -incrementRegisteredUsers(): void
+        -decrementRegisteredUsers(): void 
+        -initializeOutputText(): void
+        -copyEvent(Event event): Event
+    }
+    class LoginController{
+        -int counter 
+        -DataAccess dataAccess
+        +<<constructor>> LoginController(DataAccess dataAccess)
+        -handleLogin(): void
+        -findUser(String email, String password): User
+        -handleRegisterUserButtonClicked(): void
+        -handleExit(): void
+    }
+    class NewEventController{
+        -User user
+        -DataAccess dataAccess
+        +<<constructor>> NewEventController(User user)
+        -initialize(): void
+        -handleCreateNewEventButton(): void 
+        -displayErrorMessages(ArrayList<Validation.ErrorType> errors): void
+        -resetFields(): void
+        -getLocalDateTimeObject(String time, LocalDate date): LocalDateTime
+        -handleEventsButtonClicked(): void
+        -handleLogOutButtonClicked(): void
+    }
+    class RegisterController{
+        -int counter
+        -DataAccess dataAccess
+        +<<constructor>> RegisterController(DataAccess dataAccess)
+        -initialize(): void
+        -createUser(String email, String password, 
+        boolean isAbove18): User
+        -handleCreateUser(): void
+        -handleGoToLoginPageButtonClicked(): void
+        -handleExit(): void
+        -validateInput(String email, String password, 
+        LocalDate date): static boolean
+        -isOlderThan18(LocalDate localDate): static boolean
+        -incrementErrorCounter(): void 
+        -displayErrorMessages(List<ErrorType> errors): void
+    }
+    
+    package eventplanner.fxui.util <<Frame>> {
+        class ControllerUtil{
+            +String SERVER_ERROR
+            -String COLOUR_VALID
+            -String COLOUR_INVALID
+            {method} **static utility methods**
+        }
+        class Validation{
+            +LocalDate EARLIEST_VALID_DATE
+            +LocalDate LATEST_VALID_DATE
+            +int MIN_NAME_LENGTH
+            +int MIN_DESCRIPTION_LENGTH
+            +int MIN_LOCATION_LENGTH
+            {method} **static boolean validation methods**
+        }
+    }
+
+    package eventplanner.dataaccess <<Frame>> {
+        interface DataAccess{
+            +copy(): DataAccess
+            +getUser(String email): User 
+            +createUser(User user): void 
+            +getAllEvents(): Collection<Event>
+            +updateEvent(Event event): boolean 
+            +updateEvents(Collection<Event> events): boolean 
+            +createEvent(Event event): boolean 
+            +deleteEvent(Event event): boolean 
+            +isRemote(): boolean 
+        }
+        class LocalDataAccess{
+            +String RESOURCE_BASE_DIR
+            -File eventFile
+            -File userFile
+        }
+        class RemoteDataAccess{
+            -CustomObjectMapper mapper
+            -String SERVICE_PATH
+            -String CONTENT_TYPE
+            -String JSON_MEDIA_TYPE
+        }
+    }
+}
+
+ControllerUtil -left- AllEventsController
+ControllerUtil -up- EventPageController
+ControllerUtil -down- LoginController
+ControllerUtil -right- RegisterController
+ControllerUtil -- NewEventController
+AllEventsController -up-> EventCell
+LocalDataAccess .up.> DataAccess
+RemoteDataAccess .up.> DataAccess
+AllEventsController -> DataAccess
+App -up-> DataAccess
+EventCell -- DataAccess
+EventPageController -> DataAccess
+LoginController -up-> DataAccess
+NewEventController -> DataAccess
+RegisterController -> DataAccess
+ControllerUtil -> DataAccess
+NewEventController -up- Validation
+RegisterController - Validation
+
+@enduml
