@@ -19,13 +19,6 @@ public class UserCollectionJsonWriter {
     public static final String FILE_EXTENSION = ".json";
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    private File file;
-
-    public UserCollectionJsonWriter() {
-        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "user.json" };
-        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
-        file = path.toFile();
-    }
 
     /**
      * Method to save a collection of users to a JSON file. If no file is specified
@@ -37,7 +30,7 @@ public class UserCollectionJsonWriter {
      */
     public void save(final Collection<User> collection, File file) throws IOException {
         if (file == null) {
-            file = this.file;
+            file = getDefaultFile();
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
@@ -73,6 +66,12 @@ public class UserCollectionJsonWriter {
      */
     public void save(final User user) throws IOException {
         save(user, null);
+    }
+
+    private File getDefaultFile() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "user.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        return path.toFile();
     }
 
 }

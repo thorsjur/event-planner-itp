@@ -1,7 +1,12 @@
 package eventplanner.dataaccess;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,9 +20,35 @@ import eventplanner.json.util.IOUtil;
  */
 public class LocalDataAccess implements DataAccess {
 
-    public static final String RESOURCE_BASE_DIR = "src/main/resources/eventplanner/fxui/data/";
-    private final File eventFile = new File(RESOURCE_BASE_DIR + "event.json");
-    private final File userFile = new File(RESOURCE_BASE_DIR + "user.json");
+    private File eventFile;
+    private File userFile;
+
+    /**
+     * Constructor that accepts no parameters, and creates a new instance which uses
+     * local files.
+     */
+    public LocalDataAccess() {
+        String path = System.getProperty("user.home") + "/EventPlanner/data/";
+        try {
+            Files.createDirectories(Paths.get(path));
+
+            eventFile = new File(path + "event.json");
+            if (eventFile.createNewFile()) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(eventFile, StandardCharsets.UTF_8))) {
+                    writer.write("[ ]");
+                }
+            }
+
+            userFile = new File(path + "user.json");
+            if (userFile.createNewFile()) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFile, StandardCharsets.UTF_8))) {
+                    writer.write("[ ]");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Something went wrong! Wasn't able to create data files.");
+        }
+    }
 
     @Override
     public DataAccess copy() {
@@ -27,7 +58,7 @@ public class LocalDataAccess implements DataAccess {
     @Override
     public User getUser(String email) {
         try {
-            return IOUtil.loadUserMatchingEmail(email, this.userFile);
+            return IOUtil.loadUserMatchingEmail(email, userFile);
         } catch (IOException e) {
             printIOError(e);
             return null;
@@ -118,7 +149,7 @@ public class LocalDataAccess implements DataAccess {
     /**
      * Deletes a user from the default LocalDataAccess file.
      * 
-     * @param user the user you want to delete 
+     * @param user the user you want to delete
      */
     public void deleteUser(User user) {
         try {
