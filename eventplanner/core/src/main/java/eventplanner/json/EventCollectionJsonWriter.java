@@ -20,12 +20,6 @@ public class EventCollectionJsonWriter {
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
     private File file;
 
-    public EventCollectionJsonWriter() {
-        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
-        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
-        file = path.toFile();
-    }
-
     /**
      * Method to save a collection of events to a JSON file.
      * If no file is specified for the method, the writer writes to the default
@@ -37,7 +31,7 @@ public class EventCollectionJsonWriter {
     public void save(final Collection<Event> collection, File file) throws IOException {
 
         if (file == null) {
-            file = this.file;
+            file = getDefaultFile();
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
@@ -73,6 +67,12 @@ public class EventCollectionJsonWriter {
      */
     public void save(final Event event) throws IOException {
         save(event, null);
+    }
+
+    private File getDefaultFile() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        return path.toFile();
     }
 
 }

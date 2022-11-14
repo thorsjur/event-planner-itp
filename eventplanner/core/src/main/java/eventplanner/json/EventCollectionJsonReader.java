@@ -19,12 +19,6 @@ public class EventCollectionJsonReader {
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
     private File file;
 
-    public EventCollectionJsonReader() {
-        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
-        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
-        file = path.toFile();
-    }
-
     /**
      * Method to load a collection of events from a JSON file. If no file is
      * specified for the method, the reader reads from the default JSON file
@@ -37,7 +31,7 @@ public class EventCollectionJsonReader {
     public Collection<Event> load(File file) throws IOException {
 
         if (file == null) {
-            file = this.file;
+            file = getDefaultFile();
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
@@ -57,6 +51,12 @@ public class EventCollectionJsonReader {
      */
     public Collection<Event> load() throws IOException {
         return load(null);
+    }
+
+    private File getDefaultFile() {
+        String[] segments = { "eventplanner", "core", "src", "main", "java", "resources", "data", "event.json" };
+        Path path = IOUtil.getPathRelativeToProjectRoot(segments);
+        return path.toFile();
     }
     
 }
