@@ -1,13 +1,14 @@
 package eventplanner.dataaccess;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 
 import eventplanner.core.Event;
 import eventplanner.core.User;
@@ -22,25 +23,25 @@ public class LocalDataAccess implements DataAccess {
     private File eventFile;
     private File userFile;
 
+    /**
+     * Constructor that accepts no parameters, and creates a new instance which uses
+     * local files.
+     */
     public LocalDataAccess() {
         String path = System.getProperty("user.home") + "/EventPlanner/data/";
         try {
             Files.createDirectories(Paths.get(path));
 
             eventFile = new File(path + "event.json");
-            if (!eventFile.exists()) {
-                eventFile.createNewFile();
-
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(eventFile))) {
+            if (eventFile.createNewFile()) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(eventFile, StandardCharsets.UTF_8))) {
                     writer.write("[ ]");
                 }
-
             }
-            userFile = new File(path + "user.json");
-            if (!userFile.exists()) {
-                userFile.createNewFile();
 
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFile))) {
+            userFile = new File(path + "user.json");
+            if (userFile.createNewFile()) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(userFile, StandardCharsets.UTF_8))) {
                     writer.write("[ ]");
                 }
             }
@@ -148,7 +149,7 @@ public class LocalDataAccess implements DataAccess {
     /**
      * Deletes a user from the default LocalDataAccess file.
      * 
-     * @param user the user you want to delete 
+     * @param user the user you want to delete
      */
     public void deleteUser(User user) {
         try {

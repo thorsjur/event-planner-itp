@@ -18,7 +18,6 @@ import java.util.Collection;
 public class UserCollectionJsonReader {
 
     private static final CustomObjectMapper USER_MAPPER = new CustomObjectMapper();
-    private File file;
 
     /**
      * Method to load a collection of users from a JSON file. If no file is
@@ -31,7 +30,7 @@ public class UserCollectionJsonReader {
      */
     public Collection<User> load(File file) throws IOException {
         if (file == null) {
-            file = file = getDefaultFile();
+            file = getDefaultFile();
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());
