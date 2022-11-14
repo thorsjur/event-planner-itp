@@ -32,11 +32,11 @@ public class IOTestUtil {
         for (int i = 0; i < n; i++) {
             EventType type = List.of(EventType.values()).get(RANDOM.nextInt(4));
             String name = "name" + String.valueOf(RANDOM.nextInt(10000));
-            LocalDateTime startDateTime = LocalDateTime.of(RANDOM.nextInt(1990, 2031), RANDOM.nextInt(1, 13),
-                    RANDOM.nextInt(1, 29), RANDOM.nextInt(1, 24), RANDOM.nextInt(1, 60));
-            LocalDateTime endDateTime = startDateTime.plusMinutes(RANDOM.nextLong(100, 10000));
+            LocalDateTime startDateTime = LocalDateTime.of(randIntWithBound(1990, 2031), randIntWithBound(1, 13),
+                    randIntWithBound(1, 29), randIntWithBound(1, 24), randIntWithBound(1, 60));
+            LocalDateTime endDateTime = startDateTime.plusMinutes(randIntWithBound(100, 10000));
             String location = "location" + String.valueOf(RANDOM.nextInt(10000));
-            List<User> users = getPseudoRandomUsers(RANDOM.nextInt(1,10));
+            List<User> users = getPseudoRandomUsers(randIntWithBound(1,10));
 
             Event event = new Event(null, type, name, startDateTime, endDateTime, location, users, null, null);
             events.add(event);
@@ -104,5 +104,9 @@ public class IOTestUtil {
 
     private static String pickRandomStringFromArray(String[] array) {
         return array[RANDOM.nextInt(array.length)];
+    }
+
+    private static int randIntWithBound(int min, int max) {
+        return RANDOM.nextInt(max - min) + min;
     }
 }

@@ -25,7 +25,7 @@
                   <Font size="30.0" />
                </font>
             </Text>
-            <Button fx:id="logOutButton" layoutX="573.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLogOutButtonClicked" text="Log Out" />
+            <Button fx:id="logOutButton" layoutX="558.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLogOutButtonClicked" text="Log Out" />
             <HBox alignment="CENTER" layoutY="68.0" prefHeight="286.0" prefWidth="640.0">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0" HBox.hgrow="ALWAYS">
