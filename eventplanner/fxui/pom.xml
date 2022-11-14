@@ -67,8 +67,33 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>eventplanner.fxui/eventplanner.fxui.App</mainClass>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>eventplannerfx</launcher>
+                    <jlinkImageName>eventplannerfx</jlinkImageName>
+                    <jlinkZipName>eventplannerfx</jlinkZipName>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                  <name>EventplannerFX</name>
+                  <appVersion>1.0.0</appVersion>
+                  <vendor>gr2225</vendor>
+                  <destination>target/dist</destination>
+                  <module>eventplanner.fxui/eventplanner.fxui.App</module>
+                  <runtimeImage>target/eventplannerfx</runtimeImage>
+                  <linuxShortcut>true</linuxShortcut>
+                  <linuxPackageName>eventplannerfx</linuxPackageName>
+                  <javaOptions>
+                    <option>-Dfile.encoding=UTF-8</option>
+                  </javaOptions>
+                </configuration>
+              </plugin>
             <!-- JaCoCo - codecoverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
