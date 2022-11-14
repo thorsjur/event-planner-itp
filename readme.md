@@ -65,6 +65,12 @@ from /fxui
 mvn javafx:jlink jpackage:jpackage
 ```
 
+On linux, the generated deb-file can be installed with the commands:
+ ```
+sudo dpkg -i [path to .deb]
+sudo apt-get install -f
+```
+
 <br>
 
 ## Reports
@@ -81,3 +87,16 @@ mvn site
 ```
 In addition, JavaDoc pages are generated on running `mvn site`.
 All reports can be found at each respective modules `target/site` folder, where JaCoCo and JavaDoc has their respective directories.
+
+<br>
+
+## Known problems
+
+There might be problems depending on your operating system and prerequisites. This is a list of all known usage problems:
+
+### Problems with fakeroot or similar (linux)
+Fakeroot is required to generate the deb file. Can be installed by running the following commands.
+```
+sudo apt-get update
+sudo apt-get install fakeroot
+````
