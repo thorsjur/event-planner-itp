@@ -17,7 +17,6 @@ import eventplanner.json.util.IOUtil;
 public class EventCollectionJsonReader {
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    private File file;
 
     /**
      * Method to load a collection of events from a JSON file. If no file is

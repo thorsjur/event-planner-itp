@@ -19,7 +19,6 @@ public class UserCollectionJsonWriter {
     public static final String FILE_EXTENSION = ".json";
 
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    private File file;
 
     /**
      * Method to save a collection of users to a JSON file. If no file is specified
@@ -31,7 +30,7 @@ public class UserCollectionJsonWriter {
      */
     public void save(final Collection<User> collection, File file) throws IOException {
         if (file == null) {
-            file = file = getDefaultFile();
+            file = getDefaultFile();
         }
         if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + file.getAbsolutePath());

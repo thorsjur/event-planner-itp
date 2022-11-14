@@ -18,7 +18,6 @@ public class EventCollectionJsonWriter {
 
     public static final String FILE_EXTENSION = ".json";
     private static final CustomObjectMapper OBJECT_MAPPER = new CustomObjectMapper();
-    private File file;
 
     /**
      * Method to save a collection of events to a JSON file.
