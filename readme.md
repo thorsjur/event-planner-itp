@@ -1,8 +1,14 @@
-[nav](/docs/nav.md)
+[---------------nav---------------](/docs/nav.md)
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.stud.ntnu.no/#gitlab.stud.idi.ntnu.no/it1901/groups-2022/gr2225/gr2225) 
+# EventPlanner
 
-# Group 25 - EventPlanner
+Group project created in the course it1901. The frontend is written in Java with JavaFX, while the backend is written with Java with Spring. The data is stored as `.json` through Jackson.
+
+The dependencies are managed using Maven.
+
+## Requirements
+
+Note that [maven](https://maven.apache.org/install.html) is required to run the application.
 
 ## Repository content
 - The [**eventplanner**](eventplanner/) folder constitutes the local modules, as well as project documentation.
@@ -19,7 +25,42 @@
 
 <br>
 
+## Images
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/990b835b-a586-4856-a94a-b9e7c788a6d3)
+
+_Figure 1: Registration screen._
+<br><br><br>
+
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/9ceb8c99-8a6d-4b8e-83b7-e767aa330b02)
+
+_Figure 2: Events._
+<br><br><br>
+
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/c98821a6-bf43-45b3-8f09-40b9f646d256)
+
+_Figure 3: Event info._
+<br><br><br>
+
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/7ed5968b-da72-4b2e-892f-221f47a2d638)
+
+_Figure 4: Multi registration._
+<br><br><br>
+
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/b4c29b91-d52c-48ce-b106-700b1b9315c7)
+
+_Figure 5: Filtering._
+<br><br><br>
+
+![image](https://github.com/thorsjur/event-planner-itp/assets/113522770/58d1ef26-80d3-42d7-8233-228bd1af1b5f)
+
+_Figure 6: Creating a new event._
+<br><br><br>
+
+
+<br>
+
 ## EventPlanner Architecture
+
 ![Architecture diagram](docs/diagrams/architecture.png)
 
 **Legend:**
